@@ -1,0 +1,70 @@
+.materia-header-container {
+  margin-bottom: 32px;
+}
+
+.breadcrumbs {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.breadcrumbs strong {
+  color: #1A237E; /* Primary */
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.materia-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1A237E; /* Primary */
+  margin: 0;
+}
+
+.badge-curso {
+  background-color: #1A237E;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.profesor-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profesor-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #E0F2F1; /* Secondary */
+  color: #1A237E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.profesor-detalles {
+  display: flex;
+  flex-direction: column;
+}
+
+.profesor-nombre {
+  font-weight: 600;
+  color: #333;
+}
+
+.profesor-rol {
+  font-size: 0.8rem;
+  color: #888;
+}

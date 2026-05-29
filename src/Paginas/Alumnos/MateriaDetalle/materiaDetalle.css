@@ -1,0 +1,45 @@
+.layout-materia {
+  padding: 40px;
+  background-color: #F5F5F5; /* Neutral */
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.main-content-area {
+  display: flex;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.contenidos-list {
+  flex: 7; /* Ocupa el 70% del ancho */
+}
+
+.sidebar-derecho {
+  flex: 3; /* Ocupa el 30% del ancho */
+}
+
+.section-block {
+  background-color: #FAFAFA; /* Un gris muy sutil para la agrupación */
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  margin: 0;
+  color: #1A237E;
+  font-size: 1.2rem;
+}
+
+.section-header span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #888;
+}
