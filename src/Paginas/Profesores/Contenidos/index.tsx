@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import Footer from '../../../Componentes/footer';
-import Contenido from '../../../Componentes/profesor/Contenido';
+import ListaContenido from '../../../Componentes/profesor/listaContenido';
 
 
 interface TrabajoData {
@@ -12,24 +12,14 @@ interface TrabajoData {
 }
 
 const Contenidos: React.FC = () => {
-  const [trabajos, setTrabajos] = useState<TrabajoData[]>([]);
 
   return (
     <>
       <Sidebar />
       <section>
         <h1>Contenidos</h1>
-        <div className="materias-grid">
-          {trabajos.map((item) => (
-            <Contenido 
-              key={item.id}
-              titulo={item.titulo} 
-              descripcion={item.descripcion} 
-              tipo={item.tipo}
-            />
-          ))}
-        </div>
-      </section>
+        <ListaContenido idCurso={1}/>
+        </section>
       <Footer />
     </>
   );
