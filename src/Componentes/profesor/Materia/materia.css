@@ -1,0 +1,21 @@
+.card {
+  background: #f9fafb; /* gris claro */
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  width: 320px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin: 12px auto;
+}
+
+.card h2 {
+  color: #1e40af; /* azul fuerte */
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
