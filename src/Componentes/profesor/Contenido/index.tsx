@@ -1,12 +1,7 @@
 import React from "react";
+import type { typeContenido } from "../../../Types/profesores/types";
 
-interface ContenidoProps {
-  titulo: string;
-  descripcion: string;
-  tipo: string;
-}
-
-const Contenido: React.FC<ContenidoProps> = ({ titulo, descripcion, tipo }) => {
+const Contenido: React.FC<typeContenido> = ({ titulo, descripcion, tipo }) => {
   return (
     <div className="card">
         <h2>{titulo}</h2>

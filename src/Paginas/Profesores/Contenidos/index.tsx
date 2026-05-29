@@ -4,12 +4,7 @@ import Footer from '../../../Componentes/footer';
 import ListaContenido from '../../../Componentes/profesor/listaContenido';
 
 
-interface TrabajoData {
-  id: string; 
-  titulo: string;
-  descripcion: string;
-  tipo: string;
-}
+
 
 const Contenidos: React.FC = () => {
 

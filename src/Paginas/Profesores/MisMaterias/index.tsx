@@ -3,17 +3,12 @@ import Materia from '../../../Componentes/profesor/Materia';
 import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import Footer from '../../../Componentes/footer';
 import './misCursos.css';
+import type { typeCurso } from '../../../Types/profesores/types';
 
-interface CursoData {
-  id: number;
-  materia: string;
-  grado: string;
-  anio: number;
-  descripcion: string;
-}
+
 
 const MisCursos: React.FC = () => {
-const [materias, setMaterias] = useState<CursoData[]>([
+const [materias, setMaterias] = useState<typeCurso[]>([
   {
     id: 1,
     materia: "Matemáticas",

@@ -1,18 +1,14 @@
 
 import React, { useState } from "react";
 import Contenido from "../Contenido";
+import type { typeContenido } from "../../../Types/profesores/types";
 
 
-interface TrabajoData {
-  id: number;         
-  titulo: string;      
-  descripcion: string; 
-  tipo: string;        
-}
+
 
 const ListaContenido = ({idCurso: number}) => {
 
-  const [trabajos, setTrabajos] = useState<TrabajoData[]>([
+  const [trabajos, setTrabajos] = useState<typeContenido[]>([
     {
       id: 1,
       titulo: "Trabajo Práctico N°1: Estructuras de Datos y Tipado Estricto",
@@ -48,7 +44,7 @@ const ListaContenido = ({idCurso: number}) => {
 
         <div className="materias-grid">
                 {trabajos.map((item) => (
-                    <Contenido titulo={item.titulo} descripcion={item.descripcion} tipo={item.tipo}
+                    <Contenido id={item.id} titulo={item.titulo} descripcion={item.descripcion} tipo={item.tipo}
                     />
                 ))}
         </div>
