@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import MateriaHeader from '../../../../Componentes/alumnos/MateriaHeader';
-import ContenidoItem from '../../../../Componentes/alumnos/ContenidoItem';
-import { type Materia } from '../../../../type';
+import MateriaHeader from '../../../Componentes/alumnos/MateriaHeader';
+import ContenidoItem from '../../../Componentes/alumnos/ContenidoItem';
+import { type Materia } from '../../../type';
 import './materiaDetalle.css';
 
 export default function MateriaDetalle() {
