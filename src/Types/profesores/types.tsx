@@ -12,3 +12,16 @@ export interface typeCurso {
   anio: number;
   descripcion: string;
 }
+
+export interface typeTipoContenido {
+  id: number;
+  nombre: string;
+}
+
+
+export interface typeContenidoForm {
+  titulo: string;
+  descripcion: string;
+  tipo_contenido_id: number;
+  archivo_url: string;
+}
