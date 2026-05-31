@@ -10,7 +10,7 @@ export default function MateriaDetalle() {
   const [loading, setLoading] = useState(true);
 
   // Valores hardcodeados para el ejemplo, deberían venir de tu Auth Context y React Router (useParams)
-  const alumnoId = 1; 
+  const alumnoId = 1; //conseguir alumno_id del localStorage
   const materiaIdTarget = 1; 
 
   useEffect(() => {

@@ -1,22 +1,21 @@
-import { useState } from 'react'
-import './App.css'
-import MisCursos from './Paginas/Profesores/MisMaterias'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import MateriaDetalle from './Paginas/Alumnos/MateriaDetalle'
+import "./App.css";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import Login from "./Paginas/Login";
+import MisCursos from "./Paginas/Profesores/MisMaterias";
+import MateriaDetalle from "./Paginas/Alumnos/MateriaDetalle";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/profesor" element={<MisCursos />} />
-          <Route path="/alumnos" element={<MateriaDetalle />} />
-        </Routes>
-      </BrowserRouter>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/profesor" element={<MisCursos />} />
+        <Route path="/alumnos" element={<MateriaDetalle />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
