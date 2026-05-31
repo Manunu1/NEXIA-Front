@@ -93,8 +93,6 @@ function Login() {
           }}
         >
           <option value="1">San Martin</option>
-          <option value="2">ORT</option>
-          <option value="3">Instituto Técnico Aurora</option>
         </select>
 
         <select
