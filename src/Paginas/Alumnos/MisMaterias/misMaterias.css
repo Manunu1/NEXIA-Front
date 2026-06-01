@@ -1,0 +1,88 @@
+/* Contenedor de la Sección Principal */
+.mismaterias-section {
+  margin-left: 18%; /* Ajustado para dar aire respecto a la Sidebar */
+  margin-top: 3%;
+  margin-right: 7%;
+  min-height: 70vh;
+}
+
+.mismaterias-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e3a8a; /* Azul institucional de NEXIA */
+  margin-bottom: 24px;
+}
+
+/* Grilla Responsiva para las Tarjetas */
+.materias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  gap: 32px;
+  padding: 4px 0;
+}
+
+/* Envoltura interactiva de cada Card */
+.card-materia-wrapper {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+}
+
+.card-materia-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Estados de Carga, Errores y Fallbacks sin Contenido */
+.nexia-status-container {
+  margin-left: 18%;
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #64748b;
+}
+
+.nexia-loading-spinner {
+  border: 4px solid #e2e8f0;
+  border-left-color: #2563eb;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.nexia-error-box {
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.no-materias-fallback {
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  padding: 40px;
+  text-align: center;
+  border-radius: 12px;
+  color: #64748b;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Adaptación responsive para pantallas medianas y móviles */
+@media (max-width: 992px) {
+  .mismaterias-section,
+  .nexia-status-container {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+  }
+}
