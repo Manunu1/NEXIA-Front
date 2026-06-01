@@ -7,8 +7,8 @@ export interface typeContenido {
 
 export interface typeCurso {
   id: number;
-  materia: string;
-  grado: string;
+  materia_nombre: string;
+  division: string;
   anio: number;
   descripcion: string;
 }

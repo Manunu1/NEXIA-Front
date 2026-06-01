@@ -9,7 +9,8 @@ import HomeGestor from "./Paginas/Gestor/HomeGestor";
 import MateriasGestor from "./Paginas/Gestor/ProfesoresGestor";
 import AsignacionesGestor from "./Paginas/Gestor/AsignacionesGestor";
 import AlumnosGestor from "./Paginas/Gestor/AlumnosGestor";
-import Contenidos from "./Componentes/profesor/Contenido";
+import Contenidos from "./Paginas/Profesores/Contenidos";
+
 
 
 function App() {
