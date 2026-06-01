@@ -8,11 +8,11 @@ function Login() {
   const [institucionId, setInstitucionId] = useState("1");
   const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
-  const [rol, setRol] = useState("ALUMNO");
   const [error, setError] = useState("");
 
   const handleLogin = async () => {
     setError("");
+
     try {
       if (!dni.trim()) {
         setError("Ingresá tu DNI");
@@ -23,21 +23,30 @@ function Login() {
         setError("Ingresá tu contraseña");
         return;
       }
-      const response = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          institucion_id: Number(institucionId),
-          dni,
-          password,
-          rol,
-        }),
-      });
+
+      const response = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            institucion_id: Number(institucionId),
+            dni,
+            password,
+          }),
+        }
+      );
 
       if (!response.ok) {
-        setError("Institución, DNI, contraseña o rol incorrectos");
+        const errorData = await response.json();
+
+        setError(
+          errorData.message ||
+          "Institución, DNI o contraseña incorrectos"
+        );
+
         return;
       }
 
@@ -45,34 +54,53 @@ function Login() {
 
       const usuario = responseData.data;
 
-      localStorage.setItem("usuario", JSON.stringify(usuario));
+      localStorage.setItem(
+        "usuario",
+        JSON.stringify(usuario)
+      );
 
-      localStorage.setItem("rol", usuario.rol);
+      if (usuario.rol) {
+        localStorage.setItem("rol", usuario.rol);
+      }
 
-      localStorage.setItem("institucion_id", usuario.institucion_id);
+      localStorage.setItem(
+        "institucion_id",
+        usuario.institucion_id
+      );
 
       if (usuario.alumno_id) {
-        localStorage.setItem("alumno_id", usuario.alumno_id);
+        localStorage.setItem(
+          "alumno_id",
+          usuario.alumno_id
+        );
 
         navigate("/alumnos");
         return;
       }
 
       if (usuario.profesor_id) {
-        localStorage.setItem("profesor_id", usuario.profesor_id);
+        localStorage.setItem(
+          "profesor_id",
+          usuario.profesor_id
+        );
 
         navigate("/profesor");
         return;
       }
 
       if (usuario.gestor_id) {
-        localStorage.setItem("gestor_id", usuario.gestor_id);
+        localStorage.setItem(
+          "gestor_id",
+          usuario.gestor_id
+        );
 
         navigate("/gestor");
         return;
       }
 
-      setError("No se pudo determinar el rol del usuario");
+      setError(
+        "No se pudo determinar el tipo de usuario"
+      );
     } catch (error) {
       console.error(error);
       setError("Error conectando con el servidor");
@@ -83,7 +111,13 @@ function Login() {
     <div className="login-container">
       <div className="login-card">
         <h1>NEXIA</h1>
-        {error && <div className="error-message">{error}</div>}
+
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
+
         <select
           className="login-field"
           value={institucionId}
@@ -93,21 +127,6 @@ function Login() {
           }}
         >
           <option value="1">San Martin</option>
-          <option value="2">ORT</option>
-          <option value="3">Instituto Técnico Aurora</option>
-        </select>
-
-        <select
-          className="login-field"
-          value={rol}
-          onChange={(e) => {
-            setRol(e.target.value);
-            setError("");
-          }}
-        >
-          <option value="ALUMNO">Alumno</option>
-          <option value="PROFESOR">Profesor</option>
-          <option value="GESTOR">Gestor</option>
         </select>
 
         <input
@@ -132,7 +151,10 @@ function Login() {
           }}
         />
 
-        <button className="login-btn" onClick={handleLogin}>
+        <button
+          className="login-btn"
+          onClick={handleLogin}
+        >
           Iniciar sesión
         </button>
       </div>
