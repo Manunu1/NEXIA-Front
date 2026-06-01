@@ -1,0 +1,276 @@
+/* Paleta de Colores Identitaria de NEXIA y Variables Globales */
+:root {
+  --nexia-primary: #1e3a8a;       /* Azul institucional robusto */
+  --nexia-primary-light: #2563eb; /* Azul brillante para interacción */
+  --nexia-secondary: #0d9488;     /* Teal/Verde azulado para acentos y badges */
+  --nexia-bg-main: #f8fafc;       /* Gris ultra claro y limpio para fondo de página */
+  --nexia-bg-card: #ffffff;       /* Blanco puro para tarjetas y contenedores */
+  --nexia-border: #e2e8f0;        /* Gris suave para bordes sutiles */
+  --nexia-text-dark: #1e293b;     /* Azul grisáceo oscuro para alta legibilidad */
+  --nexia-text-muted: #64748b;    /* Gris medio para descripciones y metadatos */
+  --nexia-active-item: #eff6ff;   /* Fondo sutil para indicar selección */
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --transition: all 0.25s ease;
+}
+
+/* Contenedor principal de la Pantalla */
+.nexia-ver-contenido-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--nexia-bg-main);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--nexia-text-dark);
+}
+
+/* Header superior */
+.contenido-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background-color: var(--nexia-bg-card);
+  border-bottom: 1px solid var(--nexia-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.btn-back {
+  background: none;
+  border: 1px solid var(--nexia-border);
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  color: var(--nexia-text-muted);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-back:hover {
+  background-color: var(--nexia-bg-main);
+  color: var(--nexia-primary);
+  border-color: var(--nexia-primary-light);
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-info h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--nexia-primary);
+}
+
+.badge-curso {
+  background-color: var(--nexia-secondary);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Disposición Main Layout (Dos columnas en Escritorio) */
+.contenido-main-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden; /* Evita scrolls dobles extraños */
+}
+
+/* Sidebar Izquierda (Lista de Materiales) */
+.contenido-sidebar {
+  width: 320px;
+  background-color: var(--nexia-bg-card);
+  border-right: 1px solid var(--nexia-border);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nexia-text-muted);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.lista-materiales {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.material-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.material-item:hover {
+  background-color: var(--nexia-bg-main);
+}
+
+.material-item.active {
+  background-color: var(--nexia-active-item);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.material-icon {
+  font-size: 1.2rem;
+}
+
+.material-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.material-item-titulo {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--nexia-text-dark);
+}
+
+.material-item-tipo {
+  font-size: 0.75rem;
+  color: var(--nexia-text-muted);
+}
+
+/* Panel de Visualización Central (Derecho) */
+.contenido-viewer-container {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.viewer-card {
+  background-color: var(--nexia-bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--nexia-border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.viewer-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--nexia-border);
+}
+
+.viewer-header h2 {
+  margin: 0 0 6px 0;
+  font-size: 1.5rem;
+  color: var(--nexia-text-dark);
+}
+
+.viewer-description {
+  margin: 0;
+  color: var(--nexia-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Envoltura del Embed para que conserve proporciones fluidas */
+.embed-wrapper {
+  flex: 1;
+  background-color: #0f172a; /* Fondo ultra oscuro para resaltar el visor como en cines */
+  position: relative;
+  min-height: 450px;
+}
+
+.nexia-iframe-embed {
+  width: 100%;
+  height: 100%;
+  border: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Sección inferior del Visor */
+.viewer-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--nexia-border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-external-link {
+  background-color: var(--nexia-primary);
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.btn-external-link:hover {
+  background-color: var(--nexia-primary-light);
+}
+
+/* Estados de Carga, Error y Fallbacks Vaciós */
+.nexia-loading-container,
+.nexia-error-container,
+.no-content-selected,
+.no-url-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+  color: var(--nexia-text-muted);
+}
+
+.nexia-spinner {
+  border: 4px solid var(--nexia-border);
+  border-left-color: var(--nexia-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- ADAPTACIÓN RESPONSIVE --- */
+@media (max-width: 992px) {
+  .contenido-main-layout {
+    flex-direction: column;
+    overflow: auto;
+  }
+  
+  .contenido-sidebar {
+    width: 100%;
+    height: 200px;
+    border-right: none;
+    border-bottom: 1px solid var(--nexia-border);
+  }
+  
+  .embed-wrapper {
+    min-height: 350px;
+  }
+}
