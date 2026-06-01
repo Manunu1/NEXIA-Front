@@ -1,0 +1,12 @@
+.materias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  gap: 5%;
+  padding: 20px;
+}
+
+section {
+  margin-left: 15%;
+  margin-top: 2%;
+  margin-right: 7%;
+}
