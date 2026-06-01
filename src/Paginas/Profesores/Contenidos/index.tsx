@@ -13,7 +13,7 @@ const Contenidos: React.FC = () => {
       <Sidebar />
       <section>
         <h1>Contenidos</h1>
-        <ListaContenido idCurso={1}/>
+        <ListaContenido />
         </section>
       <Footer />
     </>
