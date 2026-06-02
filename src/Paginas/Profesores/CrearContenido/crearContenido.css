@@ -1,0 +1,56 @@
+.form-subida {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 500px;
+  margin: 40px auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.form-subida h2 {
+  color: #1a237e;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.form-subida input,
+.form-subida textarea,
+.form-subida select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.form-subida input:focus,
+.form-subida textarea:focus,
+.form-subida select:focus {
+  border-color: #1a237e;
+  outline: none;
+}
+
+.form-subida textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-subida button {
+  background-color: #1a237e;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-subida button:hover {
+  background-color: #283593;
+}

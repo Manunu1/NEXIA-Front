@@ -26,7 +26,7 @@ useEffect(() => {
 
         <div className="materias-grid">
                 {contenido.map((item) => (
-                    <Contenido id={id}key={item.id}titulo={item.titulo} descripcion={item.descripcion} tipo={item.tipo}
+                    <Contenido id={id}key={item.id}titulo={item.titulo} descripcion={item.descripcion} tipo_contenido={item.tipo_contenido}
                     />
                 ))}
         </div>

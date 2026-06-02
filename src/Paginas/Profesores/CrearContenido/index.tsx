@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import type { typeContenidoForm, typeTipoContenido } from '../../../Types/profesores/types';
+import React, { useEffect, useState } from 'react';
+import type { typeContenido, typeContenidoForm, typeTipoContenido } from '../../../Types/profesores/types';
+import './CrearContenido.css';
+import axios from 'axios';
+import Sidebar from '../../../Componentes/alumnos/Sidebar';
+import Footer from '../../../Componentes/footer';
 
 const CrearContenido: React.FC = () => {
   // Estado del formulario
@@ -8,13 +12,23 @@ const CrearContenido: React.FC = () => {
     descripcion: '',
     tipo_contenido_id: 0,
     archivo_url: '',
+    profe_curso_materia_id: 1,
   });
 
-  const [tipos, setTipos] = useState<typeTipoContenido[]>([
-    { id: 1, nombre: 'Tarea' },
-    { id: 2, nombre: 'Teoría' },
-    { id: 3, nombre: 'Evaluación' }
-  ]);
+  const [tipos, setTipos] = useState<typeTipoContenido[]>([]);
+
+  useEffect(() => {
+      const traerMaterias = async () => {
+        try {
+          const res = await axios.get(`http://localhost:3000/api/tipos-contenido `);
+          const listaTipos: typeTipoContenido[] = res.data.data;
+          setTipos(listaTipos);
+        } catch (error) {
+          console.error("Error al obtener los datos de los contenidos:", error);
+        }
+      };
+      traerMaterias();
+    }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -24,13 +38,26 @@ const CrearContenido: React.FC = () => {
     }));
   };
 
-  const Submit = (e: React.FormEvent) => {
+  const Submit = async  (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Datos a enviar a la tabla contenido:', formData);
-    // Aquí realizarías el POST a tu API
+    try {
+      const res = await axios.post<typeContenidoForm>(
+        'http://localhost:3000/api/contenidos',
+        formData
+      );
+      alert('Contenido guardado correctamente');
+    } catch (error) {
+      alert('Hubo un error al guardar');
+      console.error('Error al guardar contenido:', error);
+    }
+   
   };
 
   return (
+    <>
+    <Sidebar />
+
+    <section>
     <form onSubmit={Submit} className="form-subida">
       <h2>Subir Nuevo Contenido</h2>
 
@@ -71,6 +98,9 @@ const CrearContenido: React.FC = () => {
 
       <button type="submit">Guardar Contenido</button>
     </form>
+    </section>
+    <Footer/>
+    </>
   );
 };
 

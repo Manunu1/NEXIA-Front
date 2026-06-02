@@ -10,6 +10,7 @@ import MateriasGestor from "./Paginas/Gestor/ProfesoresGestor";
 import AsignacionesGestor from "./Paginas/Gestor/AsignacionesGestor";
 import AlumnosGestor from "./Paginas/Gestor/AlumnosGestor";
 import Contenidos from "./Paginas/Profesores/Contenidos";
+import CrearContenido from "./Paginas/Profesores/CrearContenido";
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/profesor" element={<MisCursos />} />
         <Route path="/contenido" element={<Contenidos />} />
+        <Route path="/crearContenido" element={<CrearContenido />} />
         <Route path="/alumnos" element={<MateriaDetalle />} />
         <Route path="/gestor" element={<HomeGestor />} />
         <Route path="/gestor/materias" element={<MateriasGestor />} />

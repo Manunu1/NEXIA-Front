@@ -2,7 +2,7 @@ export interface typeContenido {
   id: number;         
   titulo: string;      
   descripcion: string; 
-  tipo: string;        
+  tipo_contenido: string;        
 }
 
 export interface typeCurso {
@@ -24,4 +24,5 @@ export interface typeContenidoForm {
   descripcion: string;
   tipo_contenido_id: number;
   archivo_url: string;
+  profe_curso_materia_id: number
 }
