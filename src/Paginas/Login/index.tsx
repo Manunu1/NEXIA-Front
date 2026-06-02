@@ -24,27 +24,23 @@ function Login() {
         return;
       }
 
-      const response = await fetch(
-        "http://localhost:3000/api/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            institucion_id: Number(institucionId),
-            dni,
-            password,
-          }),
-        }
-      );
+      const response = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          institucion_id: Number(institucionId),
+          dni,
+          password,
+        }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
 
         setError(
-          errorData.message ||
-          "Institución, DNI o contraseña incorrectos"
+          errorData.message || "Institución, DNI o contraseña incorrectos",
         );
 
         return;
@@ -54,53 +50,45 @@ function Login() {
 
       const usuario = responseData.data;
 
-      localStorage.setItem(
-        "usuario",
-        JSON.stringify(usuario)
-      );
+      localStorage.setItem("usuario", JSON.stringify(usuario));
 
       if (usuario.rol) {
         localStorage.setItem("rol", usuario.rol);
       }
 
-      localStorage.setItem(
-        "institucion_id",
-        usuario.institucion_id
-      );
+      localStorage.setItem("institucion_id", usuario.institucion_id);
+
+      // Guardar un ID único para cualquier usuario
+      if (usuario.usuario_id) {
+        localStorage.setItem("usuario_id", usuario.usuario_id);
+      }
+
+      if (usuario.gestor_id) {
+        localStorage.setItem("usuario_id", usuario.gestor_id);
+      }
 
       if (usuario.alumno_id) {
-        localStorage.setItem(
-          "alumno_id",
-          usuario.alumno_id
-        );
+        localStorage.setItem("alumno_id", usuario.alumno_id);
 
         navigate("/alumnos");
         return;
       }
 
       if (usuario.profesor_id) {
-        localStorage.setItem(
-          "profesor_id",
-          usuario.profesor_id
-        );
+        localStorage.setItem("profesor_id", usuario.profesor_id);
 
         navigate("/profesor");
         return;
       }
 
       if (usuario.gestor_id) {
-        localStorage.setItem(
-          "gestor_id",
-          usuario.gestor_id
-        );
+        localStorage.setItem("gestor_id", usuario.gestor_id);
 
         navigate("/gestor");
         return;
       }
 
-      setError(
-        "No se pudo determinar el tipo de usuario"
-      );
+      setError("No se pudo determinar el tipo de usuario");
     } catch (error) {
       console.error(error);
       setError("Error conectando con el servidor");
@@ -112,11 +100,7 @@ function Login() {
       <div className="login-card">
         <h1>NEXIA</h1>
 
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
+        {error && <div className="error-message">{error}</div>}
 
         <select
           className="login-field"
@@ -151,10 +135,7 @@ function Login() {
           }}
         />
 
-        <button
-          className="login-btn"
-          onClick={handleLogin}
-        >
+        <button className="login-btn" onClick={handleLogin}>
           Iniciar sesión
         </button>
       </div>
