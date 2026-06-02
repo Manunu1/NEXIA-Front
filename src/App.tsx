@@ -20,8 +20,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/profesor" element={<MisCursos />} />
-        <Route path="/contenidos/:id" element={<Contenidos />} />
-        <Route path="/crearContenido" element={<CrearContenido />} />
+        <Route path="/contenidos/:profeCursoMateriaId" element={<Contenidos />} />
+        <Route path="/crear-contenido/:profeCursoMateriaId" element={<CrearContenido />} />
         <Route path="/alumnos" element={<MateriaDetalle />} />
         <Route path="/gestor" element={<HomeGestor />} />
         <Route path="/gestor/materias" element={<MateriasGestor />} />

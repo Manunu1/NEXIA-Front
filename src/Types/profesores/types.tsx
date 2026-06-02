@@ -11,6 +11,7 @@ export interface typeCurso {
   division: string;
   anio: number;
   descripcion: string;
+  profe_curso_materia_id: number;
 }
 
 export interface typeTipoContenido {

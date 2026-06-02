@@ -11,11 +11,11 @@ import { Link } from 'react-router-dom';
 
   const MisCursos: React.FC = () => {
 const [listaMaterias, setlistaMaterias] = useState<typeCurso[]>([])
-let id = 1;
+const profesorId = localStorage.getItem("profesor_id");
 useEffect(() => {
     const traerMaterias = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/contenidos/profesor/${id}`);
+        const res = await axios.get(`http://localhost:3000/api/contenidos/profesor/${profesorId}`);
         const materia: typeCurso[] = res.data.data;
         setlistaMaterias(materia);
       } catch (error) {
@@ -34,7 +34,7 @@ useEffect(() => {
         <h1>Mis Cursos</h1>
         <div className="materias-grid">
           {listaMaterias.map((item) => (
-            <Link key={item.id} to={`/contenidos/${item.id}`}>
+            <Link key={item.profe_curso_materia_id} to={`/contenidos/${item.profe_curso_materia_id}`}>
               <Materia
                 key={item.id}
                 materia={item.materia_nombre}

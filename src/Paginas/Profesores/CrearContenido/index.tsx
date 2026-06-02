@@ -4,15 +4,19 @@ import './CrearContenido.css';
 import axios from 'axios';
 import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import Footer from '../../../Componentes/footer';
+import { useParams } from 'react-router-dom';
 
 const CrearContenido: React.FC = () => {
+
+  const{profeCursoMateriaId} = useParams<{profeCursoMateriaId: string}>();
+  const idprofeCursoMateriaParse = Number(profeCursoMateriaId)
   // Estado del formulario
   const [formData, setFormData] = useState<typeContenidoForm>({
     titulo: '',
     descripcion: '',
     tipo_contenido_id: 0,
     archivo_url: '',
-    profe_curso_materia_id: 1,
+    profe_curso_materia_id: idprofeCursoMateriaParse,
   });
 
   const [tipos, setTipos] = useState<typeTipoContenido[]>([]);
