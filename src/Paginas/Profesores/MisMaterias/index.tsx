@@ -5,6 +5,7 @@ import Footer from '../../../Componentes/footer';
 import './misCursos.css';
 import type { typeCurso } from '../../../Types/profesores/types';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 
@@ -33,13 +34,15 @@ useEffect(() => {
         <h1>Mis Cursos</h1>
         <div className="materias-grid">
           {listaMaterias.map((item) => (
-            <Materia
-              key={item.id}
-              materia={item.materia_nombre}
-              grado={item.division}
-              anio={item.anio}
-              descripcion={item.descripcion}
-            />
+            <Link key={item.id} to={`/contenidos/${item.id}`}>
+              <Materia
+                key={item.id}
+                materia={item.materia_nombre}
+                grado={item.division}
+                anio={item.anio}
+                descripcion={item.descripcion}
+              />
+            </Link>
           ))}
         </div>
       </section>

@@ -5,7 +5,7 @@ import type { typeContenido } from "../../../Types/profesores/types";
 import axios from "axios";
 
 
-const ListaContenido = ({}) => {
+const ListaContenido = ({idCurso:Number}) => {
   const [contenido, setContenido] = useState<typeContenido[]>([]);
 
  let id = 1;
