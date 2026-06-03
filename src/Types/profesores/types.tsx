@@ -10,7 +10,7 @@ export interface typeCurso {
   materia_nombre: string;
   division: string;
   anio: number;
-  descripcion: string;
+  materia_descripcion: string;
   profe_curso_materia_id: number;
 }
 

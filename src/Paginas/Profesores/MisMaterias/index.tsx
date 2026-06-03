@@ -15,7 +15,7 @@ const profesorId = localStorage.getItem("profesor_id");
 useEffect(() => {
     const traerMaterias = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/contenidos/profesor/${profesorId}`);
+        const res = await axios.get(`http://localhost:3000/api/profesores/${profesorId}/materias`);
         const materia: typeCurso[] = res.data.data;
         setlistaMaterias(materia);
       } catch (error) {
@@ -40,7 +40,7 @@ useEffect(() => {
                 materia={item.materia_nombre}
                 grado={item.division}
                 anio={item.anio}
-                descripcion={item.descripcion}
+                descripcion={item.materia_descripcion}
               />
             </Link>
           ))}
