@@ -1,6 +1,6 @@
 
 import React from 'react';
-import './cardMateria.css';
+import './cardmaterias.css';
 
 interface CardMateriaProps {
   curso: string | number;
