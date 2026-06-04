@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import Footer from '../../../Componentes/footer';
 import ListaContenido from '../../../Componentes/profesor/listaContenido';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import type { typeContenido } from '../../../Types/profesores/types';
 import axios from 'axios';
 
-
-const Contenidos: React.FC = () => {
+const ContenidosAlumnos: React.FC = () => {
     const{ profeCursoMateriaId } = useParams<{profeCursoMateriaId: string}>();
   const [contenido, setContenido] = useState<typeContenido[]>([]);
   const traerContenidos = async () => {
@@ -26,9 +25,6 @@ const Contenidos: React.FC = () => {
       <Sidebar />
       <section>
         <h1>Contenidos</h1>
-        <Link key={profeCursoMateriaId} to={`/crear-contenido/${profeCursoMateriaId}`}>
-          <button className="btn-simple">Crear Contenido</button>
-        </Link>
         <ListaContenido contenidos={contenido} />
         </section>
       <Footer />
@@ -36,4 +32,4 @@ const Contenidos: React.FC = () => {
   );
 }
 
-export default Contenidos;
+export default ContenidosAlumnos;

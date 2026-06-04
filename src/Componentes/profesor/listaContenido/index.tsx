@@ -5,29 +5,18 @@ import type { typeContenido } from "../../../Types/profesores/types";
 import axios from "axios";
 
 type Props = {
-  profeCursoMateriaID: number;
+  contenidos: typeContenido[];
 };
 
-const ListaContenido: React.FC<Props> = ({profeCursoMateriaID}) => {
-  const [contenido, setContenido] = useState<typeContenido[]>([]);
-
+const ListaContenido: React.FC<Props> = ({contenidos}) => {
 useEffect(() => {
-    const traerContenidos = async () => {
-      try {
-        const res = await axios.get(`http://localhost:3000/api/contenidos/profe-curso-materia/${profeCursoMateriaID}`);
-        const contenido: typeContenido[] = res.data.data.contenidos;
-        setContenido(contenido);
-      } catch (error) {
-        console.error("Error al obtener los datos de los contenidos:", error);
-      }
-    };
-    traerContenidos();
+    
   }, []);
 
   return (
 
         <div className="materias-grid">
-                {contenido.map((item) => (
+                {contenidos.map((item) => (
                     <Contenido id={item.id}key={item.id}titulo={item.titulo} descripcion={item.descripcion} tipo_contenido={item.tipo_contenido}
                     />
                 ))}
