@@ -34,9 +34,8 @@ useEffect(() => {
         <h1>Mis Cursos</h1>
         <div className="materias-grid">
           {listaMaterias.map((item) => (
-            <Link key={item.profe_curso_materia_id} to={`/contenidos/${item.profe_curso_materia_id}`}>
+            <Link key={item.profe_curso_materia_id} to={`/contenidos/${item.profe_curso_materia_id}`}>``
               <Materia
-                key={item.id}
                 materia={item.materia_nombre}
                 grado={item.division}
                 anio={item.anio}

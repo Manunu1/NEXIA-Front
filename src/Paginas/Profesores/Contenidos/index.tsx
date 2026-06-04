@@ -17,7 +17,7 @@ const Contenidos: React.FC = () => {
         <Link key={profeCursoMateriaId} to={`/crear-contenido/${profeCursoMateriaId}`}>
           <button className="btn-simple">Crear Contenido</button>
         </Link>
-        <ListaContenido />
+        <ListaContenido profeCursoMateriaID ={Number(profeCursoMateriaId)}/>
         </section>
       <Footer />
     </>

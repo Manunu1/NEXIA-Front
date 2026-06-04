@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import type { typeContenido, typeContenidoForm, typeTipoContenido } from '../../../Types/profesores/types';
+import type { typeContenidoForm, typeTipoContenido } from '../../../Types/profesores/types';
 import './CrearContenido.css';
 import axios from 'axios';
 import Sidebar from '../../../Componentes/alumnos/Sidebar';
@@ -9,14 +9,17 @@ import { useParams } from 'react-router-dom';
 const CrearContenido: React.FC = () => {
 
   const{profeCursoMateriaId} = useParams<{profeCursoMateriaId: string}>();
-  const idprofeCursoMateriaParse = Number(profeCursoMateriaId)
+
+
+
+
   // Estado del formulario
   const [formData, setFormData] = useState<typeContenidoForm>({
+    profe_curso_materia_id: Number(profeCursoMateriaId),
+    tipo_contenido_id: 0,
     titulo: '',
     descripcion: '',
-    tipo_contenido_id: 0,
     archivo_url: '',
-    profe_curso_materia_id: idprofeCursoMateriaParse,
   });
 
   const [tipos, setTipos] = useState<typeTipoContenido[]>([]);
@@ -44,10 +47,20 @@ const CrearContenido: React.FC = () => {
 
   const Submit = async  (e: React.FormEvent) => {
     e.preventDefault();
+     const idParseado = Number(profeCursoMateriaId);
+      console.log("ID parseado:", idParseado);
+    console.log("FormData:", formData);
+
+    setFormData(prev => ({
+    ...prev,
+    profe_curso_materia_id: idParseado
+  }));
+
     try {
+      
       const res = await axios.post<typeContenidoForm>(
         'http://localhost:3000/api/contenidos',
-        formData
+        formData,
       );
       alert('Contenido guardado correctamente');
     } catch (error) {
