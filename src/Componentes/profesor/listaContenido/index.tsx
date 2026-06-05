@@ -1,8 +1,8 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Contenido from "../Contenido";
 import type { typeContenido } from "../../../Types/profesores/types";
-import axios from "axios";
+import { Link } from "react-router-dom";
 
 type Props = {
   contenidos: typeContenido[];
@@ -17,8 +17,18 @@ useEffect(() => {
 
         <div className="materias-grid">
                 {contenidos.map((item) => (
-                    <Contenido id={item.id}key={item.id}titulo={item.titulo} descripcion={item.descripcion} tipo_contenido={item.tipo_contenido}
-                    />
+                    <Link 
+                      key={item.contenido_id} 
+                      to={`/verContenido/${item.contenido_id}`} 
+                    >
+                      <Contenido 
+                        contenido_id={item.contenido_id}
+                        titulo={item.titulo} 
+                        descripcion={item.descripcion} 
+                        tipo_contenido={item.tipo_contenido} 
+                        url={item.url}
+                      />
+                    </Link>
                 ))}
         </div>
   );

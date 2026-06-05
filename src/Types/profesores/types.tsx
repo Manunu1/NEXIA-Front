@@ -1,8 +1,9 @@
 export interface typeContenido {
-  id: number;         
+  contenido_id: number;         
   titulo: string;      
   descripcion: string; 
-  tipo_contenido: string;        
+  tipo_contenido: string;
+  url: string
 }
 
 export interface typeCurso {

@@ -48,8 +48,6 @@ const CrearContenido: React.FC = () => {
   const Submit = async  (e: React.FormEvent) => {
     e.preventDefault();
      const idParseado = Number(profeCursoMateriaId);
-      console.log("ID parseado:", idParseado);
-    console.log("FormData:", formData);
 
     setFormData(prev => ({
     ...prev,
@@ -57,7 +55,6 @@ const CrearContenido: React.FC = () => {
   }));
 
     try {
-      
       const res = await axios.post<typeContenidoForm>(
         'http://localhost:3000/api/contenidos',
         formData,

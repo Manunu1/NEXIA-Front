@@ -12,6 +12,7 @@ import Contenidos from "./Paginas/Profesores/Contenidos";
 import CrearContenido from "./Paginas/Profesores/CrearContenido";
 import MisMaterias from "./Paginas/Alumnos/MisMaterias";
 import ContenidosAlumnos from "./Paginas/Alumnos/ContenidosAlumnos";
+import VerContenido from "./Paginas/VerContenido";
 
 
 
@@ -20,6 +21,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/verContenido/:contenidoId" element={<VerContenido />} />
         <Route path="/profesor" element={<MisCursos />} />
         <Route path="/contenidos/:profeCursoMateriaId" element={<Contenidos />} />
         <Route path="/crear-contenido/:profeCursoMateriaId" element={<CrearContenido />} />
