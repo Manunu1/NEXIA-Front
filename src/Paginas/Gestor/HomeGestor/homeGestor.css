@@ -1,0 +1,149 @@
+/* ============================================
+   PANEL DE GESTIÓN (HOME GESTOR)
+   ============================================ */
+
+/* Contenedor principal: se adapta al layout base (.main-content) */
+.home-gestor {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Título del Panel */
+.home-gestor h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222222;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+/* Línea decorativa debajo del título con tu azul institucional */
+.home-gestor h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background-color: var(--footer-bg, #1A237E);
+  border-radius: 2px;
+}
+
+/* ============================================
+   GRID DE TARJETAS (RESUMEN)
+   ============================================ */
+.resumen-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.resumen-card {
+  background-color: #ffffff;
+  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  border-left: 5px solid var(--footer-bg, #1A237E); /* Detalle elegante en el borde izquierdo */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.resumen-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(26, 35, 126, 0.08);
+}
+
+/* El número grande dentro de la tarjeta */
+.resumen-card h2 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #111111;
+  line-height: 1;
+}
+
+/* El texto de la métrica */
+.resumen-card p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Alternate color para la tercera tarjeta (Cursos) usando tu naranja */
+.resumen-card:nth-child(3) {
+  border-left-color: var(--footer-primary, #FF9800);
+}
+
+/* ============================================
+   GRID DE ACCIONES (BOTONES)
+   ============================================ */
+.acciones-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.acciones-grid button {
+  padding: 1.25rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--footer-bg, #1A237E);
+  background-color: #ffffff;
+  border: 2px solid var(--footer-bg, #1A237E);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+  text-align: center;
+}
+
+/* Efecto hover: se invierten los colores al pasar el mouse */
+.acciones-grid button:hover {
+  background-color: var(--footer-bg, #1A237E);
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(26, 35, 126, 0.2);
+  transform: translateY(-2px);
+}
+
+.acciones-grid button:active {
+  transform: scale(0.98);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 900px) {
+  .resumen-grid, 
+  .acciones-grid {
+    grid-template-columns: repeat(2, 1fr); /* Pasa a 2 columnas en tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .home-gestor {
+    gap: 1.5rem;
+  }
+  
+  .resumen-grid, 
+  .acciones-grid {
+    grid-template-columns: 1fr; /* 1 sola columna en celulares */
+    gap: 1rem;
+  }
+  
+  .resumen-card {
+    padding: 1.5rem;
+  }
+  
+  .resumen-card h2 {
+    font-size: 2.2rem;
+  }
+}
