@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './sidebar.css';
 // Importamos el logo desde assets
 import logoEscuela from '../../../assets/Logo.png';
+import LogoutButton from '../../Logout';
 
 const Sidebar: React.FC = () => {
   // Estado para el menú móvil con tipado explícito
@@ -196,6 +197,7 @@ const Sidebar: React.FC = () => {
             <span className="user-name">Julián García</span>
             <span className="user-role">ALUMNO 5° AÑO A</span>
           </div>
+          <LogoutButton/>
         </div>
       </aside>
     </>
