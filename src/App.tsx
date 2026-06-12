@@ -13,6 +13,7 @@ import CrearContenido from "./Paginas/Profesores/CrearContenido";
 import MisMaterias from "./Paginas/Alumnos/MisMaterias";
 import ContenidosAlumnos from "./Paginas/Alumnos/ContenidosAlumnos";
 import VerContenido from "./Paginas/VerContenido";
+import ProtectedRoute from "./Componentes/ProtectedRoute";
 
 
 
@@ -21,16 +22,86 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/verContenido/:contenidoId" element={<VerContenido />} />
-        <Route path="/profesor" element={<MisCursos />} />
-        <Route path="/contenidos/:profeCursoMateriaId" element={<Contenidos />} />
-        <Route path="/crear-contenido/:profeCursoMateriaId" element={<CrearContenido />} />
-        <Route path="/alumnos" element={<MisMaterias />} />
-        <Route path="/materia/:profeCursoMateriaId" element={<ContenidosAlumnos />} />
-        <Route path="/gestor" element={<HomeGestor />} />
-        <Route path="/gestor/materias" element={<MateriasGestor />} />
-        <Route path="/gestor/asignaciones" element={<AsignacionesGestor />} />
-        <Route path="/gestor/alumnos" element={<AlumnosGestor />} />
+         <Route
+          path="/verContenido/:contenidoId"
+          element={
+            <ProtectedRoute>
+              <VerContenido />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profesor"
+          element={
+            <ProtectedRoute>
+              <MisCursos />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/contenidos/:profeCursoMateriaId"
+          element={
+            <ProtectedRoute>
+              <Contenidos />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/crear-contenido/:profeCursoMateriaId"
+          element={
+            <ProtectedRoute>
+              <CrearContenido />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/alumnos"
+          element={
+            <ProtectedRoute>
+              <MisMaterias />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/materia/:profeCursoMateriaId"
+          element={
+            <ProtectedRoute>
+              <ContenidosAlumnos />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/gestor"
+          element={
+            <ProtectedRoute>
+              <HomeGestor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/gestor/materias"
+          element={
+            <ProtectedRoute>
+              <MateriasGestor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/gestor/asignaciones"
+          element={
+            <ProtectedRoute>
+              <AsignacionesGestor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/gestor/alumnos"
+          element={
+            <ProtectedRoute>
+              <AlumnosGestor />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
