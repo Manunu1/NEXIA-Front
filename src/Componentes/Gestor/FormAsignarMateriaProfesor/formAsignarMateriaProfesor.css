@@ -1,0 +1,159 @@
+/* ============================================
+   CONTENEDOR DE CENTRADO
+   ============================================ */
+.form-assignment-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 150px);
+    width: 100%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+/* ============================================
+   FORMULARIO ASIGNAR MATERIA PROFESOR (BLINDADO)
+   Ahora todos empiezan con .form-assignment-wrapper
+   ============================================ */
+.form-assignment-wrapper form {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Título Interno */
+.form-assignment-wrapper form h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #222222;
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+/* Detalle de línea azul bajo el título */
+.form-assignment-wrapper form h3::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--footer-bg, #1A237E);
+    border-radius: 2px;
+}
+
+/* Grupos de campos (Wrapper de cada Select) */
+.form-assignment-wrapper form div[style*="margin-bottom"] {
+    margin-bottom: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+/* Etiquetas (Labels) */
+.form-assignment-wrapper form label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ============================================
+   TUNEADO RE-PERSONALIZADO DE REACT-SELECT
+   ============================================ */
+.form-assignment-wrapper [class*="-control"] {
+    background-color: #EAEBF0 !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 8px !important;
+    padding: 0.15rem 0.25rem !important;
+    box-shadow: none !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.form-assignment-wrapper [class*="-control"]:focus-within {
+    border-color: var(--footer-bg, #1A237E) !important;
+    box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1) !important;
+    background-color: #ffffff !important;
+}
+
+.form-assignment-wrapper [class*="-placeholder"] {
+    color: #888888 !important;
+    font-size: 0.95rem;
+}
+
+.form-assignment-wrapper [class*="-singleValue"] {
+    color: #222222 !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.form-assignment-wrapper [class*="-menu"] {
+    background-color: #ffffff !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #E2E8F0 !important;
+    z-index: 10 !important;
+}
+
+.form-assignment-wrapper [class*="-menu-list"] {
+    padding: 0.4rem !important;
+}
+
+.form-assignment-wrapper [class*="-option"] {
+    border-radius: 6px !important;
+    padding: 0.6rem 0.8rem !important;
+    font-size: 0.95rem !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+.form-assignment-wrapper [class*="-option"]:hover {
+    background-color: #F1F3F9 !important;
+    color: var(--footer-bg, #1A237E) !important;
+}
+
+.form-assignment-wrapper [class*="-option"][class*="-isSelected"] {
+    background-color: var(--footer-bg, #1A237E) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* ============================================
+   BOTÓN SUBMIT
+   ============================================ */
+.form-assignment-wrapper form button[type="submit"] {
+    width: 100%;
+    padding: 0.85rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: var(--footer-bg, #1A237E);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 0.75rem;
+    box-shadow: 0 4px 12px rgba(26, 35, 126, 0.15);
+}
+
+.form-assignment-wrapper form button[type="submit"]:hover:not(:disabled) {
+    background-color: #0F1663;
+}
+
+.form-assignment-wrapper form button[type="submit"]:active:not(:disabled) {
+    transform: scale(0.99);
+}
+
+.form-assignment-wrapper form button[type="submit"]:disabled {
+    background-color: #A5A9CC;
+    cursor: not-allowed;
+    box-shadow: none;
+}
