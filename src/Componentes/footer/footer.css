@@ -1,21 +1,10 @@
-/* ============================================
-   FOOTER - VARIABLES PALETA
-   ============================================ */
-:root {
-  --footer-bg: #1A237E;
-  --footer-primary: #FF9800;
-  --footer-text: #FFFFFF;
-  --footer-icon-bg: #0c124a;
-  --footer-icon-color: #FFFFFF;
-}
-
-/* ============================================
-   CONTENEDOR FOOTER
-   ============================================ */
+/* ─────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────── */
 .footer {
-  background-color: var(--footer-bg);
-  color: var(--footer-text);
-  padding: 3rem 2rem;
+  background: linear-gradient(160deg, var(--navy-d) 0%, #111c57 100%);
+  color: rgba(255,255,255,.45);
+  padding: 3rem 2rem 2rem;
   margin-top: auto;
 }
 
@@ -25,130 +14,134 @@
 }
 
 .footer-title {
-  color: var(--footer-primary);
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-bottom: 2.5rem;
+  font-family: var(--fd);
+  color: var(--orange);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  margin-bottom: 2rem;
 }
 
 .footer-items {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
+  gap: 1.75rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  margin-bottom: 1.5rem;
 }
 
 .footer-item {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
-  padding: 0.5rem;
-  border-radius: 8px;
+  gap: 0.875rem;
+  padding: 0.625rem;
+  border-radius: var(--r2);
   transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
 }
 
-@media (hover: hover) {
-  .interactive-hover:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    transform: translateY(-2px);
-  }
+.footer-item:hover {
+  background-color: rgba(255,255,255,.04);
+  transform: translateY(-2px);
 }
 
 .footer-icon {
   flex-shrink: 0;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background-color: var(--footer-icon-bg);
-  color: var(--footer-icon-color);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r2);
+  background-color: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-@media (hover: hover) {
-  .interactive-hover:hover .footer-icon {
-    background-color: var(--footer-primary);
-  }
+.footer-item:hover .footer-icon {
+  background-color: var(--orange);
+  border-color: var(--orange);
 }
 
 .footer-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+  color: rgba(255,255,255,.55);
+  transition: color 0.2s ease;
+}
+
+.footer-item:hover .footer-icon svg {
+  color: var(--navy-d);
 }
 
 .footer-content {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  padding-top: 0.2rem;
+  gap: 0.2rem;
 }
 
 .footer-label {
-  color: var(--footer-primary);
-  font-size: 0.75rem;
+  color: var(--orange);
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 1.2px;
 }
 
 .footer-link {
-  color: var(--footer-text);
-  font-size: 0.95rem;
-  line-height: 1.5;
+  color: rgba(255,255,255,.5);
+  font-size: 0.875rem;
+  line-height: 1.55;
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s ease;
 }
 
-@media (hover: hover) {
-  .footer-link:hover {
-    opacity: 0.8;
-    text-decoration: underline;
-  }
+.footer-link:hover {
+  color: rgba(255,255,255,.9);
 }
 
-/* Redes Sociales */
 .footer-social {
   display: flex;
-  gap: 0.8rem;
-  margin-top: 0.2rem;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .social-link {
-  color: var(--footer-text);
-  transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r1);
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.07);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.25rem;
+  color: rgba(255,255,255,.4);
+  transition: all 0.2s ease;
 }
 
-@media (hover: hover) {
-  .social-link:hover {
-    color: var(--footer-primary);
-    transform: scale(1.15) translateY(-2px);
-  }
+.social-link:hover {
+  background: rgba(255,255,255,.1);
+  color: var(--white);
+  transform: translateY(-2px);
 }
 
 .social-link svg {
-  width: 24px;
-  height: 24px;
+  width: 15px;
+  height: 15px;
 }
 
-/* ============================================
-   RESPONSIVE FOOTER
-   ============================================ */
+.footer-copy {
+  font-size: 0.73rem;
+  color: rgba(255,255,255,.22);
+  text-align: center;
+}
+
 @media (max-width: 1024px) {
-  .footer-items {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .footer-items { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
-  .footer-items {
-    grid-template-columns: 1fr;
-  }
-  .footer-title {
-    font-size: 1.3rem;
-  }
+  .footer-items { grid-template-columns: 1fr; }
+  .footer-title  { font-size: 1.15rem; }
 }

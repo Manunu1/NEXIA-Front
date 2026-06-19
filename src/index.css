@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+/* ─────────────────────────────────────────────
+   DESIGN TOKENS — fuente única de verdad
+───────────────────────────────────────────── */
+:root {
+  /* Navy */
+  --navy:       #1A237E;
+  --navy-d:     #0D1654;
+  --navy-m:     #283593;
+  --navy-l:     #3949AB;
+  --navy-xs:    #E8EAF6;
+  --navy-ghost: #F4F5FD;
+
+  /* Orange — accent / CTA */
+  --orange:     #FF9800;
+  --orange-d:   #F57C00;
+  --orange-l:   #FFB300;
+  --orange-xs:  #FFF8E6;
+
+  /* Neutrals */
+  --white:  #FFFFFF;
+  --s1:     #F8F9FC;
+  --s2:     #F2F3FB;
+  --border: #E2E5F0;
+
+  /* Text */
+  --t1: #07112C;
+  --t2: #1E2C4A;
+  --t3: #5B6C8A;
+  --t4: #98A3BC;
+
+  /* Shadows */
+  --sh-sm: 0 1px 4px rgba(7,17,44,.06);
+  --sh-md: 0 4px 20px rgba(7,17,44,.08);
+  --sh-lg: 0 16px 48px rgba(7,17,44,.10);
+  --sh-nv: 0 16px 48px rgba(26,35,126,.14);
+
+  /* Typography */
+  --fd: 'Plus Jakarta Sans', sans-serif;
+  --fb: 'Inter', sans-serif;
+
+  /* Border radius */
+  --r1: 6px;
+  --r2: 10px;
+  --r3: 16px;
+  --r4: 22px;
+  --r5: 32px;
+
+  /* Animation */
+  --ease: cubic-bezier(.16,1,.3,1);
+
+  /* Layout */
+  --sidebar-width: 260px;
+
+  /* Legacy aliases */
+  --footer-bg:      var(--navy);
+  --footer-primary: var(--orange);
+  --bg-neutral:     var(--s1);
+}
+
+/* ─────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--fb);
+  background-color: var(--s1);
+  color: var(--t2);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+ul  { list-style: none; }
+a   { text-decoration: none; color: inherit; }
+img, svg { display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: var(--s1); }
+::-webkit-scrollbar-thumb { background: var(--navy-l); border-radius: 99px; }

@@ -1,54 +1,74 @@
+/* ─────────────────────────────────────────────
+   CONTENIDO ITEM
+───────────────────────────────────────────── */
 .contenido-card {
   display: flex;
   align-items: center;
-  background-color: white;
-  padding: 16px 24px;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-  border: 1px solid #eaeaea;
-  transition: transform 0.2s ease;
+  background: var(--white);
+  padding: 1rem 1.25rem;
+  border-radius: var(--r3);
+  margin-bottom: 0.625rem;
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-sm);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s;
 }
 
 .contenido-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  box-shadow: var(--sh-nv);
+  border-color: rgba(26,35,126,.15);
 }
 
 .contenido-icon {
-  background-color: #FFEBEE;
-  padding: 12px;
-  border-radius: 8px;
-  margin-right: 16px;
-  font-size: 1.2rem;
+  width: 42px;
+  height: 42px;
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  border-radius: var(--r2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .contenido-text {
-  flex-grow: 1;
+  flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 0.2rem;
 }
 
 .contenido-titulo {
   margin: 0;
-  font-size: 1rem;
-  color: #333;
-  font-weight: 600;
+  font-family: var(--fd);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--t1);
 }
 
 .contenido-desc {
-  font-size: 0.85rem;
-  color: #888;
-  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--t4);
+  line-height: 1.45;
 }
 
 .contenido-download {
-  text-decoration: none;
-  padding: 8px;
-  border-radius: 50%;
-  color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r1);
+  color: var(--t4);
+  border: 1.5px solid var(--border);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .contenido-download:hover {
-  background-color: #F5F5F5; /* Neutral */
+  background: var(--navy-ghost);
+  color: var(--navy);
+  border-color: var(--navy-xs);
 }

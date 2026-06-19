@@ -1,122 +1,305 @@
-/* ============================================
-   PÁGINA DE LOGIN (NEXIA) - BASADO EN TU PALETA
-   ============================================ */
-
-.login-container {
+/* ─────────────────────────────────────────────
+   LOGIN PAGE — split screen
+───────────────────────────────────────────── */
+.login-page {
   display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-  /* Fondo degradado suave difuminado como en la imagen */
-  background: linear-gradient(135deg, rgba(230, 240, 255, 0.4), rgba(255, 230, 230, 0.3)),
-              radial-gradient(circle, #e6f0ff 0%, #fff0f0 100%);
-  background-blend-mode: soft-light;
-  backdrop-filter: blur(20px);
-  padding: 1.5rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
 }
 
-.login-card {
-  background-color: #ffffff;
-  padding: 3rem 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  width: 100%;
-  max-width: 420px;
+/* ── Left brand panel ── */
+.login-brand-panel {
+  flex: 1;
+  background: linear-gradient(155deg, var(--navy-d) 0%, var(--navy) 55%, #1e3a8a 100%);
   display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
   align-items: center;
+  justify-content: center;
+  padding: 3rem 3.5rem;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Título NEXIA con el azul institucional de tu paleta */
-.login-card h1 {
-  font-size: 2.2rem;
+.login-brand-panel::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -80px;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(255,152,0,.12), transparent 65%);
+  pointer-events: none;
+}
+
+.login-brand-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.login-brand-glow {
+  position: absolute;
+  bottom: -60px; left: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(26,35,126,.5), transparent 65%);
+  pointer-events: none;
+}
+
+.login-brand-content {
+  position: relative;
+  z-index: 1;
+  max-width: 460px;
+  width: 100%;
+}
+
+.login-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin-bottom: 2.25rem;
+}
+
+.login-logo-mark {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.login-logo-name {
+  font-family: var(--fd);
+  font-size: 1.75rem;
   font-weight: 800;
-  color: var(--footer-bg); /* Usando tu azul #1A237E */
-  text-align: center;
-  margin-bottom: 0.5rem;
+  color: #fff;
   letter-spacing: -0.5px;
 }
 
-/* Campos de entrada (Select e Inputs) con el estilo gris de la referencia */
+.login-brand-title {
+  font-family: var(--fd);
+  font-size: clamp(1.65rem, 2.5vw, 2.2rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1px;
+  line-height: 1.18;
+  margin-bottom: 1rem;
+}
+
+.login-brand-title em {
+  font-style: normal;
+  color: var(--orange);
+}
+
+.login-brand-tagline {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,.5);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.login-features {
+  list-style: none;
+  padding: 0; margin: 0 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.login-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: rgba(255,255,255,.75);
+}
+
+.login-feature-check {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(255,152,0,.18);
+  border: 1px solid rgba(255,152,0,.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
+  font-size: 0.6rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.login-stats-row {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+
+.login-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.login-stat-n {
+  font-family: var(--fd);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.login-stat-n em {
+  color: var(--orange);
+  font-style: normal;
+  font-size: 1.1rem;
+}
+
+.login-stat-l {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,.38);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* ── Right form panel ── */
+.login-form-panel {
+  width: 460px;
+  flex-shrink: 0;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+}
+
+.login-form-inner {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+}
+
+.login-form-header {
+  margin-bottom: 0.5rem;
+}
+
+.login-form-header h2 {
+  font-family: var(--fd);
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -0.6px;
+  margin-bottom: 0.3rem;
+}
+
+.login-form-tagline {
+  font-size: 0.875rem;
+  color: var(--t3);
+}
+
+.login-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.login-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.login-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+}
+
 .login-field {
   width: 100%;
-  padding: 0.85rem 1rem;
-  font-size: 0.95rem;
-  background-color: #EAEBF0; /* Gris claro de la imagen */
-  color: #555555;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-size: 0.9rem;
+  font-family: var(--fb);
+  background: var(--navy-ghost);
+  color: var(--t2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  box-sizing: border-box;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s, background-color 0.2s;
 }
 
-/* Estilo específico cuando el usuario hace clic en el input */
 .login-field:focus {
-  border-color: #CBD5E1;
-  box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.05);
+  border-color: var(--navy-l);
+  box-shadow: 0 0 0 3px rgba(26,35,126,.08);
+  background: var(--white);
 }
 
-/* El select hereda fuente gruesa para el rol */
 select.login-field {
-  color: var(--footer-bg);
+  color: var(--navy);
   font-weight: 600;
   cursor: pointer;
 }
 
-/* Botón "Iniciar sesión" usando tu azul principal */
 .login-btn {
   width: 100%;
   padding: 0.9rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: #ffffff;
-  background-color: var(--footer-bg); /* Tu azul #1A237E */
+  font-family: var(--fd);
+  color: var(--navy-d);
+  background: var(--orange);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--r2);
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  margin-top: 0.5rem;
-  box-shadow: 0 4px 12px rgba(26, 35, 126, 0.15);
+  transition: all 0.2s var(--ease);
+  box-shadow: 0 4px 16px rgba(255,152,0,.28);
+  letter-spacing: 0.3px;
 }
 
-.login-btn:hover {
-  background-color: #0F1663; /* Un azul un poco más oscuro para el hover */
+.login-btn:hover:not(:disabled) {
+  background: var(--orange-l);
+  box-shadow: 0 8px 28px rgba(255,152,0,.42);
+  transform: translateY(-1px);
 }
 
-.login-btn:active {
-  transform: scale(0.99);
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
-/* Añadimos un pequeño detalle visual simulando el link inferior de la imagen, 
-   usando tu color naranja (--footer-primary) si decides meter un texto extra después */
-.login-card a {
-  color: var(--footer-primary);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.login-card a:hover {
-  text-decoration: underline;
-}
-
-/* Opcional: Ajuste responsivo para pantallas pequeñas */
-@media (max-width: 480px) {
-  .login-card {
-    padding: 2rem 1.5rem;
-  }
-  .login-card h1 {
-    font-size: 1.8rem;
-  }
-}
-.error-message {
-  background-color: #ffe5e5;
-  color: #c62828;
-  border: 1px solid #c62828;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 15px;
+.login-footer-note {
   text-align: center;
+  font-size: 0.75rem;
+  color: var(--t4);
+}
+
+.error-message {
+  background: #FFF1F1;
+  color: #C62828;
+  border: 1px solid rgba(198,40,40,.18);
+  border-radius: var(--r2);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .login-page { flex-direction: column; }
+  .login-brand-panel { padding: 2.5rem 2rem; min-height: 45vh; }
+  .login-brand-content { max-width: 100%; }
+  .login-stats-row { gap: 1.5rem; }
+  .login-form-panel { width: 100%; padding: 2rem 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .login-brand-title { font-size: 1.5rem; }
+  .login-features { gap: 0.5rem; }
+  .login-stats-row { gap: 1rem; }
+  .login-form-inner { max-width: 100%; }
 }

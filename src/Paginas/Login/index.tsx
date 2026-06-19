@@ -4,140 +4,169 @@ import "./login.css";
 
 function Login() {
   const navigate = useNavigate();
-
   const [institucionId, setInstitucionId] = useState("1");
   const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     setError("");
-
+    if (!dni.trim()) { setError("Ingresá tu DNI"); return; }
+    if (!password.trim()) { setError("Ingresá tu contraseña"); return; }
+    setLoading(true);
     try {
-      if (!dni.trim()) {
-        setError("Ingresá tu DNI");
-        return;
-      }
-
-      if (!password.trim()) {
-        setError("Ingresá tu contraseña");
-        return;
-      }
-
       const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          institucion_id: Number(institucionId),
-          dni,
-          password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ institucion_id: Number(institucionId), dni, password }),
       });
-
       if (!response.ok) {
         const errorData = await response.json();
-
-        setError(
-          errorData.message || "Institución, DNI o contraseña incorrectos",
-        );
-
+        setError(errorData.message || "Institución, DNI o contraseña incorrectos");
         return;
       }
-
       const responseData = await response.json();
-
       const usuario = responseData.data;
-
       localStorage.setItem("usuario", JSON.stringify(usuario));
-
-      if (usuario.rol) {
-        localStorage.setItem("rol", usuario.rol);
-      }
-
+      if (usuario.rol) localStorage.setItem("rol", usuario.rol);
       localStorage.setItem("institucion_id", usuario.institucion_id);
-
-      // Guardar un ID único para cualquier usuario
-      if (usuario.usuario_id) {
-        localStorage.setItem("usuario_id", usuario.usuario_id);
-      }
-
-      if (usuario.gestor_id) {
-        localStorage.setItem("usuario_id", usuario.gestor_id);
-      }
-
+      if (usuario.usuario_id) localStorage.setItem("usuario_id", usuario.usuario_id);
+      if (usuario.gestor_id) localStorage.setItem("usuario_id", usuario.gestor_id);
       if (usuario.alumno_id) {
         localStorage.setItem("alumno_id", usuario.alumno_id);
-
-        navigate("/alumnos");
-        return;
+        navigate("/alumnos"); return;
       }
-
       if (usuario.profesor_id) {
         localStorage.setItem("profesor_id", usuario.profesor_id);
-
-        navigate("/profesor");
-        return;
+        navigate("/profesor"); return;
       }
-
       if (usuario.gestor_id) {
         localStorage.setItem("gestor_id", usuario.gestor_id);
-
-        navigate("/gestor");
-        return;
+        navigate("/gestor"); return;
       }
-
       setError("No se pudo determinar el tipo de usuario");
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       setError("Error conectando con el servidor");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h1>NEXIA</h1>
+    <div className="login-page">
+      {/* ── Left brand panel ── */}
+      <div className="login-brand-panel">
+        <div className="login-brand-content">
+          <div className="login-logo">
+            <div className="login-logo-mark">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="44" height="44">
+                <rect width="500" height="500" fill="#0D1654" rx="80"/>
+                <circle cx="270" cy="255" r="155" fill="#0A1248" opacity="0.7"/>
+                <line x1="130" y1="365" x2="130" y2="115" stroke="white" strokeWidth="52" strokeLinecap="round"/>
+                <line x1="130" y1="115" x2="370" y2="365" stroke="white" strokeWidth="52" strokeLinecap="round"/>
+                <line x1="370" y1="115" x2="370" y2="365" stroke="#F5A020" strokeWidth="52" strokeLinecap="round"/>
+                <circle cx="130" cy="115" r="14" fill="#F5A020"/>
+              </svg>
+            </div>
+            <span className="login-logo-name">NEXIA</span>
+          </div>
 
-        {error && <div className="error-message">{error}</div>}
+          <h1 className="login-brand-title">
+            Tu campus virtual,<br />potenciado con <em>IA pedagógica</em>
+          </h1>
 
-        <select
-          className="login-field"
-          value={institucionId}
-          onChange={(e) => {
-            setInstitucionId(e.target.value);
-            setError("");
-          }}
-        >
-          <option value="1">San Martin</option>
-        </select>
+          <p className="login-brand-tagline">
+            La plataforma que transforma la forma en que alumnos, docentes y directivos gestionan la experiencia educativa.
+          </p>
 
-        <input
-          type="text"
-          className="login-field"
-          placeholder="DNI"
-          value={dni}
-          onChange={(e) => {
-            setDni(e.target.value);
-            setError("");
-          }}
-        />
+          <ul className="login-features">
+            {[
+              "IA Pedagógica que guía, no que da respuestas",
+              "Gestión académica completa en un solo lugar",
+              "Acceso a contenidos desde cualquier dispositivo",
+              "Comunicación institucional integrada",
+            ].map((feat) => (
+              <li key={feat} className="login-feature">
+                <span className="login-feature-check">✓</span>
+                {feat}
+              </li>
+            ))}
+          </ul>
 
-        <input
-          type="password"
-          className="login-field"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setError("");
-          }}
-        />
+          <div className="login-stats-row">
+            <div className="login-stat-item">
+              <span className="login-stat-n">+200<em>+</em></span>
+              <span className="login-stat-l">Instituciones</span>
+            </div>
+            <div className="login-stat-item">
+              <span className="login-stat-n">50<em>K+</em></span>
+              <span className="login-stat-l">Alumnos</span>
+            </div>
+            <div className="login-stat-item">
+              <span className="login-stat-n">−38<em>%</em></span>
+              <span className="login-stat-l">Repitencia</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <button className="login-btn" onClick={handleLogin}>
-          Iniciar sesión
-        </button>
+      {/* ── Right form panel ── */}
+      <div className="login-form-panel">
+        <div className="login-form-inner">
+          <div className="login-form-header">
+            <h2>Bienvenido de vuelta 👋</h2>
+            <p className="login-form-tagline">Iniciá sesión en tu campus virtual</p>
+          </div>
+
+          {error && <div className="error-message">{error}</div>}
+
+          <div className="login-form-fields">
+            <div className="login-field-group">
+              <label className="login-label">Institución</label>
+              <select
+                className="login-field"
+                value={institucionId}
+                onChange={(e) => { setInstitucionId(e.target.value); setError(""); }}
+              >
+                <option value="1">San Martin</option>
+              </select>
+            </div>
+
+            <div className="login-field-group">
+              <label className="login-label">DNI</label>
+              <input
+                type="text"
+                className="login-field"
+                placeholder="Ej: 40123456"
+                value={dni}
+                onChange={(e) => { setDni(e.target.value); setError(""); }}
+                onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+              />
+            </div>
+
+            <div className="login-field-group">
+              <label className="login-label">Contraseña</label>
+              <input
+                type="password"
+                className="login-field"
+                placeholder="Tu contraseña"
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setError(""); }}
+                onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+              />
+            </div>
+          </div>
+
+          <button className="login-btn" onClick={handleLogin} disabled={loading}>
+            {loading ? "Ingresando..." : "Iniciar sesión →"}
+          </button>
+
+          <p className="login-footer-note">
+            ¿Problemas para acceder? Contactá a tu institución.
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,9 @@
+/* ─────────────────────────────────────────────
+   SIDEBAR GESTOR
+   Hereda estilos de sidebar.css — añade overrides
+   específicos del rol Gestor si son necesarios.
+───────────────────────────────────────────── */
+.sidebar-gestor .nav-link.active {
+  background-color: var(--orange);
+  color: var(--navy-d);
+}

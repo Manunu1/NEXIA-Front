@@ -1,14 +1,52 @@
-.btn-simple {
-  background-color: #007bff; /* azul */
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s ease;
+/* ─────────────────────────────────────────────
+   CONTENIDOS PROFESOR — inline viewer
+   Imports shared .iv- classes from ContenidosAlumnos.css
+   but since CSS is global, just add overrides here
+───────────────────────────────────────────── */
+
+/* Add content button in header */
+.iv-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
 }
 
-.btn-simple:hover {
-  background-color: #0056b3; /* azul más oscuro al pasar el mouse */
+.iv-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.875rem;
+  background: var(--orange);
+  color: var(--navy-d);
+  border-radius: var(--r2);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s var(--ease);
+  box-shadow: 0 2px 8px rgba(255,152,0,.24);
+}
+
+.iv-add-btn:hover {
+  background: var(--orange-l);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255,152,0,.38);
+}
+
+.iv-empty-link {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--navy);
+  text-decoration: none;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--navy-xs);
+  border-radius: var(--r2);
+  background: var(--navy-ghost);
+  margin-top: 0.5rem;
+  display: inline-flex;
+  transition: background 0.15s;
+}
+
+.iv-empty-link:hover {
+  background: var(--navy-xs);
 }

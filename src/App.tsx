@@ -14,8 +14,7 @@ import MisMaterias from "./Paginas/Alumnos/MisMaterias";
 import ContenidosAlumnos from "./Paginas/Alumnos/ContenidosAlumnos";
 import VerContenido from "./Paginas/VerContenido";
 import ProtectedRoute from "./Componentes/ProtectedRoute";
-
-
+import Proximamente from "./Paginas/Proximamente";
 
 function App() {
   return (
@@ -70,6 +69,13 @@ function App() {
             </ProtectedRoute>
           }
         />
+        {['/calendario','/mensajes','/comunicados','/nexia-ia','/boletin','/apuntes','/configuracion'].map(p => (
+          <Route
+            key={p}
+            path={p}
+            element={<ProtectedRoute><Proximamente /></ProtectedRoute>}
+          />
+        ))}
         <Route
           path="/gestor"
           element={

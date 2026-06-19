@@ -1,159 +1,136 @@
-/* ============================================
-   CONTENEDOR DE CENTRADO
-   ============================================ */
+/* ─────────────────────────────────────────────
+   FORM ASIGNAR MATERIA PROFESOR (con React-Select)
+───────────────────────────────────────────── */
 .form-assignment-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 150px);
-    width: 100%;
-    padding: 1.5rem;
-    box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 150px);
+  width: 100%;
+  padding: 2rem 1.5rem;
 }
 
-/* ============================================
-   FORMULARIO ASIGNAR MATERIA PROFESOR (BLINDADO)
-   Ahora todos empiezan con .form-assignment-wrapper
-   ============================================ */
 .form-assignment-wrapper form {
-    background-color: #ffffff;
-    padding: 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-    width: 100%;
-    max-width: 450px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+  background: var(--white);
+  padding: 2.5rem 2rem;
+  border-radius: var(--r4);
+  box-shadow: var(--sh-md);
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-/* Título Interno */
 .form-assignment-wrapper form h3 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #222222;
-    margin-bottom: 0.5rem;
-    position: relative;
-    padding-bottom: 0.5rem;
+  font-family: var(--fd);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -0.4px;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
 }
 
-/* Detalle de línea azul bajo el título */
-.form-assignment-wrapper form h3::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background-color: var(--footer-bg, #1A237E);
-    border-radius: 2px;
-}
-
-/* Grupos de campos (Wrapper de cada Select) */
-.form-assignment-wrapper form div[style*="margin-bottom"] {
-    margin-bottom: 0 !important;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-/* Etiquetas (Labels) */
 .form-assignment-wrapper form label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #666666;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.375rem;
 }
 
-/* ============================================
-   TUNEADO RE-PERSONALIZADO DE REACT-SELECT
-   ============================================ */
+/* ─── React-Select overrides ─── */
 .form-assignment-wrapper [class*="-control"] {
-    background-color: #EAEBF0 !important;
-    border: 1px solid #E2E8F0 !important;
-    border-radius: 8px !important;
-    padding: 0.15rem 0.25rem !important;
-    box-shadow: none !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  background: var(--navy-ghost) !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: var(--r2) !important;
+  padding: 0.1rem 0.2rem !important;
+  box-shadow: none !important;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s !important;
 }
 
 .form-assignment-wrapper [class*="-control"]:focus-within {
-    border-color: var(--footer-bg, #1A237E) !important;
-    box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1) !important;
-    background-color: #ffffff !important;
+  border-color: var(--navy-l) !important;
+  box-shadow: 0 0 0 3px rgba(26,35,126,.08) !important;
+  background: var(--white) !important;
 }
 
 .form-assignment-wrapper [class*="-placeholder"] {
-    color: #888888 !important;
-    font-size: 0.95rem;
+  color: var(--t4) !important;
+  font-size: 0.9rem;
 }
 
 .form-assignment-wrapper [class*="-singleValue"] {
-    color: #222222 !important;
-    font-size: 0.95rem;
-    font-weight: 500;
+  color: var(--t2) !important;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .form-assignment-wrapper [class*="-menu"] {
-    background-color: #ffffff !important;
-    border-radius: 8px !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-    border: 1px solid #E2E8F0 !important;
-    z-index: 10 !important;
+  background: var(--white) !important;
+  border-radius: var(--r3) !important;
+  box-shadow: var(--sh-lg) !important;
+  border: 1px solid var(--border) !important;
+  z-index: 20 !important;
 }
 
 .form-assignment-wrapper [class*="-menu-list"] {
-    padding: 0.4rem !important;
+  padding: 0.375rem !important;
 }
 
 .form-assignment-wrapper [class*="-option"] {
-    border-radius: 6px !important;
-    padding: 0.6rem 0.8rem !important;
-    font-size: 0.95rem !important;
-    cursor: pointer !important;
-    transition: background-color 0.15s ease, color 0.15s ease !important;
+  border-radius: var(--r1) !important;
+  padding: 0.6rem 0.875rem !important;
+  font-size: 0.875rem !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
 }
 
 .form-assignment-wrapper [class*="-option"]:hover {
-    background-color: #F1F3F9 !important;
-    color: var(--footer-bg, #1A237E) !important;
+  background: var(--navy-ghost) !important;
+  color: var(--navy) !important;
 }
 
 .form-assignment-wrapper [class*="-option"][class*="-isSelected"] {
-    background-color: var(--footer-bg, #1A237E) !important;
-    color: #ffffff !important;
-    font-weight: 600;
+  background: var(--navy) !important;
+  color: var(--white) !important;
+  font-weight: 700;
 }
 
-/* ============================================
-   BOTÓN SUBMIT
-   ============================================ */
+/* Submit */
 .form-assignment-wrapper form button[type="submit"] {
-    width: 100%;
-    padding: 0.85rem;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #ffffff;
-    background-color: var(--footer-bg, #1A237E);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    margin-top: 0.75rem;
-    box-shadow: 0 4px 12px rgba(26, 35, 126, 0.15);
+  width: 100%;
+  padding: 0.875rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: var(--fb);
+  color: var(--navy-d);
+  background: var(--orange);
+  border: none;
+  border-radius: var(--r2);
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 16px rgba(255,152,0,.28);
 }
 
 .form-assignment-wrapper form button[type="submit"]:hover:not(:disabled) {
-    background-color: #0F1663;
+  background: var(--orange-l);
+  box-shadow: 0 8px 28px rgba(255,152,0,.42);
+  transform: translateY(-1px);
 }
 
 .form-assignment-wrapper form button[type="submit"]:active:not(:disabled) {
-    transform: scale(0.99);
+  transform: scale(0.99);
 }
 
 .form-assignment-wrapper form button[type="submit"]:disabled {
-    background-color: #A5A9CC;
-    cursor: not-allowed;
-    box-shadow: none;
+  background: var(--t4);
+  cursor: not-allowed;
+  box-shadow: none;
 }

@@ -1,21 +1,116 @@
+/* ─────────────────────────────────────────────
+   MATERIA CARD — profesor
+───────────────────────────────────────────── */
 .card {
-  background: #f9fafb; /* gris claro */
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 16px;
-  width: 320px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin: 12px auto;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r4);
+  padding: 1.5rem;
+  box-shadow: var(--sh-md);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+}
+
+/* Borde top degradado animado */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--orange-l));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ease);
+  border-radius: var(--r4) var(--r4) 0 0;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-nv);
+  border-color: rgba(26,35,126,.15);
+}
+
+.card:hover::before { transform: scaleX(1); }
+
+/* Chip de curso */
+.card-chip {
+  display: inline-flex;
+  align-items: center;
+  background: var(--orange-xs);
+  color: var(--orange-d);
+  border: 1px solid rgba(255,152,0,.2);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
 }
 
 .card h2 {
-  color: #1e40af; /* azul fuerte */
-  font-size: 18px;
-  margin-bottom: 12px;
+  font-family: var(--fd);
+  color: var(--t1);
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--t3);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.card-footer-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.card-arrow {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navy-l);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.card:hover .card-arrow {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--white);
+  transform: translateX(2px);
 }
 
 .cardBody {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.5rem;
 }

@@ -1,0 +1,79 @@
+/* ─────────────────────────────────────────────
+   PRÓXIMAMENTE — página de sección en desarrollo
+───────────────────────────────────────────── */
+.prox-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 5rem 2rem;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.prox-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.875rem;
+  background: var(--orange-xs);
+  color: var(--orange-d);
+  border: 1px solid rgba(255,152,0,.2);
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.prox-icon {
+  font-size: 3.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.08));
+}
+
+.prox-title {
+  font-family: var(--fd);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -0.7px;
+  margin: 0;
+}
+
+.prox-desc {
+  font-size: 0.95rem;
+  color: var(--t2);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 360px;
+}
+
+.prox-sub {
+  font-size: 0.82rem;
+  color: var(--t4);
+  margin: 0;
+}
+
+.prox-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.5rem;
+  background: var(--navy-ghost);
+  color: var(--navy);
+  border: 1.5px solid var(--navy-xs);
+  border-radius: var(--r2);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  margin-top: 0.75rem;
+  font-family: var(--fb);
+}
+
+.prox-btn:hover {
+  background: var(--navy-xs);
+  transform: translateX(-2px);
+}
