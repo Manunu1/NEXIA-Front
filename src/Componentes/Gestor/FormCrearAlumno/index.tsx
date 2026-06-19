@@ -148,13 +148,14 @@ export default function FormCrearAlumno() {
             />
 
             <input
+                type="email"
                 name="email"
                 placeholder="Email"
                 onChange={handleChange}
             />
 
             <input
-                type="password"
+                type="text"
                 name="password"
                 placeholder="Contraseña"
                 onChange={handleChange}

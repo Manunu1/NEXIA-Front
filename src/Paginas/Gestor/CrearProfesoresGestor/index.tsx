@@ -1,5 +1,7 @@
+import FormCrearProfesor from "../../../Componentes/Gestor/FormCrearProfesor";
+
 function ProfesoresGestor() {
-  return <h1>Profesores Gestor</h1>;
+  return <FormCrearProfesor />;
 }
 
 export default ProfesoresGestor;

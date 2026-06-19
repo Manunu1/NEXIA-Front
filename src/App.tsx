@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./Paginas/Login";
 import MisCursos from "./Paginas/Profesores/MisMaterias";
 import HomeGestor from "./Paginas/Gestor/HomeGestor";
-import MateriasGestor from "./Paginas/Gestor/CrearProfesoresGestor";
+import ProfesoresGestor from "./Paginas/Gestor/CrearProfesoresGestor";
 import AsignacionesGestor from "./Paginas/Gestor/AsignarMateriaProfesor";
 import AlumnosGestor from "./Paginas/Gestor/CrearAlumnosGestor";
 import Contenidos from "./Paginas/Profesores/Contenidos";
@@ -79,10 +79,10 @@ function App() {
           }
         />
         <Route
-          path="/gestor/materias"
+          path="/gestor/profesores"
           element={
             <ProtectedRoute>
-              <MateriasGestor />
+              <ProfesoresGestor />
             </ProtectedRoute>
           }
         />
