@@ -14,6 +14,7 @@ import MisMaterias from "./Paginas/Alumnos/MisMaterias";
 import ContenidosAlumnos from "./Paginas/Alumnos/ContenidosAlumnos";
 import VerContenido from "./Paginas/VerContenido";
 import ProtectedRoute from "./Componentes/ProtectedRoute";
+import LandingPage from "./Paginas/LandingPage";
 
 
 
@@ -21,7 +22,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
          <Route
           path="/verContenido/:contenidoId"
           element={
