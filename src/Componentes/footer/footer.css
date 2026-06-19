@@ -2,7 +2,7 @@
    FOOTER
 ───────────────────────────────────────────── */
 .footer {
-  background: linear-gradient(160deg, var(--navy-d) 0%, #111c57 100%);
+  background: linear-gradient(160deg, var(--navy-d) 0%, #111c57 100%) !important;
   color: rgba(255,255,255,.45);
   padding: 3rem 2rem 2rem;
   margin-top: auto;
