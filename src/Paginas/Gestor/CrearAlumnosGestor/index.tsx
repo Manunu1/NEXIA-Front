@@ -1,5 +1,7 @@
+import FormCrearAlumno from "../../../Componentes/Gestor/FormCrearAlumno";
+
 function AlumnosGestor() {
-  return <h1>Alumnos Gestor</h1>;
+  return <FormCrearAlumno/>;
 }
 
 export default AlumnosGestor;
