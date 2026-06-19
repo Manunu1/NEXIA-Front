@@ -1,1 +1,6 @@
-/* misCursos.css — los estilos globales de layout están en App.css */
+.materias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 5%;
+  padding: 20px;
+}

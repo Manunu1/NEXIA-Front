@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./Paginas/Login";
 import MisCursos from "./Paginas/Profesores/MisMaterias";
 import HomeGestor from "./Paginas/Gestor/HomeGestor";
-import MateriasGestor from "./Paginas/Gestor/CrearProfesoresGestor";
+import ProfesoresGestor from "./Paginas/Gestor/CrearProfesoresGestor";
 import AsignacionesGestor from "./Paginas/Gestor/AsignarMateriaProfesor";
 import AlumnosGestor from "./Paginas/Gestor/CrearAlumnosGestor";
 import Contenidos from "./Paginas/Profesores/Contenidos";
@@ -15,12 +15,14 @@ import ContenidosAlumnos from "./Paginas/Alumnos/ContenidosAlumnos";
 import VerContenido from "./Paginas/VerContenido";
 import ProtectedRoute from "./Componentes/ProtectedRoute";
 import Proximamente from "./Paginas/Proximamente";
+import LandingPage from "./Paginas/LandingPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
          <Route
           path="/verContenido/:contenidoId"
           element={
@@ -85,10 +87,10 @@ function App() {
           }
         />
         <Route
-          path="/gestor/materias"
+          path="/gestor/profesores"
           element={
             <ProtectedRoute>
-              <MateriasGestor />
+              <ProfesoresGestor />
             </ProtectedRoute>
           }
         />
