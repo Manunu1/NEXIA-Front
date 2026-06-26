@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 
@@ -53,6 +53,22 @@ function Login() {
       setLoading(false);
     }
   };
+
+  const [instituciones, setInstituciones] = useState([]);
+
+  useEffect(() => {
+    const fetchInstituciones = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/instituciones");
+        const data = await res.json();
+        setInstituciones(data);
+      } catch (err) {
+        setError("Error al cargar instituciones");
+      }
+    };
+    fetchInstituciones();
+  }, []);
+
 
   return (
     <div className="login-page">
@@ -130,7 +146,12 @@ function Login() {
                 value={institucionId}
                 onChange={(e) => { setInstitucionId(e.target.value); setError(""); }}
               >
-                <option value="1">San Martin</option>
+                {instituciones.map((inst) => (
+                <option key={inst.id} value={inst.id}>
+                  {inst.nombre}
+                </option>
+        ))}
+
               </select>
             </div>
 
