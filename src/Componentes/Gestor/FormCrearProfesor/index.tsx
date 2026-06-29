@@ -16,6 +16,7 @@ export default function FormCrearProfesor() {
   const [form, setForm] = useState({ nombre: "", apellido: "", email: "", password: "", dni: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchInstituciones = async () => {
@@ -32,11 +33,15 @@ export default function FormCrearProfesor() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    if (error) setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedInstitucion) { alert("Seleccioná una institución"); return; }
+    if (!selectedInstitucion) {
+      setError("Seleccioná una institución antes de continuar.");
+      return;
+    }
 
     const payload = {
       institucion_id: selectedInstitucion.value,
@@ -46,6 +51,7 @@ export default function FormCrearProfesor() {
 
     try {
       setLoading(true);
+      setError("");
       await api.post("/api/gestor/profesores", payload);
       setSuccess(true);
       setForm({ nombre: "", apellido: "", email: "", password: "", dni: "" });
@@ -53,7 +59,7 @@ export default function FormCrearProfesor() {
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       console.error(err);
-      alert("Error creando profesor");
+      setError("Ocurrió un error al crear el profesor. Intentá de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -108,7 +114,7 @@ export default function FormCrearProfesor() {
           <Select
             options={instituciones}
             value={selectedInstitucion}
-            onChange={(option) => setSelectedInstitucion(option)}
+            onChange={(option) => { setSelectedInstitucion(option); if (error) setError(""); }}
             placeholder="Seleccionar institución..."
             noOptionsMessage={() => "Sin resultados"}
           />
@@ -118,8 +124,19 @@ export default function FormCrearProfesor() {
 
       <div className="gestor-form-footer">
         {success && (
-          <div style={{ marginBottom: '0.75rem', padding: '0.625rem 0.875rem', background: 'rgba(34,197,94,.08)', border: '1px solid rgba(34,197,94,.2)', borderRadius: 'var(--r2)', fontSize: '0.82rem', color: '#16A34A', fontWeight: 600 }}>
-            ✓ Profesor creado exitosamente
+          <div className="form-success-msg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Profesor creado exitosamente
+          </div>
+        )}
+        {error && (
+          <div className="form-error-msg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            {error}
           </div>
         )}
         <button type="submit" className="form-submit" disabled={loading}>

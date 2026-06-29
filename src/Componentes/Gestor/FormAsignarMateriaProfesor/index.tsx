@@ -14,6 +14,7 @@ const FormAsignarMateriaProfesor = () => {
   const [cursoSeleccionado, setCursoSeleccionado] = useState<Option | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const institucionId = localStorage.getItem("institucion_id");
 
@@ -47,12 +48,13 @@ const FormAsignarMateriaProfesor = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!profesorSeleccionado || !materiaSeleccionada || !cursoSeleccionado) {
-      alert("Seleccioná profesor, materia y curso");
+      setError("Seleccioná profesor, materia y curso para continuar.");
       return;
     }
 
     try {
       setLoading(true);
+      setError("");
       await api.post("/api/gestor/profesores/asignar-materia", {
         profesor_id: profesorSeleccionado.value,
         materia_id: materiaSeleccionada.value,
@@ -63,13 +65,15 @@ const FormAsignarMateriaProfesor = () => {
       setMateriaSeleccionada(null);
       setCursoSeleccionado(null);
       setTimeout(() => setSuccess(false), 3000);
-    } catch (error) {
-      console.error(error);
-      alert("Error al asignar");
+    } catch (err) {
+      console.error(err);
+      setError("Ocurrió un error al realizar la asignación. Intentá de nuevo.");
     } finally {
       setLoading(false);
     }
   };
+
+  const clearError = () => { if (error) setError(""); };
 
   return (
     <form onSubmit={handleSubmit} className="gestor-form-card">
@@ -94,7 +98,7 @@ const FormAsignarMateriaProfesor = () => {
           <Select
             options={profesores}
             value={profesorSeleccionado}
-            onChange={(opt) => setProfesorSeleccionado(opt)}
+            onChange={(opt) => { setProfesorSeleccionado(opt); clearError(); }}
             placeholder="Buscar profesor..."
             isClearable
             noOptionsMessage={() => "Sin resultados"}
@@ -106,7 +110,7 @@ const FormAsignarMateriaProfesor = () => {
           <Select
             options={cursos}
             value={cursoSeleccionado}
-            onChange={(opt) => setCursoSeleccionado(opt)}
+            onChange={(opt) => { setCursoSeleccionado(opt); clearError(); }}
             placeholder="Seleccionar curso..."
             isClearable
             noOptionsMessage={() => "Sin resultados"}
@@ -118,7 +122,7 @@ const FormAsignarMateriaProfesor = () => {
           <Select
             options={materias}
             value={materiaSeleccionada}
-            onChange={(opt) => setMateriaSeleccionada(opt)}
+            onChange={(opt) => { setMateriaSeleccionada(opt); clearError(); }}
             placeholder="Seleccionar materia..."
             isClearable
             noOptionsMessage={() => "Sin resultados"}
@@ -129,8 +133,19 @@ const FormAsignarMateriaProfesor = () => {
 
       <div className="gestor-form-footer">
         {success && (
-          <div style={{ marginBottom: '0.75rem', padding: '0.625rem 0.875rem', background: 'rgba(34,197,94,.08)', border: '1px solid rgba(34,197,94,.2)', borderRadius: 'var(--r2)', fontSize: '0.82rem', color: '#16A34A', fontWeight: 600 }}>
-            ✓ Asignación realizada exitosamente
+          <div className="form-success-msg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Asignación realizada exitosamente
+          </div>
+        )}
+        {error && (
+          <div className="form-error-msg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            {error}
           </div>
         )}
         <button type="submit" className="form-submit" disabled={loading}>

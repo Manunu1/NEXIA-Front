@@ -15,6 +15,7 @@ export default function FormCrearAlumno() {
   const [form, setForm] = useState({ nombre: "", apellido: "", dni: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3000/api/instituciones")
@@ -40,11 +41,19 @@ export default function FormCrearAlumno() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    if (error) setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedCurso || !selectedInstitucion) { alert("Seleccioná institución y curso"); return; }
+    if (!selectedInstitucion) {
+      setError("Seleccioná una institución antes de continuar.");
+      return;
+    }
+    if (!selectedCurso) {
+      setError("Seleccioná un curso para el alumno.");
+      return;
+    }
 
     const payload = {
       institucion_id: selectedInstitucion.value,
@@ -55,6 +64,7 @@ export default function FormCrearAlumno() {
 
     try {
       setLoading(true);
+      setError("");
       await api.post("/api/gestor/alumnos", payload);
       setSuccess(true);
       setForm({ nombre: "", apellido: "", dni: "", email: "", password: "" });
@@ -64,7 +74,7 @@ export default function FormCrearAlumno() {
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       console.error(err);
-      alert("Error creando alumno");
+      setError("Ocurrió un error al crear el alumno. Intentá de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -120,7 +130,7 @@ export default function FormCrearAlumno() {
           <Select
             options={instituciones}
             value={selectedInstitucion}
-            onChange={(value) => { setSelectedInstitucion(value); setSelectedCurso(null); setCursos([]); }}
+            onChange={(value) => { setSelectedInstitucion(value); setSelectedCurso(null); setCursos([]); if (error) setError(""); }}
             placeholder="Seleccionar institución..."
             noOptionsMessage={() => "Sin resultados"}
           />
@@ -131,7 +141,7 @@ export default function FormCrearAlumno() {
           <Select
             options={cursos}
             value={selectedCurso}
-            onChange={(value) => setSelectedCurso(value)}
+            onChange={(value) => { setSelectedCurso(value); if (error) setError(""); }}
             placeholder="Seleccionar curso..."
             isDisabled={!selectedInstitucion}
             noOptionsMessage={() => "No hay cursos disponibles"}
@@ -142,8 +152,19 @@ export default function FormCrearAlumno() {
 
       <div className="gestor-form-footer">
         {success && (
-          <div style={{ marginBottom: '0.75rem', padding: '0.625rem 0.875rem', background: 'rgba(34,197,94,.08)', border: '1px solid rgba(34,197,94,.2)', borderRadius: 'var(--r2)', fontSize: '0.82rem', color: '#16A34A', fontWeight: 600 }}>
-            ✓ Alumno creado exitosamente
+          <div className="form-success-msg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Alumno creado exitosamente
+          </div>
+        )}
+        {error && (
+          <div className="form-error-msg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            {error}
           </div>
         )}
         <button type="submit" className="form-submit" disabled={loading}>

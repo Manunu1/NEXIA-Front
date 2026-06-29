@@ -70,7 +70,7 @@ function HomeGestor() {
 
   const donutBg = loading
     ? 'var(--border)'
-    : `conic-gradient(#1A237E 0deg ${aDeg}deg, #FF9800 ${aDeg}deg ${aDeg + pDeg}deg, #22C55E ${aDeg + pDeg}deg 360deg)`;
+    : `conic-gradient(#1A237E 0deg ${aDeg}deg, #FF9800 ${aDeg}deg ${aDeg + pDeg}deg, #3949AB ${aDeg + pDeg}deg 360deg)`;
 
   return (
     <>
@@ -82,14 +82,18 @@ function HomeGestor() {
           <div className="welcome-banner">
             <div className="wb-body">
               <span className="wb-saludo">{getSaludo()}, bienvenido de vuelta</span>
-              <h2 className="wb-name">
-                {userName || 'Gestor'} <span className="wb-star">✦</span>
-              </h2>
+              <h2 className="wb-name">{userName || 'Gestor'}</h2>
               <p className="wb-date">{formatDate()}</p>
             </div>
             <div className="wb-badges">
-              <span className="wb-badge wb-badge--count">🏫 Panel administrativo</span>
-              <span className="wb-badge wb-badge--ia">⚡ Nexia IA activa</span>
+              <span className="wb-badge wb-badge--count">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="12" height="12"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Panel administrativo
+              </span>
+              <span className="wb-badge wb-badge--ia">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="12" height="12"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Nexia IA activa
+              </span>
             </div>
           </div>
 
@@ -141,8 +145,8 @@ function HomeGestor() {
               </button>
             </div>
 
-            <div className="g-kpi-card g-kpi-card--teal">
-              <div className="g-kpi-icon g-kpi-icon--teal">
+            <div className="g-kpi-card g-kpi-card--indigo">
+              <div className="g-kpi-icon g-kpi-icon--indigo">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                   <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
@@ -194,7 +198,7 @@ function HomeGestor() {
                 <div className="g-bar-item">
                   <div className="g-bar-track">
                     <div
-                      className="g-bar-fill g-bar-fill--teal"
+                      className="g-bar-fill g-bar-fill--indigo"
                       style={{ height: loading ? '4px' : `${(cursos / maxVal) * 100}%` }}
                     />
                   </div>
@@ -230,7 +234,7 @@ function HomeGestor() {
                     <span className="g-legend-val">{loading ? '—' : profesores}</span>
                   </div>
                   <div className="g-legend-item">
-                    <span className="g-legend-dot g-legend-dot--teal" />
+                    <span className="g-legend-dot g-legend-dot--indigo" />
                     <span className="g-legend-label">Cursos</span>
                     <span className="g-legend-val">{loading ? '—' : cursos}</span>
                   </div>
@@ -283,7 +287,7 @@ function HomeGestor() {
               </button>
 
               <button className="g-action-card" onClick={() => navigate('/gestor/asignaciones')}>
-                <div className="g-action-icon g-action-icon--teal">
+                <div className="g-action-icon g-action-icon--indigo">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" />
                     <line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
