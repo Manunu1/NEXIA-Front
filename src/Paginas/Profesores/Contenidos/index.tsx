@@ -3,7 +3,7 @@ import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import ListaContenido from '../../../Componentes/profesor/listaContenido';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import type { typeContenido } from '../../../Types/profesores/types';
-import axios from 'axios';
+import api from '../../../api';
 import './contenidos.css';
 
 function getEmbedUrl(url: string | null | undefined): string {
@@ -34,7 +34,7 @@ const Contenidos: React.FC = () => {
   useEffect(() => {
     const traerContenidos = async () => {
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `http://localhost:3000/api/contenidos/profe-curso-materia/${profeCursoMateriaId}`
         );
         const lista: typeContenido[] = res.data.data.contenidos || [];

@@ -16,6 +16,7 @@ import VerContenido from "./Paginas/VerContenido";
 import ProtectedRoute from "./Componentes/ProtectedRoute";
 import Proximamente from "./Paginas/Proximamente";
 import LandingPage from "./Paginas/LandingPage";
+import Comunicados from "./Paginas/Comunicados";
 
 function App() {
   return (
@@ -71,7 +72,15 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {['/calendario','/mensajes','/comunicados','/nexia-ia','/boletin','/apuntes','/configuracion'].map(p => (
+        <Route
+          path="/comunicados"
+          element={
+            <ProtectedRoute>
+              <Comunicados />
+            </ProtectedRoute>
+          }
+        />
+        {['/calendario','/mensajes','/nexia-ia','/boletin','/apuntes','/configuracion'].map(p => (
           <Route
             key={p}
             path={p}

@@ -1,0 +1,350 @@
+/* ─────────────────────────────────────────────
+   COMUNICADOS — Página completa
+───────────────────────────────────────────── */
+@import '../../Componentes/Gestor/FormCrearProfesor/formProfesor.css';
+
+/* ── Botón "Nuevo comunicado" ─────────────── */
+.com-new-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  border-radius: var(--r2);
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--fd);
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  box-shadow: var(--sh-nv);
+  letter-spacing: -0.2px;
+  align-self: flex-start;
+  white-space: nowrap;
+}
+
+.com-new-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.com-new-btn:hover {
+  background: var(--navy-d);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(26,35,126,.22);
+}
+
+.com-new-btn:active { transform: scale(0.98); }
+
+.com-new-btn--active {
+  background: var(--t3);
+  box-shadow: var(--sh-sm);
+}
+
+.com-new-btn--active:hover {
+  background: var(--t2);
+  box-shadow: var(--sh-sm);
+}
+
+/* ── Formulario de publicación ────────────── */
+.com-form-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r4);
+  box-shadow: var(--sh-md);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  animation: comSlideDown 0.25s var(--ease);
+}
+
+@keyframes comSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.com-form-header {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--s1);
+}
+
+.com-form-header-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r2);
+  background: var(--navy-ghost);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.com-form-header-icon svg { width: 20px; height: 20px; }
+
+.com-form-title {
+  display: block;
+  font-family: var(--fd);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.2px;
+}
+
+.com-form-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--t4);
+  margin-top: 0.1rem;
+}
+
+.com-form-body {
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.com-textarea {
+  width: 100%;
+  padding: 0.72rem 0.9rem;
+  font-size: 0.9rem;
+  font-family: var(--fb);
+  background: var(--navy-ghost);
+  color: var(--t2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  outline: none;
+  resize: vertical;
+  min-height: 110px;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s;
+  line-height: 1.65;
+}
+
+.com-textarea::placeholder { color: var(--t4); font-size: 0.875rem; }
+
+.com-textarea:focus {
+  border-color: var(--navy-l);
+  box-shadow: 0 0 0 3px rgba(26,35,126,.08);
+  background: var(--white);
+}
+
+.com-field-optional {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--t4);
+  background: var(--border);
+  border-radius: var(--r5);
+  padding: 0.1rem 0.5rem;
+  margin-left: 0.5rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.com-img-preview {
+  border-radius: var(--r2);
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  max-height: 220px;
+  background: var(--s2);
+}
+
+.com-img-preview img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.com-form-error {
+  background: #FFF1F1;
+  border: 1px solid rgba(198,40,40,.18);
+  color: #C62828;
+  border-radius: var(--r2);
+  padding: 0.75rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.com-success-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  background: rgba(34,197,94,.08);
+  border: 1px solid rgba(34,197,94,.2);
+  border-radius: var(--r2);
+  font-size: 0.82rem;
+  color: #16A34A;
+  font-weight: 600;
+}
+
+.com-form-footer {
+  padding: 1rem 2rem 1.5rem;
+}
+
+/* ── Feed de comunicados ──────────────────── */
+.com-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ── Card individual ──────────────────────── */
+.com-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.com-card:hover {
+  box-shadow: var(--sh-md);
+  transform: translateY(-3px);
+}
+
+/* Imagen */
+.com-card-img-wrap {
+  width: 100%;
+  height: 210px;
+  overflow: hidden;
+  background: var(--s2);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.com-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.45s var(--ease);
+}
+
+.com-card:hover .com-card-img { transform: scale(1.04); }
+
+/* Body */
+.com-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.75rem;
+}
+
+/* Meta row — fecha + institución */
+.com-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.com-card-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--t4);
+  letter-spacing: 0.2px;
+}
+
+.com-card-inst {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--navy);
+  background: var(--navy-ghost);
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--r5);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+/* Título */
+.com-card-title {
+  font-family: var(--fd);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -0.4px;
+  line-height: 1.3;
+}
+
+/* Contenido — 5 líneas con ellipsis */
+.com-card-text {
+  font-size: 0.9rem;
+  color: var(--t3);
+  line-height: 1.65;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Autor */
+.com-card-author {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.25rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--border);
+}
+
+.com-card-author-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--navy-ghost);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--fd);
+  flex-shrink: 0;
+}
+
+.com-card-author-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--t3);
+}
+
+/* ── Empty state icon ─────────────────────── */
+.com-empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--r3);
+  background: var(--navy-ghost);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.com-empty-icon svg { width: 30px; height: 30px; }
+
+/* ── Responsive ───────────────────────────── */
+@media (max-width: 900px) {
+  .com-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .com-grid { grid-template-columns: 1fr; }
+  .com-form-body   { padding: 1.25rem; }
+  .com-form-header { padding: 1.25rem; }
+  .com-form-footer { padding: 0.75rem 1.25rem 1.25rem; }
+  .com-card-img-wrap { height: 180px; }
+}

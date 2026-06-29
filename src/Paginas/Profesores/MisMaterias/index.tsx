@@ -4,7 +4,7 @@ import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import Footer from '../../../Componentes/footer';
 import './misCursos.css';
 import type { typeCurso } from '../../../Types/profesores/types';
-import axios from 'axios';
+import api from '../../../api';
 import { Link } from 'react-router-dom';
 
 const MisCursos: React.FC = () => {
@@ -31,7 +31,7 @@ const MisCursos: React.FC = () => {
           setError('No se encontró el ID del profesor.');
           return;
         }
-        const res = await axios.get(`http://localhost:3000/api/profesores/${profesorId}/materias`);
+        const res = await api.get(`http://localhost:3000/api/profesores/${profesorId}/materias`);
         setListaMaterias(res.data.data || []);
       } catch (err) {
         console.error('Error al obtener los cursos:', err);

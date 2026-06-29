@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../../api';
 import './VerContenido.css';
 
 // Interfaz que replica exactamente el formato de datos enviado por el Backend de NEXIA
@@ -59,7 +59,7 @@ export const VerContenido: React.FC = () => {
         }
 
         // Consumo del endpoint tal como lo define la documentación de la API
-        const response = await axios.get<ApiResponse>(
+        const response = await api.get<ApiResponse>(
           `http://localhost:3000/api/alumnos/${alumnoId}/contenidos`,
           {
             params: { materia_id: materiaId }

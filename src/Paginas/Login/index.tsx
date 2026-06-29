@@ -27,10 +27,22 @@ function Login() {
         return;
       }
       const responseData = await response.json();
-      const usuario = responseData.data;
+      const data = responseData.data;
+
+      // Nuevo formato JWT: { token, user }
+      // Formato legacy: objeto usuario directamente
+      const token: string | null = data?.token ?? null;
+      const usuario = data?.user ?? data;
+
+      if (!usuario || typeof usuario !== 'object') {
+        setError("Respuesta inesperada del servidor");
+        return;
+      }
+
+      if (token) localStorage.setItem("token", token);
       localStorage.setItem("usuario", JSON.stringify(usuario));
       if (usuario.rol) localStorage.setItem("rol", usuario.rol);
-      localStorage.setItem("institucion_id", usuario.institucion_id);
+      if (usuario.institucion_id) localStorage.setItem("institucion_id", usuario.institucion_id);
       if (usuario.usuario_id) localStorage.setItem("usuario_id", usuario.usuario_id);
       if (usuario.gestor_id) localStorage.setItem("usuario_id", usuario.gestor_id);
       if (usuario.alumno_id) {
@@ -48,7 +60,7 @@ function Login() {
       setError("No se pudo determinar el tipo de usuario");
     } catch (err) {
       console.error(err);
-      setError("Error conectando con el servidor");
+      setError("No se pudo conectar con el servidor. Verificá que esté corriendo en localhost:3000");
     } finally {
       setLoading(false);
     }

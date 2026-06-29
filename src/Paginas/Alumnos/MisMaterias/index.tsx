@@ -3,7 +3,7 @@ import CardMateria from '../../../Componentes/alumnos/CardMaterias';
 import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import Footer from '../../../Componentes/footer';
 import './misMaterias.css';
-import axios from 'axios';
+import api from '../../../api';
 import { Link } from 'react-router-dom';
 
 interface MateriaBackend {
@@ -58,7 +58,7 @@ const MisMaterias: React.FC = () => {
         const userParsed = JSON.parse(session);
         const alumnoId = userParsed.alumno_id;
         if (!alumnoId) { setError('El perfil no corresponde a un alumno válido.'); return; }
-        const res = await axios.get(`http://localhost:3000/api/alumnos/${alumnoId}/materias`);
+        const res = await api.get(`http://localhost:3000/api/alumnos/${alumnoId}/materias`);
         setMaterias(res.data.data);
       } catch {
         setError('Error al conectar con el servidor.');

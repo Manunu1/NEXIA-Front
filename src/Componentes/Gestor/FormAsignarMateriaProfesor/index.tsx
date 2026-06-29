@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import "./formAsignarMateriaProfesor.css";
+import api from '../../../api';
 
 interface Option { value: number; label: string; }
 
@@ -18,30 +19,27 @@ const FormAsignarMateriaProfesor = () => {
 
   useEffect(() => {
     if (!institucionId) return;
-    fetch(`http://localhost:3000/api/profesores?institucion_id=${institucionId}`)
-      .then(r => r.json())
-      .then(result => {
-        setProfesores(result.data.map((p: any) => ({ value: p.profesor_id, label: `${p.apellido}, ${p.nombre}` })));
+    api.get(`/api/profesores?institucion_id=${institucionId}`)
+      .then(res => {
+        setProfesores(res.data.data.map((p: any) => ({ value: p.profesor_id, label: `${p.apellido}, ${p.nombre}` })));
       })
       .catch(err => console.error("Error cargando profesores:", err));
   }, [institucionId]);
 
   useEffect(() => {
     if (!institucionId) return;
-    fetch(`http://localhost:3000/api/materias?institucion_id=${institucionId}`)
-      .then(r => r.json())
-      .then(result => {
-        setMaterias(result.data.map((m: any) => ({ value: m.materia_id, label: `${m.nombre} (${m.especialidad_nombre || "General"})` })));
+    api.get(`/api/materias?institucion_id=${institucionId}`)
+      .then(res => {
+        setMaterias(res.data.data.map((m: any) => ({ value: m.materia_id, label: `${m.nombre} (${m.especialidad_nombre || "General"})` })));
       })
       .catch(err => console.error("Error cargando materias:", err));
   }, [institucionId]);
 
   useEffect(() => {
     if (!institucionId) return;
-    fetch(`http://localhost:3000/api/cursos?institucion_id=${institucionId}`)
-      .then(r => r.json())
-      .then(result => {
-        setCursos(result.data.map((c: any) => ({ value: c.curso_id, label: `${c.anio}° ${c.division}` })));
+    api.get(`/api/cursos?institucion_id=${institucionId}`)
+      .then(res => {
+        setCursos(res.data.data.map((c: any) => ({ value: c.curso_id, label: `${c.anio}° ${c.division}` })));
       })
       .catch(err => console.error("Error cargando cursos:", err));
   }, [institucionId]);
@@ -55,19 +53,11 @@ const FormAsignarMateriaProfesor = () => {
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/api/gestor/profesores/asignar-materia", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          profesor_id: profesorSeleccionado.value,
-          materia_id: materiaSeleccionada.value,
-          curso_id: cursoSeleccionado.value,
-        }),
+      await api.post("/api/gestor/profesores/asignar-materia", {
+        profesor_id: profesorSeleccionado.value,
+        materia_id: materiaSeleccionada.value,
+        curso_id: cursoSeleccionado.value,
       });
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || "Error en la asignación");
-      }
       setSuccess(true);
       setProfesorSeleccionado(null);
       setMateriaSeleccionada(null);

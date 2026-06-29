@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api';
 import type { typeContenido } from '../../Types/profesores/types';
 import Sidebar from '../../Componentes/alumnos/Sidebar';
 import './verContenido.css';
@@ -78,7 +78,7 @@ const VerContenido: React.FC = () => {
   useEffect(() => {
     const traer = async () => {
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `http://localhost:3000/api/contenidos/contenido/${contenidoId}`
         );
         const db = res.data.data || res.data;

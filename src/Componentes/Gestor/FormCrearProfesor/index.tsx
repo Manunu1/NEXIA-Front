@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import "./formProfesor.css";
+import api from '../../../api';
 
 interface Institucion {
   id: string;
@@ -45,13 +46,7 @@ export default function FormCrearProfesor() {
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/api/gestor/profesores", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+      await api.post("/api/gestor/profesores", payload);
       setSuccess(true);
       setForm({ nombre: "", apellido: "", email: "", password: "", dni: "" });
       setSelectedInstitucion(null);

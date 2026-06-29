@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SidebarGestor from "../../../Componentes/Gestor/SidebarGestor";
+import api from '../../../api';
 import "./homeGestor.css";
 
 const DAYS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
@@ -44,18 +45,14 @@ function HomeGestor() {
         if (!institucionId) return;
 
         const [alumnosRes, profesoresRes, cursosRes] = await Promise.all([
-          fetch(`http://localhost:3000/api/alumnos?institucion_id=${institucionId}`),
-          fetch(`http://localhost:3000/api/profesores?institucion_id=${institucionId}`),
-          fetch(`http://localhost:3000/api/cursos?institucion_id=${institucionId}`),
+          api.get(`/api/alumnos?institucion_id=${institucionId}`),
+          api.get(`/api/profesores?institucion_id=${institucionId}`),
+          api.get(`/api/cursos?institucion_id=${institucionId}`),
         ]);
 
-        const alumnosData = await alumnosRes.json();
-        const profesoresData = await profesoresRes.json();
-        const cursosData = await cursosRes.json();
-
-        setAlumnos(alumnosData.data?.length || 0);
-        setProfesores(profesoresData.data?.length || 0);
-        setCursos(cursosData.data?.length || 0);
+        setAlumnos(alumnosRes.data.data?.length || 0);
+        setProfesores(profesoresRes.data.data?.length || 0);
+        setCursos(cursosRes.data.data?.length || 0);
       } catch (error) {
         console.error("Error cargando dashboard:", error);
       } finally {

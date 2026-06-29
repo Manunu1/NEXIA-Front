@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import "./formAlumno.css";
+import api from '../../../api';
 
 interface Institucion { id: string; nombre: string; }
 interface Curso { curso_id: string; institucion_id: string; anio: number; division: string; }
@@ -54,13 +55,7 @@ export default function FormCrearAlumno() {
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/api/gestor/alumnos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+      await api.post("/api/gestor/alumnos", payload);
       setSuccess(true);
       setForm({ nombre: "", apellido: "", dni: "", email: "", password: "" });
       setSelectedInstitucion(null);

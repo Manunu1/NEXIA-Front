@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { typeContenidoForm, typeTipoContenido } from '../../../Types/profesores/types';
 import './crearContenido.css';
-import axios from 'axios';
+import api from '../../../api';
 import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import Footer from '../../../Componentes/footer';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -49,7 +49,7 @@ const CrearContenido: React.FC = () => {
   useEffect(() => {
     const traerTipos = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/tipos-contenido');
+        const res = await api.get('http://localhost:3000/api/tipos-contenido');
         setTipos(res.data.data);
       } catch (err) {
         console.error('Error al obtener tipos de contenido:', err);
@@ -76,7 +76,7 @@ const CrearContenido: React.FC = () => {
     e.preventDefault();
     setSubmitStatus('loading');
     try {
-      await axios.post('http://localhost:3000/api/contenidos', {
+      await api.post('http://localhost:3000/api/contenidos', {
         ...formData,
         profe_curso_materia_id: Number(profeCursoMateriaId),
       });
