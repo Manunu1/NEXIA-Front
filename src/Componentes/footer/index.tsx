@@ -1,13 +1,26 @@
-
 import './footer.css';
 
 const Footer: React.FC = () => {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="footer">
       <div className="footer-container">
-        <h2 className="footer-title">Información institucional</h2>
-        
+
+        {/* Brand row */}
+        <div className="footer-brand">
+          <div className="footer-brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+          </div>
+          <span className="footer-brand-name">NEXIA</span>
+        </div>
+
+        <p className="footer-title">Información institucional</p>
+
         <div className="footer-items">
+
           {/* Dirección */}
           <div className="footer-item interactive-hover">
             <div className="footer-icon">
@@ -51,13 +64,11 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Redes Sociales */}
+          {/* Redes */}
           <div className="footer-item">
             <div className="footer-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="18" cy="5" r="3" />
-                <circle cx="6" cy="12" r="3" />
-                <circle cx="18" cy="19" r="3" />
+                <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
                 <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
                 <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
               </svg>
@@ -66,14 +77,14 @@ const Footer: React.FC = () => {
               <span className="footer-label">Redes</span>
               <div className="footer-social">
                 <a href="https://website.com" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Sitio web">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10" />
                     <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
                     <path d="M2 12h20" />
                   </svg>
                 </a>
                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Instagram">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="4" />
                     <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
                   </svg>
@@ -81,7 +92,15 @@ const Footer: React.FC = () => {
               </div>
             </div>
           </div>
+
         </div>
+
+        {/* Bottom row */}
+        <div className="footer-bottom">
+          <span className="footer-copy">© {year} NEXIA — Plataforma educativa virtual. Todos los derechos reservados.</span>
+          <span className="footer-made">Hecho con <span>♥</span> por ORT Argentina</span>
+        </div>
+
       </div>
     </footer>
   );

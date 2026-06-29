@@ -324,6 +324,143 @@
   margin-top: 0.5rem;
 }
 
+/* ── Source tabs ── */
+.cc-source-tabs {
+  display: flex;
+  gap: 0.375rem;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 3px;
+}
+
+.cc-source-tab {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: var(--fb);
+  color: var(--t3);
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--r2) - 2px);
+  cursor: pointer;
+  transition: all 0.18s var(--ease);
+}
+
+.cc-source-tab--active {
+  background: var(--white);
+  color: var(--navy);
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+/* ── Drop zone ── */
+.cc-drop-zone {
+  margin-top: 0.5rem;
+  border: 2px dashed var(--border);
+  border-radius: var(--r3);
+  background: var(--navy-ghost);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+
+.cc-drop-zone:hover,
+.cc-drop-zone--over {
+  border-color: var(--navy-l);
+  background: rgba(26,35,126,.06);
+}
+
+.cc-drop-zone--error {
+  border-color: #ef5350;
+  background: #fff5f5;
+}
+
+.cc-drop-icon {
+  color: var(--navy-l);
+  opacity: 0.7;
+}
+
+.cc-drop-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--t2);
+  margin: 0;
+}
+
+.cc-drop-text--error { color: #c62828; }
+
+.cc-drop-sub {
+  font-size: 0.74rem;
+  color: var(--t4);
+  margin: 0;
+}
+
+/* ── Upload status ── */
+.cc-upload-status {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--r2);
+  border: 1.5px solid var(--border);
+}
+
+.cc-upload-status--loading {
+  background: var(--navy-ghost);
+}
+
+.cc-upload-status--done {
+  background: #f0fdf4;
+  border-color: #a7f3d0;
+  color: #065f46;
+}
+
+.cc-upload-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: inherit;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.cc-upload-sub {
+  font-size: 0.72rem;
+  color: var(--t3);
+  margin: 0;
+}
+
+.cc-upload-status--done .cc-upload-sub { color: #059669; }
+
+.cc-upload-remove {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--t3);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: var(--r1);
+  line-height: 1;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.cc-upload-remove:hover { color: #c62828; }
+
 /* ── Shared button classes (also used by Contenidos pages) ── */
 .btn-simple {
   display: inline-flex;

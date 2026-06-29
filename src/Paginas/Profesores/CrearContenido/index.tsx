@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { typeContenidoForm, typeTipoContenido } from '../../../Types/profesores/types';
 import './crearContenido.css';
 import api from '../../../api';
@@ -15,10 +15,12 @@ function getEmbedUrl(url: string): string {
   return url;
 }
 
-function canEmbed(url: string): boolean {
+function isMediaEmbed(url: string): boolean {
+  if (!url) return false;
   const u = url.toLowerCase();
   return u.includes('youtube.com') || u.includes('youtu.be') ||
-    u.includes('drive.google.com') || u.includes('docs.google.com') || u.endsWith('.pdf');
+    u.includes('drive.google.com') || u.includes('docs.google.com') ||
+    u.endsWith('.pdf') || u.includes('.pdf?');
 }
 
 function getTypeIcon(nombre: string): string {
@@ -31,9 +33,13 @@ function getTypeIcon(nombre: string): string {
   return '📁';
 }
 
+type SourceMode   = 'url' | 'pdf';
+type UploadState  = 'idle' | 'uploading' | 'done' | 'error';
+
 const CrearContenido: React.FC = () => {
   const { profeCursoMateriaId } = useParams<{ profeCursoMateriaId: string }>();
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState<typeContenidoForm>({
     profe_curso_materia_id: Number(profeCursoMateriaId),
@@ -45,6 +51,12 @@ const CrearContenido: React.FC = () => {
   const [tipos, setTipos] = useState<typeTipoContenido[]>([]);
   const [urlPreview, setUrlPreview] = useState('');
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const [sourceMode, setSourceMode]   = useState<SourceMode>('url');
+  const [uploadState, setUploadState] = useState<UploadState>('idle');
+  const [uploadedFileName, setUploadedFileName] = useState('');
+  const [uploadError, setUploadError] = useState('');
+  const [dragOver, setDragOver] = useState(false);
 
   useEffect(() => {
     const traerTipos = async () => {
@@ -62,18 +74,64 @@ const CrearContenido: React.FC = () => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: name === 'tipo_contenido_id' ? Number(value) : value }));
     if (name === 'archivo_url') {
-      if (canEmbed(value)) {
-        setUrlPreview(getEmbedUrl(value));
-      } else {
-        setUrlPreview('');
-      }
+      setUrlPreview(isMediaEmbed(value) ? getEmbedUrl(value) : '');
     }
+  };
+
+  const handleSwitchMode = (mode: SourceMode) => {
+    setSourceMode(mode);
+    setFormData(prev => ({ ...prev, archivo_url: '' }));
+    setUrlPreview('');
+    setUploadState('idle');
+    setUploadedFileName('');
+    setUploadError('');
+  };
+
+  const uploadPDF = async (file: File) => {
+    const isPdf = file.type === 'application/pdf' ||
+                  file.type === 'application/octet-stream' ||
+                  file.name.toLowerCase().endsWith('.pdf');
+    if (!isPdf) {
+      setUploadError('El archivo seleccionado no es un PDF.');
+      setUploadState('error');
+      return;
+    }
+    setUploadState('uploading');
+    setUploadedFileName(file.name);
+    setUploadError('');
+    try {
+      const fd = new FormData();
+      fd.append('archivo', file);
+      const res = await api.post('http://localhost:3000/api/contenidos/upload', fd);
+      const url: string = res.data.data.url;
+      setFormData(prev => ({ ...prev, archivo_url: url }));
+      setUrlPreview(url);
+      setUploadState('done');
+    } catch (err: any) {
+      const msg = err.response?.data?.message || err.message || 'Error al conectar con el servidor.';
+      console.error('[Upload error]', err.response?.status, msg);
+      setUploadError(msg);
+      setUploadState('error');
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) uploadPDF(file);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) uploadPDF(file);
   };
 
   const selectedTipo = tipos.find(t => t.id === formData.tipo_contenido_id);
 
   const Submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.archivo_url) return;
     setSubmitStatus('loading');
     try {
       await api.post('http://localhost:3000/api/contenidos', {
@@ -105,6 +163,8 @@ const CrearContenido: React.FC = () => {
                   setSubmitStatus('idle');
                   setFormData({ profe_curso_materia_id: Number(profeCursoMateriaId), tipo_contenido_id: 0, titulo: '', descripcion: '', archivo_url: '' });
                   setUrlPreview('');
+                  setUploadState('idle');
+                  setUploadedFileName('');
                 }}>
                   Publicar otro
                 </button>
@@ -142,6 +202,7 @@ const CrearContenido: React.FC = () => {
             {/* ── Columna izquierda: formulario ── */}
             <div className="cc-form-col">
               <form onSubmit={Submit} className="cc-form">
+
                 <div className="cc-form-section">
                   <label className="cc-label">Título del contenido *</label>
                   <input
@@ -188,33 +249,127 @@ const CrearContenido: React.FC = () => {
                   </div>
                 </div>
 
+                {/* ── Source selector ── */}
                 <div className="cc-form-section">
-                  <label className="cc-label">URL del contenido *</label>
-                  <input
-                    name="archivo_url"
-                    className="cc-input"
-                    placeholder="https://youtube.com/watch?v=... o enlace de Drive"
-                    value={formData.archivo_url}
-                    onChange={handleChange}
-                    required
-                    type="url"
-                  />
-                  {formData.archivo_url && !canEmbed(formData.archivo_url) && (
-                    <p className="cc-url-hint">
-                      🔗 Este enlace se abrirá en una nueva pestaña (no se puede previsualizar)
-                    </p>
+                  <label className="cc-label">Fuente del contenido *</label>
+                  <div className="cc-source-tabs">
+                    <button
+                      type="button"
+                      className={`cc-source-tab${sourceMode === 'url' ? ' cc-source-tab--active' : ''}`}
+                      onClick={() => handleSwitchMode('url')}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
+                        <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+                        <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                      </svg>
+                      Pegar URL
+                    </button>
+                    <button
+                      type="button"
+                      className={`cc-source-tab${sourceMode === 'pdf' ? ' cc-source-tab--active' : ''}`}
+                      onClick={() => handleSwitchMode('pdf')}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
+                      </svg>
+                      Subir PDF
+                    </button>
+                  </div>
+
+                  {/* URL mode */}
+                  {sourceMode === 'url' && (
+                    <>
+                      <input
+                        name="archivo_url"
+                        className="cc-input"
+                        style={{ marginTop: '0.5rem' }}
+                        placeholder="https://youtube.com/watch?v=... o enlace de Drive"
+                        value={formData.archivo_url}
+                        onChange={handleChange}
+                        required
+                        type="url"
+                      />
+                      {formData.archivo_url && !isMediaEmbed(formData.archivo_url) && (
+                        <p className="cc-url-hint">
+                          🔗 Este enlace se abrirá en una nueva pestaña (no se puede previsualizar)
+                        </p>
+                      )}
+                      {formData.archivo_url && isMediaEmbed(formData.archivo_url) && (
+                        <p className="cc-url-hint cc-url-hint--ok">
+                          ✓ Vista previa disponible →
+                        </p>
+                      )}
+                    </>
                   )}
-                  {formData.archivo_url && canEmbed(formData.archivo_url) && (
-                    <p className="cc-url-hint cc-url-hint--ok">
-                      ✓ Vista previa disponible →
-                    </p>
+
+                  {/* PDF upload mode */}
+                  {sourceMode === 'pdf' && (
+                    <>
+                      {uploadState === 'idle' || uploadState === 'error' ? (
+                        <div
+                          className={`cc-drop-zone${dragOver ? ' cc-drop-zone--over' : ''}${uploadState === 'error' ? ' cc-drop-zone--error' : ''}`}
+                          onClick={() => fileInputRef.current?.click()}
+                          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                          onDragLeave={() => setDragOver(false)}
+                          onDrop={handleDrop}
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="28" height="28" className="cc-drop-icon">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
+                          </svg>
+                          {uploadState === 'error' ? (
+                            <p className="cc-drop-text cc-drop-text--error">
+                              {uploadError || 'Error al subir. Intentá de nuevo.'}
+                            </p>
+                          ) : (
+                            <>
+                              <p className="cc-drop-text">Arrastrá un PDF o hacé clic para seleccionar</p>
+                              <p className="cc-drop-sub">Máximo 20 MB · Solo archivos .pdf</p>
+                            </>
+                          )}
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="application/pdf"
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                          />
+                        </div>
+                      ) : uploadState === 'uploading' ? (
+                        <div className="cc-upload-status cc-upload-status--loading">
+                          <div className="nexia-loading-spinner" />
+                          <div>
+                            <p className="cc-upload-name">{uploadedFileName}</p>
+                            <p className="cc-upload-sub">Subiendo archivo...</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="cc-upload-status cc-upload-status--done">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                          <div>
+                            <p className="cc-upload-name">{uploadedFileName}</p>
+                            <p className="cc-upload-sub">PDF subido correctamente</p>
+                          </div>
+                          <button
+                            type="button"
+                            className="cc-upload-remove"
+                            onClick={() => { setUploadState('idle'); setUploadError(''); setFormData(p => ({ ...p, archivo_url: '' })); setUrlPreview(''); }}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
 
                 <button
                   type="submit"
                   className="cc-submit-btn"
-                  disabled={submitStatus === 'loading'}
+                  disabled={submitStatus === 'loading' || !formData.archivo_url || (sourceMode === 'pdf' && uploadState !== 'done')}
                 >
                   {submitStatus === 'loading' ? 'Publicando...' : '📤 Publicar contenido'}
                 </button>
@@ -242,10 +397,13 @@ const CrearContenido: React.FC = () => {
                 </div>
               ) : (
                 <div className="cc-preview-placeholder">
-                  <span className="cc-ph-emoji">🔗</span>
+                  <span className="cc-ph-emoji">{sourceMode === 'pdf' ? '📄' : '🔗'}</span>
                   <p className="cc-ph-title">Vista previa del contenido</p>
                   <p className="cc-ph-sub">
-                    Pegá una URL de YouTube, Google Drive o Google Docs para ver una previsualización aquí.
+                    {sourceMode === 'pdf'
+                      ? 'Subí un PDF para ver una previsualización aquí.'
+                      : 'Pegá una URL de YouTube, Google Drive o Google Docs para ver una previsualización aquí.'
+                    }
                   </p>
                 </div>
               )}
@@ -254,10 +412,10 @@ const CrearContenido: React.FC = () => {
                 <h4 className="cc-guide-title">Formatos compatibles</h4>
                 <div className="cc-guide-list">
                   {[
+                    { icon: '📄', label: 'PDF', desc: 'Subí directo o enlace a PDF' },
                     { icon: '▶', label: 'YouTube', desc: 'Videos educativos' },
                     { icon: '📊', label: 'Google Slides', desc: 'Presentaciones' },
-                    { icon: '📁', label: 'Google Drive', desc: 'Archivos y carpetas' },
-                    { icon: '📄', label: 'PDF', desc: 'Documentos en PDF' },
+                    { icon: '📁', label: 'Google Drive', desc: 'Archivos compartidos' },
                     { icon: '🔗', label: 'Cualquier URL', desc: 'Abre en nueva pestaña' },
                   ].map(({ icon, label, desc }) => (
                     <div key={label} className="cc-guide-item">

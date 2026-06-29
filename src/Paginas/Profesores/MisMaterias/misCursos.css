@@ -1,6 +1,8 @@
-.materias-grid {
+/* Estilos globales de layout y grid en App.css */
+/* Solo overrides específicos de la página */
+
+.cursos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 5%;
-  padding: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 1.25rem;
 }

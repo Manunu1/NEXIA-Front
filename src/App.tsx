@@ -17,6 +17,7 @@ import ProtectedRoute from "./Componentes/ProtectedRoute";
 import Proximamente from "./Paginas/Proximamente";
 import LandingPage from "./Paginas/LandingPage";
 import Comunicados from "./Paginas/Comunicados";
+import NexiaIA from "./Paginas/NexiaIA";
 
 function App() {
   return (
@@ -80,7 +81,15 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {['/calendario','/mensajes','/nexia-ia','/boletin','/apuntes','/configuracion'].map(p => (
+        <Route
+          path="/nexia-ia"
+          element={
+            <ProtectedRoute>
+              <NexiaIA />
+            </ProtectedRoute>
+          }
+        />
+        {['/calendario','/mensajes','/boletin','/apuntes','/configuracion'].map(p => (
           <Route
             key={p}
             path={p}

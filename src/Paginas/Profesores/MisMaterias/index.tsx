@@ -108,7 +108,7 @@ const MisCursos: React.FC = () => {
               <p>No tenés materias asignadas para este ciclo lectivo.</p>
             </div>
           ) : (
-            <div className="materias-grid">
+            <div className="cursos-grid">
               {listaMaterias.map((item) => (
                 <Link
                   key={item.profe_curso_materia_id}

@@ -31,7 +31,7 @@ function getEmbedUrl(url: string): string {
   return url;
 }
 
-function canEmbed(url: string): boolean {
+function isMediaEmbed(url: string): boolean {
   if (!url) return false;
   const u = url.toLowerCase();
   return (
@@ -42,6 +42,11 @@ function canEmbed(url: string): boolean {
     u.endsWith('.pdf') ||
     u.includes('.pdf?')
   );
+}
+
+function getDomain(url: string): string {
+  try { return new URL(url).hostname.replace('www.', ''); }
+  catch { return url; }
 }
 
 function getIcon(tipo: string, url: string): string {
@@ -98,8 +103,9 @@ const VerContenido: React.FC = () => {
     if (contenidoId) traer();
   }, [contenidoId]);
 
-  const embedUrl   = contenido ? getEmbedUrl(contenido.url) : '';
-  const showIframe = contenido ? canEmbed(contenido.url) : false;
+  const embedUrl = contenido ? getEmbedUrl(contenido.url) : '';
+  const hasUrl   = !!(contenido?.url);
+  const isMedia  = contenido ? isMediaEmbed(contenido.url) : false;
   const icon       = contenido ? getIcon(contenido.tipo_contenido, contenido.url) : '📎';
   const typeLabel  = contenido ? getTypeLabel(contenido.tipo_contenido, contenido.url) : '';
 
@@ -197,10 +203,10 @@ const VerContenido: React.FC = () => {
           <div className="vc-viewer">
             {loading ? (
               <div className="vc-viewer-state">
-                <div className="vc-spinner vc-spinner-light" />
+                <div className="vc-spinner" />
                 <p>Cargando contenido...</p>
               </div>
-            ) : showIframe ? (
+            ) : isMedia ? (
               <div className="vc-iframe-container">
                 <iframe
                   src={embedUrl}
@@ -208,24 +214,29 @@ const VerContenido: React.FC = () => {
                   className="vc-iframe"
                   allowFullScreen
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"
                 />
               </div>
-            ) : contenido?.url ? (
-              <div className="vc-fallback">
-                <div className="vc-fallback-icon">{icon}</div>
-                <h3 className="vc-fallback-title">{contenido.titulo}</h3>
-                <p className="vc-fallback-sub">
-                  Este tipo de contenido no se puede previsualizar aquí.<br />
-                  Abrilo directamente para verlo.
-                </p>
-                <a
-                  href={contenido.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="vc-fallback-btn"
-                >
-                  Abrir contenido ↗
-                </a>
+            ) : hasUrl ? (
+              <div className="vc-link-card">
+                <div className="iv-link-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="36" height="36">
+                    <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+                    <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                  </svg>
+                </div>
+                <div className="iv-link-card-body">
+                  <p className="iv-link-card-title">{contenido?.titulo}</p>
+                  <p className="iv-link-card-domain">{getDomain(contenido!.url)}</p>
+                  <p className="iv-link-card-notice">Este tipo de contenido no puede mostrarse embebido por restricciones de seguridad del sitio externo.</p>
+                  <a href={contenido?.url} target="_blank" rel="noopener noreferrer" className="iv-link-card-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
+                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                      <polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                    Abrir enlace
+                  </a>
+                </div>
               </div>
             ) : (
               <div className="vc-viewer-state">

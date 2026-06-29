@@ -1,0 +1,499 @@
+/* ─────────────────────────────────────────────
+   NEXIA IA — Chat Interface Premium
+───────────────────────────────────────────── */
+
+.nia-wrapper {
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--s1);
+  overflow: hidden;
+}
+
+/* ── Header ──────────────────────────────────── */
+.nia-header {
+  height: 64px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.75rem;
+  flex-shrink: 0;
+  box-shadow: var(--sh-sm);
+  z-index: 10;
+}
+
+.nia-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.nia-logo-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r2);
+  background: linear-gradient(135deg, var(--navy-d) 0%, var(--navy-l) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(26,35,126,.25);
+}
+
+.nia-logo-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.nia-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.nia-header-title {
+  font-family: var(--fd);
+  font-size: 0.975rem;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.nia-header-sub {
+  font-size: 0.72rem;
+  color: var(--t4);
+  font-weight: 500;
+}
+
+.nia-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nia-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  background: rgba(34,197,94,.07);
+  border: 1px solid rgba(34,197,94,.15);
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #16A34A;
+  white-space: nowrap;
+}
+
+.nia-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22C55E;
+  flex-shrink: 0;
+  animation: niaPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes niaPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.45; transform: scale(0.85); }
+}
+
+.nia-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.875rem;
+  background: transparent;
+  color: var(--t3);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: var(--fb);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.nia-clear-btn svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.nia-clear-btn:hover {
+  background: var(--s1);
+  color: var(--t2);
+  border-color: var(--navy-xs);
+}
+
+/* ── Messages area ───────────────────────────── */
+.nia-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Welcome state ───────────────────────────── */
+.nia-welcome {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3.5rem 2rem 2.5rem;
+  max-width: 620px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.nia-welcome-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--r3);
+  background: linear-gradient(135deg, var(--navy-d) 0%, var(--navy-l) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  margin-bottom: 1.75rem;
+  box-shadow: var(--sh-nv);
+}
+
+.nia-welcome-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.nia-welcome-title {
+  font-family: var(--fd);
+  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -0.8px;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.nia-welcome-sub {
+  font-size: 0.92rem;
+  color: var(--t3);
+  line-height: 1.75;
+  max-width: 460px;
+  margin-bottom: 2.5rem;
+}
+
+.nia-prompts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 580px;
+  margin-bottom: 2rem;
+}
+
+.nia-prompt-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--fb);
+  transition: all 0.22s var(--ease);
+  box-shadow: var(--sh-sm);
+}
+
+.nia-prompt-card:hover {
+  border-color: var(--navy-xs);
+  background: var(--navy-ghost);
+  box-shadow: var(--sh-md);
+  transform: translateY(-2px);
+}
+
+.nia-prompt-text {
+  font-size: 0.82rem;
+  color: var(--t2);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.nia-prompt-arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--t4);
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.nia-prompt-card:hover .nia-prompt-arrow {
+  color: var(--navy);
+}
+
+.nia-welcome-disclaimer {
+  font-size: 0.72rem;
+  color: var(--t4);
+  max-width: 420px;
+  line-height: 1.6;
+  padding: 0.75rem 1rem;
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  border-radius: var(--r2);
+}
+
+/* ── Message list ────────────────────────────── */
+.nia-msg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 2rem 1.5rem;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 100%;
+}
+
+.nia-msg {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  animation: niaMsgIn 0.25s var(--ease);
+}
+
+@keyframes niaMsgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nia-msg--user {
+  flex-direction: row-reverse;
+}
+
+/* ── AI avatar ───────────────────────────────── */
+.nia-ai-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r1);
+  background: linear-gradient(135deg, var(--navy-d) 0%, var(--navy-l) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  flex-shrink: 0;
+  align-self: flex-end;
+  box-shadow: 0 2px 8px rgba(26,35,126,.2);
+}
+
+.nia-ai-avatar svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ── Message bubbles ─────────────────────────── */
+.nia-bubble {
+  max-width: 68%;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--r3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  position: relative;
+}
+
+/* User bubble — navy */
+.nia-msg--user .nia-bubble {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-m) 100%);
+  color: var(--white);
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 16px rgba(26,35,126,.18);
+}
+
+/* AI bubble — white */
+.nia-msg--ai .nia-bubble {
+  background: var(--white);
+  color: var(--t1);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--sh-sm);
+}
+
+/* Error bubble */
+.nia-bubble--error {
+  background: #FFF1F1 !important;
+  border-color: rgba(198,40,40,.2) !important;
+  color: #C62828 !important;
+}
+
+.nia-bubble-text {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.nia-msg--user .nia-bubble-text {
+  color: rgba(255,255,255,.95);
+}
+
+.nia-bubble-time {
+  font-size: 0.63rem;
+  opacity: 0.45;
+  align-self: flex-end;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* ── Typing indicator ────────────────────────── */
+.nia-bubble--typing {
+  background: var(--white) !important;
+  border: 1px solid var(--border) !important;
+  padding: 1rem 1.25rem !important;
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 0.35rem !important;
+  align-items: center !important;
+  width: fit-content;
+  min-width: 68px;
+}
+
+.nia-bubble--typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--navy-l);
+  display: block;
+  flex-shrink: 0;
+  animation: niaTyping 1.3s ease-in-out infinite;
+}
+
+.nia-bubble--typing span:nth-child(2) { animation-delay: 0.18s; }
+.nia-bubble--typing span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes niaTyping {
+  0%, 80%, 100% { transform: translateY(0);   opacity: 0.35; }
+  40%           { transform: translateY(-6px); opacity: 1; }
+}
+
+/* ── Input area ──────────────────────────────── */
+.nia-input-area {
+  flex-shrink: 0;
+  padding: 1.1rem 1.75rem 1.4rem;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+}
+
+.nia-input-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  background: var(--s1);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r3);
+  padding: 0.75rem 0.875rem 0.75rem 1.1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.nia-input-wrap:focus-within {
+  border-color: var(--navy-l);
+  box-shadow: 0 0 0 3px rgba(26,35,126,.07);
+  background: var(--white);
+}
+
+.nia-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: var(--fb);
+  font-size: 0.9rem;
+  color: var(--t1);
+  resize: none;
+  line-height: 1.6;
+  max-height: 140px;
+  overflow-y: auto;
+  min-height: 22px;
+}
+
+.nia-input::placeholder {
+  color: var(--t4);
+}
+
+.nia-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nia-send-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r2);
+  background: var(--navy);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  flex-shrink: 0;
+  transition: all 0.2s var(--ease);
+  align-self: flex-end;
+}
+
+.nia-send-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.nia-send-btn:not(:disabled):hover {
+  background: var(--navy-m);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(26,35,126,.28);
+}
+
+.nia-send-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.nia-input-hint {
+  font-size: 0.68rem;
+  color: var(--t4);
+  text-align: center;
+  margin-top: 0.625rem;
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+  .nia-wrapper      { margin-left: 0; }
+  .nia-header       { padding: 0 1rem; height: 56px; }
+  .nia-header-sub   { display: none; }
+  .nia-msg-list     { padding: 1.25rem 1rem 1rem; gap: 1.1rem; }
+  .nia-bubble       { max-width: 88%; }
+  .nia-prompts-grid { grid-template-columns: 1fr; }
+  .nia-input-area   { padding: 0.875rem 1rem 1.1rem; }
+  .nia-welcome      { padding: 2rem 1.25rem; }
+  .nia-welcome-icon { width: 56px; height: 56px; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nia-wrapper { margin-left: 220px; }
+  .nia-header  { padding: 0 1.25rem; }
+}

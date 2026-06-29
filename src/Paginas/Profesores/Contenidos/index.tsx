@@ -16,11 +16,17 @@ function getEmbedUrl(url: string | null | undefined): string {
   return url;
 }
 
-function canEmbed(url: string | null | undefined): boolean {
+function isMediaEmbed(url: string | null | undefined): boolean {
   if (!url) return false;
   const u = url.toLowerCase();
   return u.includes('youtube.com') || u.includes('youtu.be') ||
-    u.includes('drive.google.com') || u.includes('docs.google.com') || u.endsWith('.pdf');
+    u.includes('drive.google.com') || u.includes('docs.google.com') ||
+    u.endsWith('.pdf') || u.includes('.pdf?');
+}
+
+function getDomain(url: string): string {
+  try { return new URL(url).hostname.replace('www.', ''); }
+  catch { return url; }
 }
 
 const Contenidos: React.FC = () => {
@@ -37,7 +43,10 @@ const Contenidos: React.FC = () => {
         const res = await api.get(
           `http://localhost:3000/api/contenidos/profe-curso-materia/${profeCursoMateriaId}`
         );
-        const lista: typeContenido[] = res.data.data.contenidos || [];
+        const lista: typeContenido[] = (res.data.data.contenidos || []).map((c: any) => ({
+          ...c,
+          url: c.url || c.archivo_url || '',
+        }));
         setContenidos(lista);
         if (lista.length > 0) setSelected(lista[0]);
       } catch (err) {
@@ -51,7 +60,8 @@ const Contenidos: React.FC = () => {
   }, [profeCursoMateriaId]);
 
   const embedUrl = selected?.url ? getEmbedUrl(selected.url) : '';
-  const showIframe = selected?.url ? canEmbed(selected.url) : false;
+  const hasUrl   = !!selected?.url;
+  const isMedia  = selected?.url ? isMediaEmbed(selected.url) : false;
 
   return (
     <>
@@ -112,32 +122,48 @@ const Contenidos: React.FC = () => {
           </div>
 
           <div className="iv-viewer-panel">
-            {selected ? (
-              showIframe ? (
-                <div className="iv-iframe-wrap">
-                  <iframe
-                    key={embedUrl}
-                    src={embedUrl}
-                    title={selected.titulo}
-                    allowFullScreen
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    className="iv-iframe"
-                  />
-                </div>
-              ) : (
-                <div className="iv-fallback">
-                  <div className="iv-fallback-icon">🔗</div>
-                  <h3 className="iv-fallback-title">{selected.titulo}</h3>
-                  <p className="iv-fallback-desc">Este contenido no puede mostrarse en la vista previa integrada.</p>
-                  <a href={selected.url} target="_blank" rel="noopener noreferrer" className="iv-fallback-btn">
-                    Abrir contenido →
-                  </a>
-                </div>
-              )
-            ) : (
+            {!selected ? (
               <div className="iv-placeholder">
                 <div className="iv-placeholder-icon">👆</div>
                 <p className="iv-placeholder-text">Seleccioná un contenido de la lista para previsualizarlo</p>
+              </div>
+            ) : isMedia ? (
+              <div className="iv-iframe-wrap">
+                <iframe
+                  key={embedUrl}
+                  src={embedUrl}
+                  title={selected.titulo}
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  className="iv-iframe"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"
+                />
+              </div>
+            ) : hasUrl ? (
+              <div className="iv-link-card">
+                <div className="iv-link-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
+                    <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+                    <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                  </svg>
+                </div>
+                <div className="iv-link-card-body">
+                  <p className="iv-link-card-title">{selected.titulo}</p>
+                  <p className="iv-link-card-domain">{getDomain(selected.url!)}</p>
+                  <p className="iv-link-card-notice">Este tipo de contenido no puede mostrarse embebido por restricciones de seguridad del sitio externo.</p>
+                  <a href={selected.url} target="_blank" rel="noopener noreferrer" className="iv-link-card-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
+                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                      <polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                    Abrir enlace
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <div className="iv-placeholder">
+                <div className="iv-placeholder-icon">🔗</div>
+                <p className="iv-placeholder-text">Este contenido no tiene URL.</p>
               </div>
             )}
 

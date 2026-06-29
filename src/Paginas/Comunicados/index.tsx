@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../../Componentes/alumnos/Sidebar";
 import SidebarGestor from "../../Componentes/Gestor/SidebarGestor";
+import Footer from "../../Componentes/footer";
 import api from "../../api";
 import "./comunicados.css";
 
@@ -308,6 +309,7 @@ function Comunicados() {
           )}
 
         </main>
+        <Footer />
       </div>
     </>
   );
