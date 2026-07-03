@@ -3,12 +3,29 @@ import Sidebar from '../../Componentes/alumnos/Sidebar';
 import api from '../../api';
 import './nexiaIA.css';
 
+interface HistorialItem {
+  rol: 'usuario' | 'ia';
+  texto: string;
+}
+
 interface Message {
   id: string;
   role: 'user' | 'ai';
   content: string;
   timestamp: Date;
   error?: boolean;
+  retryPayload?: { pregunta: string; historial: HistorialItem[] };
+}
+
+// Cuántos mensajes previos (no todo el historial) se mandan en cada request,
+// para no hacer crecer el payload indefinidamente en conversaciones largas.
+const MAX_HISTORIAL = 16;
+
+function toHistorial(messages: Message[]): HistorialItem[] {
+  return messages
+    .filter((m) => !m.error)
+    .slice(-MAX_HISTORIAL)
+    .map((m) => ({ rol: m.role === 'ai' ? 'ia' : 'usuario', texto: m.content } as HistorialItem));
 }
 
 const SUGGESTED_PROMPTS = [
@@ -30,56 +47,73 @@ const NexiaIA: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
 
-  const sendMessage = async (text: string) => {
-    if (!text.trim() || loading) return;
-
-    const userMsg: Message = {
-      id: `u-${Date.now()}`,
-      role: 'user',
-      content: text.trim(),
-      timestamp: new Date(),
-    };
-
-    setMessages(prev => [...prev, userMsg]);
-    setInput('');
+  const consultarIA = async (pregunta: string, historial: HistorialItem[]) => {
     setLoading(true);
-
-    if (inputRef.current) {
-      inputRef.current.style.height = 'auto';
-    }
-
     try {
-      const res = await api.post('/api/ia/chat', { mensaje: text.trim() });
-      const aiContent =
-        res.data.respuesta ||
-        res.data.response ||
-        res.data.message ||
-        'No pude generar una respuesta. Intentá nuevamente.';
+      const res = await api.post('/api/ia/consulta', { pregunta, historial });
+      const respuesta: string | undefined = res.data?.data?.respuesta;
 
       setMessages(prev => [
         ...prev,
         {
           id: `a-${Date.now()}`,
           role: 'ai',
-          content: aiContent,
+          content: respuesta || 'No pude generar una respuesta. Intentá nuevamente.',
           timestamp: new Date(),
         },
       ]);
-    } catch {
+    } catch (err: any) {
+      const status = err.response?.status;
+      const serverMessage: string | undefined = err.response?.data?.message;
+      let content = 'No se pudo conectar con el tutor IA, intentá de nuevo.';
+      if (status === 400) {
+        content = 'Hubo un problema con el mensaje enviado. Reformulalo e intentá de nuevo.';
+      } else if (status === 429) {
+        content = serverMessage || 'Se alcanzó el límite de consultas por ahora. Esperá unos minutos e intentá de nuevo.';
+      }
+
       setMessages(prev => [
         ...prev,
         {
           id: `err-${Date.now()}`,
           role: 'ai',
-          content:
-            'No se pudo conectar con Nexia IA en este momento. Verificá tu conexión e intentá nuevamente.',
+          content,
           timestamp: new Date(),
           error: true,
+          retryPayload: { pregunta, historial },
         },
       ]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const sendMessage = async (text: string) => {
+    const pregunta = text.trim();
+    if (!pregunta || loading) return;
+
+    const historial = toHistorial(messages);
+
+    const userMsg: Message = {
+      id: `u-${Date.now()}`,
+      role: 'user',
+      content: pregunta,
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMsg]);
+    setInput('');
+
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+    }
+
+    await consultarIA(pregunta, historial);
+  };
+
+  const retryMessage = (payload: { pregunta: string; historial: HistorialItem[] }) => {
+    if (loading) return;
+    consultarIA(payload.pregunta, payload.historial);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -183,6 +217,19 @@ const NexiaIA: React.FC = () => {
                   )}
                   <div className={`nia-bubble${msg.error ? ' nia-bubble--error' : ''}`}>
                     <p className="nia-bubble-text">{msg.content}</p>
+                    {msg.error && msg.retryPayload && (
+                      <button
+                        type="button"
+                        className="nia-retry-btn"
+                        disabled={loading}
+                        onClick={() => retryMessage(msg.retryPayload!)}
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13">
+                          <polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                        </svg>
+                        Reintentar
+                      </button>
+                    )}
                     <span className="nia-bubble-time">{formatTime(msg.timestamp)}</span>
                   </div>
                 </div>

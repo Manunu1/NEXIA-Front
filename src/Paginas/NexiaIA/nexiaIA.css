@@ -336,6 +336,31 @@
   color: #C62828 !important;
 }
 
+.nia-retry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #C62828;
+  background: var(--white);
+  border: 1px solid rgba(198,40,40,.25);
+  border-radius: var(--r2);
+  transition: all 0.15s ease;
+}
+
+.nia-retry-btn:hover:not(:disabled) {
+  background: #FFF1F1;
+  border-color: rgba(198,40,40,.4);
+}
+
+.nia-retry-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .nia-bubble-text {
   font-size: 0.9rem;
   line-height: 1.75;
