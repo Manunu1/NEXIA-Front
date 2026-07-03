@@ -9,7 +9,6 @@ const SECTION_INFO: Record<string, { icon: string; title: string; desc: string }
   '/mensajes':     { icon: '💬', title: 'Mensajes',      desc: 'Comunicación directa con docentes y compañeros de clase.' },
   '/comunicados':  { icon: '📢', title: 'Comunicados',   desc: 'Novedades y anuncios oficiales de tu institución.' },
   '/nexia-ia':     { icon: '⚡', title: 'Nexia IA',      desc: 'Tu asistente pedagógico inteligente disponible 24/7.' },
-  '/boletin':      { icon: '📋', title: 'Mi Boletín',    desc: 'Consultá tus calificaciones y evolución académica.' },
   '/apuntes':      { icon: '📝', title: 'Apuntes',       desc: 'Organizá y guardá tus apuntes de clase en un solo lugar.' },
   '/configuracion':{ icon: '⚙️', title: 'Configuración', desc: 'Personalizá tu perfil y preferencias de la plataforma.' },
 };

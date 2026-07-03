@@ -1,0 +1,8 @@
+.iv-page .tp-empty {
+  flex: 1;
+  padding: 4rem 1rem;
+}
+
+.iv-page .iv-loading {
+  flex: 1;
+}

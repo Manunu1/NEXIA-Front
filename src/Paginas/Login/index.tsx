@@ -66,7 +66,7 @@ function Login() {
     }
   };
 
-  const [instituciones, setInstituciones] = useState([]);
+  const [instituciones, setInstituciones] = useState<{ id: number; nombre: string }[]>([]);
 
   useEffect(() => {
     const fetchInstituciones = async () => {

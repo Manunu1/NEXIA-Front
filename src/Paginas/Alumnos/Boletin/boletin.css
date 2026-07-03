@@ -1,0 +1,120 @@
+.bol-section {
+  margin-bottom: 2.5rem;
+}
+
+.bol-section-title {
+  font-family: var(--fd);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--t1);
+  margin-bottom: 1rem;
+  letter-spacing: -0.2px;
+}
+
+.bol-table-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+  overflow-x: auto;
+}
+
+.bol-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.bol-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--s1);
+  color: var(--t4);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.bol-th-materia {
+  text-align: left !important;
+}
+
+.bol-table tbody td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  color: var(--t2);
+}
+
+.bol-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.bol-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.bol-table tbody tr:hover {
+  background: var(--s1);
+}
+
+.bol-td-materia {
+  text-align: left;
+  font-weight: 700;
+  color: var(--t1);
+}
+
+.bol-td-nota {
+  font-variant-numeric: tabular-nums;
+}
+
+.bol-td-promedio {
+  background: var(--navy-ghost);
+}
+
+.bol-table tbody tr:hover .bol-td-promedio {
+  background: var(--navy-xs);
+}
+
+.bol-sin-nota {
+  color: var(--t4);
+  font-weight: 400;
+}
+
+.bol-nota-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  font-family: var(--fd);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+.bol-nota-pill--alta {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.bol-nota-pill--media {
+  background: var(--orange-xs);
+  color: var(--orange-d);
+}
+
+.bol-nota-pill--baja {
+  background: #FFF1F1;
+  color: #C62828;
+}
+
+.bol-td-comentario {
+  text-align: left;
+  color: var(--t3);
+  max-width: 280px;
+}

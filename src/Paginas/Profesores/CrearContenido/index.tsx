@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import type { typeContenidoForm, typeTipoContenido } from '../../../Types/profesores/types';
+import type { typeContenido, typeContenidoForm, typeTipoContenido } from '../../../Types/profesores/types';
 import './crearContenido.css';
 import api from '../../../api';
 import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import Footer from '../../../Componentes/footer';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 function getEmbedUrl(url: string): string {
   const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s?]+)/);
@@ -33,23 +33,60 @@ function getTypeIcon(nombre: string): string {
   return '📁';
 }
 
+function isVideoUrl(url: string): boolean {
+  const u = url.toLowerCase();
+  return u.includes('youtube.com') || u.includes('youtu.be') || u.includes('vimeo.com');
+}
+
+// Avisa (sin bloquear) cuando el tipo elegido no coincide con la fuente cargada,
+// por ejemplo: tipo "PDF" pero se pegó un link que no es un PDF.
+function getTipoFuenteWarning(tipoNombre: string | undefined, mode: SourceMode, url: string): string | null {
+  if (!tipoNombre) return null;
+  const tipo = tipoNombre.toUpperCase();
+
+  if (mode === 'pdf' && tipo !== 'PDF') {
+    return `Subiste un archivo PDF pero el tipo elegido es "${tipoNombre}". Cambiá el tipo a "PDF" para que se muestre correctamente.`;
+  }
+
+  if (mode === 'url' && url) {
+    const esUrlPdf = url.toLowerCase().includes('.pdf');
+
+    if (tipo === 'PDF' && !esUrlPdf) {
+      return 'Elegiste el tipo "PDF" pero el enlace no parece apuntar a un archivo PDF.';
+    }
+    if (tipo === 'VIDEO' && !isVideoUrl(url)) {
+      return 'Elegiste el tipo "VIDEO" pero el enlace no parece ser de YouTube ni de otra plataforma de video.';
+    }
+  }
+
+  return null;
+}
+
 type SourceMode   = 'url' | 'pdf';
 type UploadState  = 'idle' | 'uploading' | 'done' | 'error';
 
 const CrearContenido: React.FC = () => {
-  const { profeCursoMateriaId } = useParams<{ profeCursoMateriaId: string }>();
+  const { profeCursoMateriaId, contenidoId } = useParams<{ profeCursoMateriaId?: string; contenidoId?: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const isEditMode = !!contenidoId;
+  const editState = location.state as { contenido?: typeContenido; profeCursoMateriaId?: string } | null;
+  const contenidoOriginal = editState?.contenido ?? null;
+  const materiaId = profeCursoMateriaId ?? editState?.profeCursoMateriaId;
+
   const [formData, setFormData] = useState<typeContenidoForm>({
-    profe_curso_materia_id: Number(profeCursoMateriaId),
-    tipo_contenido_id: 0,
-    titulo: '',
-    descripcion: '',
-    archivo_url: '',
+    profe_curso_materia_id: Number(materiaId),
+    tipo_contenido_id: contenidoOriginal?.tipo_contenido_id ? Number(contenidoOriginal.tipo_contenido_id) : 0,
+    titulo: contenidoOriginal?.titulo ?? '',
+    descripcion: contenidoOriginal?.descripcion ?? '',
+    archivo_url: contenidoOriginal?.url ?? '',
   });
   const [tipos, setTipos] = useState<typeTipoContenido[]>([]);
-  const [urlPreview, setUrlPreview] = useState('');
+  const [urlPreview, setUrlPreview] = useState(
+    contenidoOriginal?.url && isMediaEmbed(contenidoOriginal.url) ? getEmbedUrl(contenidoOriginal.url) : ''
+  );
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const [sourceMode, setSourceMode]   = useState<SourceMode>('url');
@@ -62,12 +99,20 @@ const CrearContenido: React.FC = () => {
     const traerTipos = async () => {
       try {
         const res = await api.get('http://localhost:3000/api/tipos-contenido');
-        setTipos(res.data.data);
+        const lista: typeTipoContenido[] = res.data.data;
+        setTipos(lista);
+        // Si el objeto original no traía tipo_contenido_id por algún motivo,
+        // como red de seguridad lo resolvemos por nombre.
+        if (!contenidoOriginal?.tipo_contenido_id && contenidoOriginal?.tipo_contenido) {
+          const match = lista.find(t => t.nombre === contenidoOriginal.tipo_contenido);
+          if (match) setFormData(prev => ({ ...prev, tipo_contenido_id: match.id }));
+        }
       } catch (err) {
         console.error('Error al obtener tipos de contenido:', err);
       }
     };
     traerTipos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -128,22 +173,47 @@ const CrearContenido: React.FC = () => {
   };
 
   const selectedTipo = tipos.find(t => t.id === formData.tipo_contenido_id);
+  const tipoFuenteWarning = getTipoFuenteWarning(selectedTipo?.nombre, sourceMode, formData.archivo_url);
 
   const Submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.archivo_url) return;
     setSubmitStatus('loading');
     try {
-      await api.post('http://localhost:3000/api/contenidos', {
-        ...formData,
-        profe_curso_materia_id: Number(profeCursoMateriaId),
-      });
+      if (isEditMode) {
+        await api.put(`http://localhost:3000/api/contenidos/${contenidoId}`, {
+          titulo: formData.titulo,
+          descripcion: formData.descripcion,
+          archivo_url: formData.archivo_url,
+          tipo_contenido_id: formData.tipo_contenido_id,
+        });
+      } else {
+        await api.post('http://localhost:3000/api/contenidos', {
+          ...formData,
+          profe_curso_materia_id: Number(materiaId),
+        });
+      }
       setSubmitStatus('success');
     } catch (err) {
       console.error('Error al guardar contenido:', err);
       setSubmitStatus('error');
     }
   };
+
+  if (isEditMode && !contenidoOriginal) {
+    return (
+      <>
+        <Sidebar />
+        <div className="main-wrapper">
+          <main className="main-content">
+            <div className="alert-error">
+              No se encontró la información del contenido a editar. Volvé a la lista de contenidos e intentá de nuevo desde ahí.
+            </div>
+          </main>
+        </div>
+      </>
+    );
+  }
 
   if (submitStatus === 'success') {
     return (
@@ -153,21 +223,23 @@ const CrearContenido: React.FC = () => {
           <main className="main-content">
             <div className="cc-success-screen">
               <div className="cc-success-icon">🎉</div>
-              <h2>¡Contenido publicado!</h2>
-              <p>Tus alumnos ya pueden ver el material en la materia.</p>
+              <h2>{isEditMode ? '¡Contenido actualizado!' : '¡Contenido publicado!'}</h2>
+              <p>{isEditMode ? 'Los cambios ya están disponibles para tus alumnos.' : 'Tus alumnos ya pueden ver el material en la materia.'}</p>
               <div className="cc-success-actions">
-                <button className="btn-simple" onClick={() => navigate(-1)}>
+                <button className="btn-simple" onClick={() => navigate(`/contenidos/${materiaId}`)}>
                   Ver contenidos →
                 </button>
-                <button className="btn-secondary" onClick={() => {
-                  setSubmitStatus('idle');
-                  setFormData({ profe_curso_materia_id: Number(profeCursoMateriaId), tipo_contenido_id: 0, titulo: '', descripcion: '', archivo_url: '' });
-                  setUrlPreview('');
-                  setUploadState('idle');
-                  setUploadedFileName('');
-                }}>
-                  Publicar otro
-                </button>
+                {!isEditMode && (
+                  <button className="btn-secondary" onClick={() => {
+                    setSubmitStatus('idle');
+                    setFormData({ profe_curso_materia_id: Number(materiaId), tipo_contenido_id: 0, titulo: '', descripcion: '', archivo_url: '' });
+                    setUrlPreview('');
+                    setUploadState('idle');
+                    setUploadedFileName('');
+                  }}>
+                    Publicar otro
+                  </button>
+                )}
               </div>
             </div>
           </main>
@@ -184,11 +256,13 @@ const CrearContenido: React.FC = () => {
         <main className="main-content">
           <div className="page-header">
             <div>
-              <button className="btn-back-page" onClick={() => navigate(-1)}>
+              <button className="btn-back-page" onClick={() => navigate(`/contenidos/${materiaId}`)}>
                 ← Volver a contenidos
               </button>
-              <h1 className="page-title">📤 Publicar contenido</h1>
-              <p className="page-subtitle">Compartí material educativo con tus alumnos</p>
+              <h1 className="page-title">{isEditMode ? '✎ Editar contenido' : '📤 Publicar contenido'}</h1>
+              <p className="page-subtitle">
+                {isEditMode ? 'Actualizá el material ya publicado' : 'Compartí material educativo con tus alumnos'}
+              </p>
             </div>
           </div>
 
@@ -364,6 +438,16 @@ const CrearContenido: React.FC = () => {
                       )}
                     </>
                   )}
+
+                  {tipoFuenteWarning && (
+                    <div className="cc-mismatch-warning">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                        <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
+                      </svg>
+                      {tipoFuenteWarning}
+                    </div>
+                  )}
                 </div>
 
                 <button
@@ -371,7 +455,9 @@ const CrearContenido: React.FC = () => {
                   className="cc-submit-btn"
                   disabled={submitStatus === 'loading' || !formData.archivo_url || (sourceMode === 'pdf' && uploadState !== 'done')}
                 >
-                  {submitStatus === 'loading' ? 'Publicando...' : '📤 Publicar contenido'}
+                  {submitStatus === 'loading'
+                    ? (isEditMode ? 'Guardando...' : 'Publicando...')
+                    : (isEditMode ? '✓ Guardar cambios' : '📤 Publicar contenido')}
                 </button>
               </form>
             </div>

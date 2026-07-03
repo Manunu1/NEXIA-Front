@@ -1,0 +1,15 @@
+.ctp-publish-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: auto;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--t2);
+}
+
+.ctp-publish-check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--navy);
+}

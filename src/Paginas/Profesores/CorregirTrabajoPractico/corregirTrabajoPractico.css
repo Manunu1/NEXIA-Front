@@ -1,0 +1,27 @@
+.ctp-editar-link {
+  display: inline-flex;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 0.6rem 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--t3);
+  white-space: nowrap;
+  box-shadow: var(--sh-sm);
+  transition: all 0.15s ease;
+}
+
+.ctp-editar-link:hover {
+  border-color: var(--navy-l);
+  color: var(--navy);
+}
+
+.ctp-descripcion {
+  font-size: 0.88rem;
+  color: var(--t3);
+  line-height: 1.65;
+  max-width: 720px;
+  margin-bottom: 1.5rem;
+}

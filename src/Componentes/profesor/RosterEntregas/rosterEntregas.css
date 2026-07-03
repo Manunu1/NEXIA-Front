@@ -1,0 +1,178 @@
+.re-table {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+  overflow: hidden;
+}
+
+.re-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.6fr 1.1fr 1fr 90px 1.6fr 90px;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s ease;
+}
+
+.re-row:last-child {
+  border-bottom: none;
+}
+
+.re-row:not(.re-row--head):hover {
+  background: var(--s1);
+}
+
+.re-row--head {
+  background: var(--s1);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--t4);
+}
+
+.re-col {
+  min-width: 0;
+}
+
+.re-alumno-nombre {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--t1);
+}
+
+.re-alumno-fecha {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--t4);
+  margin-top: 2px;
+}
+
+.re-badge {
+  display: inline-flex;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.re-badge--sin-entrega {
+  background: var(--s2);
+  color: var(--t4);
+  border: 1px solid var(--border);
+}
+
+.re-badge--pendiente {
+  background: var(--orange-xs);
+  color: var(--orange-d);
+  border: 1px solid rgba(255,152,0,.2);
+}
+
+.re-badge--corregido {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid rgba(46,125,50,.2);
+}
+
+.re-archivo-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.re-archivo-link:hover {
+  text-decoration: underline;
+}
+
+.re-archivo-none {
+  color: var(--t4);
+  font-size: 0.8rem;
+}
+
+.re-nota-input {
+  width: 100%;
+  font-family: var(--fb);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0.45rem 0.4rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r1);
+  color: var(--t1);
+}
+
+.re-nota-input:focus {
+  outline: none;
+  border-color: var(--navy-l);
+}
+
+.re-nota-input:disabled {
+  background: var(--s1);
+  color: var(--t4);
+}
+
+.re-comentario-input {
+  width: 100%;
+  font-family: var(--fb);
+  font-size: 0.8rem;
+  padding: 0.45rem 0.6rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r1);
+  color: var(--t1);
+}
+
+.re-comentario-input:focus {
+  outline: none;
+  border-color: var(--navy-l);
+}
+
+.re-comentario-input:disabled {
+  background: var(--s1);
+  color: var(--t4);
+}
+
+.re-guardar-btn {
+  width: 100%;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--navy);
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  border-radius: var(--r1);
+  padding: 0.45rem 0.5rem;
+  transition: all 0.15s ease;
+}
+
+.re-guardar-btn:hover:not(:disabled) {
+  background: var(--navy-xs);
+}
+
+.re-guardar-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.re-row-error {
+  grid-column: 1 / -1;
+  font-size: 0.72rem;
+  color: #C62828;
+  margin-top: -0.25rem;
+}
+
+@media (max-width: 1024px) {
+  .re-row {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+  .re-row--head {
+    display: none;
+  }
+  .re-col--accion {
+    margin-top: 0.25rem;
+  }
+}

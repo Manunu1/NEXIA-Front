@@ -1,0 +1,165 @@
+.tpf-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 640px;
+}
+
+.tpf-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tpf-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--t2);
+}
+
+.tpf-input {
+  font-family: var(--fb);
+  font-size: 0.9rem;
+  color: var(--t1);
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  padding: 0.7rem 0.9rem;
+  transition: border-color 0.15s ease;
+}
+
+.tpf-input:focus {
+  outline: none;
+  border-color: var(--navy-l);
+}
+
+.tpf-textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.6;
+}
+
+.tpf-hint {
+  font-size: 0.76rem;
+  color: var(--t4);
+}
+
+/* ── Drop zone ── */
+.tpf-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--r3);
+  background: var(--s1);
+  color: var(--t4);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tpf-drop-zone:hover,
+.tpf-drop-zone--over {
+  border-color: var(--navy-l);
+  background: var(--navy-ghost);
+  color: var(--navy);
+}
+
+.tpf-drop-zone--error {
+  border-color: rgba(198,40,40,.35);
+  background: #FFF1F1;
+}
+
+.tpf-drop-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--t2);
+}
+
+.tpf-drop-text--error {
+  color: #C62828;
+}
+
+.tpf-drop-sub {
+  font-size: 0.75rem;
+  color: var(--t4);
+}
+
+.tpf-upload-status {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--r3);
+  border: 1.5px solid var(--border);
+}
+
+.tpf-upload-status--loading {
+  background: var(--s1);
+  color: var(--t3);
+}
+
+.tpf-upload-status--done {
+  background: var(--navy-ghost);
+  border-color: var(--navy-xs);
+  color: var(--navy);
+}
+
+.tpf-upload-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--t1);
+}
+
+.tpf-upload-sub {
+  font-size: 0.75rem;
+  color: var(--t4);
+}
+
+.tpf-upload-remove {
+  margin-left: auto;
+  color: var(--t4);
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.tpf-upload-remove:hover {
+  color: #C62828;
+}
+
+/* ── Actions ── */
+.tpf-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.tpf-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--orange);
+  color: var(--navy-d);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: var(--r2);
+  box-shadow: 0 4px 16px rgba(255,152,0,.3);
+  transition: all 0.2s var(--ease);
+}
+
+.tpf-submit-btn:hover:not(:disabled) {
+  background: var(--orange-l);
+  transform: translateY(-1px);
+}
+
+.tpf-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

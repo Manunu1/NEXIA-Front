@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Read(//c/Users/49091323/NEXIA-back-/**)",
+      "Bash(node -e ' *)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //F //PID 6040)",
+      "Bash(node ./src/app.js)",
+      "Read(//tmp/**)"
     ]
   }
 }

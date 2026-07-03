@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import ListaContenido from '../../../Componentes/profesor/listaContenido';
+import MateriaTabsAlumno from '../../../Componentes/alumnos/MateriaTabsAlumno';
 import { useParams, useNavigate } from 'react-router-dom';
 import type { typeContenido } from '../../../Types/profesores/types';
 import api from '../../../api';
@@ -86,6 +87,9 @@ const ContenidosAlumnos: React.FC = () => {
               <span className="iv-count">{contenidos.length} recursos</span>
             )}
           </div>
+          {profeCursoMateriaId && (
+            <MateriaTabsAlumno profeCursoMateriaId={profeCursoMateriaId} active="contenidos" />
+          )}
           {selected?.url && (
             <a href={selected.url} target="_blank" rel="noopener noreferrer" className="iv-open-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13">

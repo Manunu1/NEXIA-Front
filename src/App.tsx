@@ -18,6 +18,14 @@ import Proximamente from "./Paginas/Proximamente";
 import LandingPage from "./Paginas/LandingPage";
 import Comunicados from "./Paginas/Comunicados";
 import NexiaIA from "./Paginas/NexiaIA";
+import TrabajosPracticos from "./Paginas/Profesores/TrabajosPracticos";
+import CrearTrabajoPractico from "./Paginas/Profesores/CrearTrabajoPractico";
+import EditarTrabajoPractico from "./Paginas/Profesores/EditarTrabajoPractico";
+import CorregirTrabajoPractico from "./Paginas/Profesores/CorregirTrabajoPractico";
+import Notas from "./Paginas/Profesores/Notas";
+import TrabajosPracticosAlumno from "./Paginas/Alumnos/TrabajosPracticos";
+import TrabajoPracticoDetalle from "./Paginas/Alumnos/TrabajoPracticoDetalle";
+import Boletin from "./Paginas/Alumnos/Boletin";
 
 function App() {
   return (
@@ -58,6 +66,54 @@ function App() {
           }
         />
         <Route
+          path="/editar-contenido/:contenidoId"
+          element={
+            <ProtectedRoute>
+              <CrearContenido />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trabajos-practicos/:profeCursoMateriaId"
+          element={
+            <ProtectedRoute>
+              <TrabajosPracticos />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/crear-trabajo-practico/:profeCursoMateriaId"
+          element={
+            <ProtectedRoute>
+              <CrearTrabajoPractico />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trabajo-practico/:id/editar"
+          element={
+            <ProtectedRoute>
+              <EditarTrabajoPractico />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trabajo-practico/:id/entregas"
+          element={
+            <ProtectedRoute>
+              <CorregirTrabajoPractico />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notas/:profeCursoMateriaId"
+          element={
+            <ProtectedRoute>
+              <Notas />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/alumnos"
           element={
             <ProtectedRoute>
@@ -70,6 +126,30 @@ function App() {
           element={
             <ProtectedRoute>
               <ContenidosAlumnos />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/materia/:profeCursoMateriaId/trabajos-practicos"
+          element={
+            <ProtectedRoute>
+              <TrabajosPracticosAlumno />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trabajo-practico/:id"
+          element={
+            <ProtectedRoute>
+              <TrabajoPracticoDetalle />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/boletin"
+          element={
+            <ProtectedRoute>
+              <Boletin />
             </ProtectedRoute>
           }
         />
@@ -89,7 +169,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {['/calendario','/mensajes','/boletin','/apuntes','/configuracion'].map(p => (
+        {['/calendario','/mensajes','/apuntes','/configuracion'].map(p => (
           <Route
             key={p}
             path={p}

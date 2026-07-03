@@ -1,0 +1,101 @@
+.tc-table {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+  overflow: hidden;
+}
+
+.tc-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.6fr 100px 2fr 100px;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s ease;
+}
+
+.tc-row:last-child {
+  border-bottom: none;
+}
+
+.tc-row:not(.tc-row--head):hover {
+  background: var(--s1);
+}
+
+.tc-row--head {
+  background: var(--s1);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--t4);
+}
+
+.tc-col--alumno {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--t1);
+}
+
+.tc-nota-input,
+.tc-obs-input {
+  width: 100%;
+  font-family: var(--fb);
+  font-size: 0.85rem;
+  padding: 0.45rem 0.6rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r1);
+  color: var(--t1);
+}
+
+.tc-nota-input {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.tc-nota-input:focus,
+.tc-obs-input:focus {
+  outline: none;
+  border-color: var(--navy-l);
+}
+
+.tc-guardar-btn {
+  width: 100%;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--navy);
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  border-radius: var(--r1);
+  padding: 0.45rem 0.5rem;
+  transition: all 0.15s ease;
+}
+
+.tc-guardar-btn:hover:not(:disabled) {
+  background: var(--navy-xs);
+}
+
+.tc-guardar-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tc-row-error {
+  grid-column: 1 / -1;
+  font-size: 0.72rem;
+  color: #C62828;
+  margin-top: -0.25rem;
+}
+
+@media (max-width: 768px) {
+  .tc-row {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+  .tc-row--head {
+    display: none;
+  }
+}

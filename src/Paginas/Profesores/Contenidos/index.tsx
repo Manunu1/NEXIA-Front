@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../Componentes/alumnos/Sidebar';
 import ListaContenido from '../../../Componentes/profesor/listaContenido';
+import MateriaTabs from '../../../Componentes/profesor/MateriaTabs';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import type { typeContenido } from '../../../Types/profesores/types';
 import api from '../../../api';
@@ -80,7 +81,23 @@ const Contenidos: React.FC = () => {
               <span className="iv-count">{contenidos.length} recursos</span>
             )}
           </div>
+          {profeCursoMateriaId && (
+            <MateriaTabs profeCursoMateriaId={profeCursoMateriaId} active="contenidos" />
+          )}
           <div className="iv-header-actions">
+            {selected && (
+              <Link
+                to={`/editar-contenido/${selected.contenido_id}`}
+                state={{ contenido: selected, profeCursoMateriaId }}
+                className="iv-open-btn"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13">
+                  <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+                Editar
+              </Link>
+            )}
             {selected?.url && (
               <a href={selected.url} target="_blank" rel="noopener noreferrer" className="iv-open-btn">
                 Abrir externo ↗

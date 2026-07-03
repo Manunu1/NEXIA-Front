@@ -1,0 +1,28 @@
+.etp-estado-btn {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 0.6rem 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--t3);
+  white-space: nowrap;
+  box-shadow: var(--sh-sm);
+  transition: all 0.15s ease;
+}
+
+.etp-estado-btn:hover:not(:disabled) {
+  border-color: var(--navy-l);
+  color: var(--navy);
+}
+
+.etp-estado-btn--activo {
+  background: var(--navy-ghost);
+  color: var(--navy);
+  border-color: var(--navy-xs);
+}
+
+.etp-estado-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
