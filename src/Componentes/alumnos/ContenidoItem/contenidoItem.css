@@ -14,9 +14,15 @@
 }
 
 .contenido-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--sh-nv);
   border-color: rgba(26,35,126,.15);
+}
+
+.contenido-card:hover .contenido-icon {
+  transform: rotate(-6deg) scale(1.08);
+  background: var(--navy);
+  color: var(--white);
 }
 
 .contenido-icon {
@@ -31,6 +37,7 @@
   margin-right: 1rem;
   font-size: 1.1rem;
   flex-shrink: 0;
+  transition: all var(--dur-fast) var(--ease-spring);
 }
 
 .contenido-text {

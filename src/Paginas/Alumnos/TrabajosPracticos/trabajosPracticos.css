@@ -13,18 +13,20 @@
   border: 1px solid var(--border);
   border-radius: 99px;
   padding: 0.45rem 1rem;
-  transition: all 0.15s ease;
+  transition: all var(--dur-fast) var(--ease-spring);
 }
 
 .tpa-filtro-btn:hover {
   border-color: var(--navy-l);
   color: var(--navy);
+  transform: translateY(-2px);
 }
 
 .tpa-filtro-btn--active {
   background: var(--navy);
   border-color: var(--navy);
   color: var(--white);
+  box-shadow: var(--sh-glow-navy);
 }
 
 .tpa-grid {
@@ -32,3 +34,13 @@
   grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
   gap: 1.25rem;
 }
+
+.tpa-grid > * {
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
+}
+.tpa-grid > *:nth-child(1) { animation-delay: 0.02s; }
+.tpa-grid > *:nth-child(2) { animation-delay: 0.06s; }
+.tpa-grid > *:nth-child(3) { animation-delay: 0.10s; }
+.tpa-grid > *:nth-child(4) { animation-delay: 0.14s; }
+.tpa-grid > *:nth-child(5) { animation-delay: 0.18s; }
+.tpa-grid > *:nth-child(n+6) { animation-delay: 0.22s; }

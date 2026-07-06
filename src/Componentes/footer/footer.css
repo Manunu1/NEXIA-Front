@@ -34,7 +34,10 @@
   justify-content: center;
   color: var(--orange);
   flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-spring);
 }
+
+.footer-brand:hover .footer-brand-icon { transform: rotate(-8deg) scale(1.08); }
 
 .footer-brand-icon svg {
   width: 15px;
@@ -154,9 +157,10 @@
 }
 
 .social-link:hover {
-  background: rgba(255,255,255,.1);
-  color: var(--white);
-  transform: translateY(-2px);
+  background: var(--orange);
+  color: var(--navy-d);
+  transform: translateY(-3px) rotate(-6deg);
+  box-shadow: var(--sh-glow-orange);
 }
 
 .social-link svg {

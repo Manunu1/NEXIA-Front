@@ -33,6 +33,7 @@
 .lc-item:hover:not(.lc-item--selected) {
   background: var(--s1);
   border-color: var(--border);
+  transform: translateX(2px);
 }
 
 .lc-item--selected {

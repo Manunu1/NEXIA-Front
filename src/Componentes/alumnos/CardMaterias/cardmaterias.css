@@ -29,7 +29,7 @@
 }
 
 .card-materia:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px) scale(1.012);
   box-shadow: var(--sh-nv);
   border-color: rgba(26,35,126,.18);
 }
@@ -37,6 +37,12 @@
 .card-materia:hover::before {
   transform: scaleX(1);
 }
+
+.card-materia:hover .card-title { color: var(--navy); }
+.card-materia:hover .profesor-avatar-wrap { transform: scale(1.08); }
+
+.card-title { transition: color var(--dur-fast) var(--ease); }
+.profesor-avatar-wrap { transition: transform var(--dur-fast) var(--ease-spring); }
 
 .card-header {
   display: flex;

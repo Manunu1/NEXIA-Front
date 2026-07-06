@@ -5,6 +5,7 @@
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--border);
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
 }
 
 .breadcrumbs {
@@ -43,7 +44,7 @@
 .badge-curso {
   display: inline-flex;
   align-items: center;
-  background: var(--navy);
+  background: linear-gradient(120deg, var(--navy), var(--navy-l));
   color: var(--white);
   padding: 4px 12px;
   border-radius: 99px;

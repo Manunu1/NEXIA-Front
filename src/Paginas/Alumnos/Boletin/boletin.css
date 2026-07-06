@@ -1,6 +1,9 @@
 .bol-section {
   margin-bottom: 2.5rem;
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
 }
+
+.bol-section:nth-of-type(2) { animation-delay: 0.08s; }
 
 .bol-section-title {
   font-family: var(--fd);
@@ -9,6 +12,18 @@
   color: var(--t1);
   margin-bottom: 1rem;
   letter-spacing: -0.2px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bol-section-title::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: linear-gradient(135deg, var(--orange), var(--navy-l));
+  flex-shrink: 0;
 }
 
 .bol-table-wrap {
@@ -17,7 +32,10 @@
   border-radius: var(--r3);
   box-shadow: var(--sh-sm);
   overflow-x: auto;
+  transition: box-shadow var(--dur-md) var(--ease);
 }
+
+.bol-table-wrap:hover { box-shadow: var(--sh-md); }
 
 .bol-table {
   width: 100%;
@@ -92,11 +110,14 @@
   justify-content: center;
   min-width: 32px;
   font-family: var(--fd);
-  font-weight: 800;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   padding: 3px 10px;
   border-radius: 99px;
+  transition: transform var(--dur-fast) var(--ease-spring);
 }
+
+.bol-table tbody tr:hover .bol-nota-pill { transform: scale(1.08); }
 
 .bol-nota-pill--alta {
   background: #E8F5E9;

@@ -122,6 +122,7 @@
 .material-item:hover {
   background: var(--s1);
   border-color: var(--border);
+  transform: translateX(2px);
 }
 
 .material-item.active {
@@ -168,6 +169,7 @@
   flex: 1;
   box-shadow: var(--sh-md);
   overflow: hidden;
+  animation: scaleIn var(--dur-slow) var(--ease) both;
 }
 
 .viewer-header {

@@ -166,6 +166,7 @@
   color: var(--white);
   margin-bottom: 1.75rem;
   box-shadow: var(--sh-nv);
+  animation: floatY 4s ease-in-out infinite;
 }
 
 .nia-welcome-icon svg {
@@ -199,6 +200,12 @@
   max-width: 580px;
   margin-bottom: 2rem;
 }
+
+.nia-prompts-grid > * { animation: fadeInUp var(--dur-slow) var(--ease) both; }
+.nia-prompts-grid > *:nth-child(1) { animation-delay: 0.05s; }
+.nia-prompts-grid > *:nth-child(2) { animation-delay: 0.10s; }
+.nia-prompts-grid > *:nth-child(3) { animation-delay: 0.15s; }
+.nia-prompts-grid > *:nth-child(4) { animation-delay: 0.20s; }
 
 .nia-prompt-card {
   display: flex;
@@ -486,8 +493,8 @@
 
 .nia-send-btn:not(:disabled):hover {
   background: var(--navy-m);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(26,35,126,.28);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: var(--sh-glow-navy);
 }
 
 .nia-send-btn:disabled {

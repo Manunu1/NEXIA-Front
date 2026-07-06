@@ -26,7 +26,7 @@
 .ttp-card:hover {
   box-shadow: var(--sh-nv);
   border-color: rgba(26,35,126,.18);
-  transform: translateY(-4px);
+  transform: translateY(-6px);
 }
 
 .ttp-card:hover::before {
@@ -64,6 +64,7 @@
   background: var(--orange-xs);
   color: var(--orange-d);
   border: 1px solid rgba(255,152,0,.2);
+  animation: pulseGlow 2.6s ease-in-out infinite;
 }
 
 .ttp-badge--corregido {

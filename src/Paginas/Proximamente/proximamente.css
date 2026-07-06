@@ -10,6 +10,7 @@
   padding: 5rem 2rem;
   max-width: 520px;
   margin: 0 auto;
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
 }
 
 .prox-badge {
@@ -31,6 +32,7 @@
   font-size: 3.5rem;
   line-height: 1;
   filter: drop-shadow(0 4px 12px rgba(0,0,0,.08));
+  animation: floatY 3.5s ease-in-out infinite;
 }
 
 .prox-title {

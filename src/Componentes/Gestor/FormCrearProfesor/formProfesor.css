@@ -9,7 +9,11 @@
   width: 100%;
   max-width: 520px;
   overflow: hidden;
+  animation: scaleIn var(--dur-slow) var(--ease) both;
+  transition: box-shadow var(--dur-md) var(--ease);
 }
+
+.gestor-form-card:hover { box-shadow: var(--sh-lg); }
 
 .gestor-form-header {
   display: flex;
@@ -98,8 +102,9 @@
 
 .form-field input:focus {
   border-color: var(--navy-l);
-  box-shadow: 0 0 0 3px rgba(26,35,126,.08);
+  box-shadow: 0 0 0 3px rgba(26,35,126,.1);
   background: var(--white);
+  transform: translateY(-1px);
 }
 
 /* ── React-Select overrides ───────────────── */
@@ -185,19 +190,20 @@
   font-weight: 700;
   font-family: var(--fd);
   color: var(--navy-d);
-  background: var(--orange);
+  background: linear-gradient(120deg, var(--orange) 0%, var(--orange-l) 50%, var(--orange) 100%);
+  background-size: 220% 100%;
   border: none;
   border-radius: var(--r2);
   cursor: pointer;
-  transition: all 0.2s var(--ease);
+  transition: all 0.2s var(--ease), background-position 0.6s ease;
   box-shadow: 0 4px 16px rgba(255,152,0,.28);
   letter-spacing: -0.2px;
 }
 
 .form-submit:hover:not(:disabled) {
-  background: var(--orange-l);
+  background-position: 100% 0;
   box-shadow: 0 8px 28px rgba(255,152,0,.42);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .form-submit:active:not(:disabled) { transform: scale(0.99); }
@@ -275,6 +281,7 @@
   align-items: center;
   justify-content: center;
   border: 1px solid var(--navy-xs);
+  animation: floatY 4s ease-in-out infinite;
 }
 
 .gpi-icon-wrap svg { width: 24px; height: 24px; }
@@ -308,7 +315,12 @@
   display: flex;
   align-items: center;
   gap: 0.625rem;
+  animation: fadeInUp var(--dur-md) var(--ease) both;
 }
+.gpi-step:nth-child(1) { animation-delay: 0.05s; }
+.gpi-step:nth-child(2) { animation-delay: 0.1s; }
+.gpi-step:nth-child(3) { animation-delay: 0.15s; }
+.gpi-step:nth-child(4) { animation-delay: 0.2s; }
 
 .gpi-step-num {
   width: 20px;

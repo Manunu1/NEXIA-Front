@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 /* ─────────────────────────────────────────────
    DESIGN TOKENS — fuente única de verdad
@@ -35,9 +35,11 @@
   --sh-md: 0 4px 20px rgba(7,17,44,.08);
   --sh-lg: 0 16px 48px rgba(7,17,44,.10);
   --sh-nv: 0 16px 48px rgba(26,35,126,.14);
+  --sh-glow-orange: 0 8px 28px rgba(255,152,0,.32);
+  --sh-glow-navy:   0 8px 28px rgba(26,35,126,.28);
 
-  /* Typography */
-  --fd: 'Plus Jakarta Sans', sans-serif;
+  /* Typography — Space Grotesk (display, geométrica/distintiva) + Inter (lectura) */
+  --fd: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
   --fb: 'Inter', sans-serif;
 
   /* Border radius */
@@ -49,6 +51,10 @@
 
   /* Animation */
   --ease: cubic-bezier(.16,1,.3,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+  --dur-fast: 0.18s;
+  --dur-md: 0.32s;
+  --dur-slow: 0.6s;
 
   /* Layout */
   --sidebar-width: 260px;
@@ -87,6 +93,90 @@ a   { text-decoration: none; color: inherit; }
 img, svg { display: block; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-::-webkit-scrollbar       { width: 5px; }
-::-webkit-scrollbar-track { background: var(--s1); }
-::-webkit-scrollbar-thumb { background: var(--navy-l); border-radius: 99px; }
+::selection { background: var(--orange); color: var(--navy-d); }
+
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar       { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--navy-l), var(--navy-m));
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+
+/* ─────────────────────────────────────────────
+   MOTION SYSTEM — keyframes reutilizables
+───────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+@keyframes auroraDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(3%, -4%) scale(1.08); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,152,0,.35); }
+  50%      { box-shadow: 0 0 0 8px rgba(255,152,0,0); }
+}
+
+@keyframes pulseGlowNavy {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(26,35,126,.28); }
+  50%      { box-shadow: 0 0 0 7px rgba(26,35,126,0); }
+}
+
+@keyframes spinDual {
+  to { transform: rotate(360deg); }
+}
+
+/* Entrada escalonada: aplicar .stagger-in a un contenedor cuyos hijos directos
+   deban animarse en cascada (cards, filas de tabla, items de lista) */
+.stagger-in > * {
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
+}
+.stagger-in > *:nth-child(1)  { animation-delay: 0.02s; }
+.stagger-in > *:nth-child(2)  { animation-delay: 0.06s; }
+.stagger-in > *:nth-child(3)  { animation-delay: 0.10s; }
+.stagger-in > *:nth-child(4)  { animation-delay: 0.14s; }
+.stagger-in > *:nth-child(5)  { animation-delay: 0.18s; }
+.stagger-in > *:nth-child(6)  { animation-delay: 0.22s; }
+.stagger-in > *:nth-child(7)  { animation-delay: 0.26s; }
+.stagger-in > *:nth-child(8)  { animation-delay: 0.30s; }
+.stagger-in > *:nth-child(n+9) { animation-delay: 0.34s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

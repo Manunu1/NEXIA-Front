@@ -21,8 +21,14 @@
   border-bottom: none;
 }
 
+.tc-row:not(.tc-row--head) {
+  border-left: 2px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
 .tc-row:not(.tc-row--head):hover {
   background: var(--s1);
+  border-left-color: var(--orange);
 }
 
 .tc-row--head {
@@ -75,7 +81,10 @@
 }
 
 .tc-guardar-btn:hover:not(:disabled) {
-  background: var(--navy-xs);
+  background: var(--navy);
+  color: var(--white);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-glow-navy);
 }
 
 .tc-guardar-btn:disabled {

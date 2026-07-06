@@ -24,6 +24,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.375rem;
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
 }
 
 .cc-form-section {
@@ -138,7 +139,7 @@
 .cc-submit-btn:hover:not(:disabled) {
   background: var(--orange-l);
   box-shadow: 0 8px 28px rgba(255,152,0,.42);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .cc-submit-btn:disabled {
@@ -376,6 +377,7 @@
   background: var(--white);
   color: var(--navy);
   box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  animation: scaleIn 0.22s var(--ease-spring);
 }
 
 /* ── Drop zone ── */
@@ -502,7 +504,7 @@
 .btn-simple:hover {
   background: var(--orange-l);
   box-shadow: 0 8px 24px rgba(255,152,0,.38);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
@@ -524,4 +526,5 @@
 .btn-secondary:hover {
   border-color: var(--navy-xs);
   background: var(--navy-ghost);
+  transform: translateY(-2px);
 }

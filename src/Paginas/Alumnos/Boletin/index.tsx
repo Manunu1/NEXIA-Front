@@ -57,7 +57,7 @@ const Boletin: React.FC = () => {
 
   const { materias, bimestres, notaPorCelda } = useMemo(() => {
     const notasFinales = boletin?.notas_finales || [];
-    const materiasSet = new Set<string>();
+    const materiasSet = new Set<string>((boletin?.materias || []).map((m) => m.materia_nombre));
     const bimestresMap = new Map<number, { bimestre_id: number; nombre: string; orden: number }>();
     const celda = new Map<string, number | null>();
 
@@ -104,8 +104,8 @@ const Boletin: React.FC = () => {
                 {materias.length === 0 ? (
                   <div className="no-materias-fallback">
                     <div className="fallback-icon">📋</div>
-                    <h3>Sin notas cargadas</h3>
-                    <p>Todavía no hay notas finales cargadas para ningún bimestre.</p>
+                    <h3>Sin materias asignadas</h3>
+                    <p>No te encontrás inscrito en ninguna materia para este ciclo lectivo.</p>
                   </div>
                 ) : (
                   <div className="bol-table-wrap">

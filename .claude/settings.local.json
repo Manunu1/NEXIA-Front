@@ -7,7 +7,12 @@
       "Bash(netstat -ano)",
       "Bash(taskkill //F //PID 6040)",
       "Bash(node ./src/app.js)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(grep -n \"materias\" -A 25 /c/Users/48803376/Downloads/NEXIA-back-/src/repositories/alumnoRepository.js | head -60)",
+      "Read(//c/Users/48803376/Downloads/NEXIA-back-/src/repositories/**)",
+      "Bash(grep -rn \"materias\" /c/Users/48803376/Downloads/NEXIA-back-/src/controllers/alumnoController.js /c/Users/48803376/Downloads/NEXIA-back-/src/services/alumnoService.js /c/Users/48803376/Downloads/NEXIA-back-/src/repositories/alumnoRepository.js)",
+      "Read(//c/Users/48803376/Downloads/NEXIA-back-/src/controllers/**)",
+      "Read(//c/Users/48803376/Downloads/NEXIA-back-/src/services/**)"
     ]
   }
 }

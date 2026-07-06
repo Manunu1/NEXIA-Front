@@ -30,7 +30,7 @@
 }
 
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
   box-shadow: var(--sh-nv);
   border-color: rgba(26,35,126,.15);
 }

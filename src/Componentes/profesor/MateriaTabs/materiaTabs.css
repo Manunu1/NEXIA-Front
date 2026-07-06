@@ -29,6 +29,7 @@
   background: var(--white);
   color: var(--navy);
   box-shadow: var(--sh-sm);
+  animation: scaleIn 0.22s var(--ease-spring);
 }
 
 @media (max-width: 768px) {

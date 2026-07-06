@@ -10,4 +10,5 @@
   text-transform: uppercase;
   user-select: none;
   flex-shrink: 0;
+  animation: fadeIn var(--dur-slow) var(--ease) both;
 }

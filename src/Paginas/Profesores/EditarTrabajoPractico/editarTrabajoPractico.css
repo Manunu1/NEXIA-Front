@@ -14,6 +14,7 @@
 .etp-estado-btn:hover:not(:disabled) {
   border-color: var(--navy-l);
   color: var(--navy);
+  transform: translateY(-1px);
 }
 
 .etp-estado-btn--activo {

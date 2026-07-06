@@ -21,8 +21,14 @@
   border-bottom: none;
 }
 
+.re-row:not(.re-row--head) {
+  border-left: 2px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
 .re-row:not(.re-row--head):hover {
   background: var(--s1);
+  border-left-color: var(--orange);
 }
 
 .re-row--head {
@@ -109,6 +115,7 @@
 .re-nota-input:focus {
   outline: none;
   border-color: var(--navy-l);
+  box-shadow: 0 0 0 3px rgba(26,35,126,.1);
 }
 
 .re-nota-input:disabled {
@@ -149,7 +156,10 @@
 }
 
 .re-guardar-btn:hover:not(:disabled) {
-  background: var(--navy-xs);
+  background: var(--navy);
+  color: var(--white);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-glow-navy);
 }
 
 .re-guardar-btn:disabled {

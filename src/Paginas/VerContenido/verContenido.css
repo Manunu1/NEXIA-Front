@@ -138,6 +138,7 @@
   flex-direction: column;
   gap: 0.875rem;
   overflow-y: auto;
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
 }
 
 .vc-panel-loading {

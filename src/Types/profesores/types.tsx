@@ -111,7 +111,14 @@ export interface typeBoletinNotaTP {
   comentario_correccion?: string | null;
 }
 
+export interface typeBoletinMateria {
+  materia_id: number;
+  materia_nombre: string;
+  curso_materia_id: number;
+}
+
 export interface typeBoletin {
+  materias: typeBoletinMateria[];
   notas_finales: typeBoletinNotaFinal[];
   notas_trabajos_practicos: typeBoletinNotaTP[];
 }

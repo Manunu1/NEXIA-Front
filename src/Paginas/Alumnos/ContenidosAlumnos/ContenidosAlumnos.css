@@ -10,6 +10,7 @@
   flex-direction: column;
   background: var(--s1);
   overflow: hidden;
+  animation: fadeIn var(--dur-md) var(--ease) both;
 }
 
 /* ── Header ── */
@@ -46,6 +47,7 @@
   background: var(--s1);
   color: var(--t1);
   border-color: var(--navy-xs);
+  transform: translateX(-2px);
 }
 
 .iv-header-center {
