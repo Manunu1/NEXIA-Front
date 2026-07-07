@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import Sidebar from '../../../Componentes/alumnos/Sidebar';
+import Sidebar from '../../../Componentes/Sidebar';
 import MateriaTabs from '../../../Componentes/profesor/MateriaTabs';
+import MateriaIdentity from '../../../Componentes/MateriaIdentity';
 import ListaTrabajosPracticos from '../../../Componentes/profesor/ListaTrabajosPracticos';
 import type { typeTrabajoPractico } from '../../../Types/profesores/types';
 import api from '../../../api';
@@ -11,6 +12,7 @@ const TrabajosPracticos: React.FC = () => {
   const { profeCursoMateriaId } = useParams<{ profeCursoMateriaId: string }>();
   const navigate = useNavigate();
   const [trabajos, setTrabajos] = useState<typeTrabajoPractico[]>([]);
+  const [materia, setMateria] = useState<{ materia_nombre: string; anio: number; division: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,8 +20,9 @@ const TrabajosPracticos: React.FC = () => {
     const traer = async () => {
       try {
         const res = await api.get(
-          `http://localhost:3000/api/trabajos-practicos/profe-curso-materia/${profeCursoMateriaId}`
+          `/api/trabajos-practicos/profe-curso-materia/${profeCursoMateriaId}`
         );
+        setMateria(res.data.data.materia || null);
         setTrabajos(res.data.data.trabajos_practicos || []);
       } catch (err) {
         console.error('Error al obtener los trabajos prácticos:', err);
@@ -43,7 +46,16 @@ const TrabajosPracticos: React.FC = () => {
             Volver
           </button>
           <div className="iv-header-center">
-            <h1 className="iv-title">Trabajos prácticos</h1>
+            {materia ? (
+              <MateriaIdentity
+                nombre={materia.materia_nombre}
+                anio={materia.anio}
+                division={materia.division}
+                seccion="Trabajos prácticos"
+              />
+            ) : (
+              <h1 className="iv-title">Trabajos prácticos</h1>
+            )}
             {!loading && <span className="iv-count">{trabajos.length} trabajos</span>}
           </div>
           {profeCursoMateriaId && (

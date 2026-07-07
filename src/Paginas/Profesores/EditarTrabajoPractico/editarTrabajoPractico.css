@@ -1,3 +1,8 @@
+.etp-form-wrap {
+  max-width: 680px;
+  margin-inline: auto;
+}
+
 .etp-estado-btn {
   background: var(--white);
   border: 1px solid var(--border);

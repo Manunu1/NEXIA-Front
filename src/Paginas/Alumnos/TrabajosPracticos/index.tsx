@@ -1,16 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Sidebar from '../../../Componentes/alumnos/Sidebar';
+import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import MateriaTabsAlumno from '../../../Componentes/alumnos/MateriaTabsAlumno';
+import MateriaIdentity from '../../../Componentes/MateriaIdentity';
+import EmptyState from '../../../Componentes/EmptyState';
 import TarjetaTrabajoPractico from '../../../Componentes/alumnos/TarjetaTrabajoPractico';
 import type { typeTrabajoPracticoAlumno } from '../../../Types/profesores/types';
 import api from '../../../api';
 import './trabajosPracticos.css';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 
 type Filtro = 'todos' | 'pendientes' | 'corregidos';
 
-function normalizar(raw: any): typeTrabajoPracticoAlumno {
+function normalizar(rawInput: unknown): typeTrabajoPracticoAlumno {
+  const raw = rawInput as typeTrabajoPracticoAlumno;
   return {
     trabajo_practico_id: raw.trabajo_practico_id,
     profe_curso_materia_id: raw.profe_curso_materia_id,
@@ -34,6 +38,7 @@ function normalizar(raw: any): typeTrabajoPracticoAlumno {
 }
 
 const TrabajosPracticosAlumno: React.FC = () => {
+  usePageTitle('Trabajos prácticos');
   const { profeCursoMateriaId } = useParams<{ profeCursoMateriaId: string }>();
   const navigate = useNavigate();
   const [trabajos, setTrabajos] = useState<typeTrabajoPracticoAlumno[]>([]);
@@ -80,7 +85,13 @@ const TrabajosPracticosAlumno: React.FC = () => {
                 ← Volver a la materia
               </button>
               <h1 className="page-title">Trabajos prácticos</h1>
-              <p className="page-subtitle">Los trabajos publicados por tu docente en esta materia</p>
+              {trabajos[0]?.materia_nombre ? (
+                <div className="tpa-materia-id">
+                  <MateriaIdentity nombre={trabajos[0].materia_nombre} />
+                </div>
+              ) : (
+                <p className="page-subtitle">Los trabajos publicados por tu docente en esta materia</p>
+              )}
             </div>
             {profeCursoMateriaId && (
               <MateriaTabsAlumno profeCursoMateriaId={profeCursoMateriaId} active="trabajos-practicos" />
@@ -113,17 +124,25 @@ const TrabajosPracticosAlumno: React.FC = () => {
               <p>Cargando trabajos prácticos...</p>
             </div>
           ) : trabajos.length === 0 && !error ? (
-            <div className="no-materias-fallback">
-              <div className="fallback-icon">🗂️</div>
-              <h3>Sin trabajos prácticos</h3>
-              <p>Tu docente todavía no publicó trabajos prácticos en esta materia.</p>
-            </div>
+            <EmptyState
+              icon={
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                </svg>
+              }
+              title="Sin trabajos prácticos"
+              description="Tu docente todavía no publicó trabajos prácticos en esta materia."
+            />
           ) : filtrados.length === 0 ? (
-            <div className="no-materias-fallback">
-              <div className="fallback-icon">✨</div>
-              <h3>Nada por acá</h3>
-              <p>No hay trabajos prácticos en este filtro.</p>
-            </div>
+            <EmptyState
+              icon={
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                </svg>
+              }
+              title="Nada por acá"
+              description="No hay trabajos prácticos en este filtro."
+            />
           ) : (
             <div className="tpa-grid">
               {filtrados.map((tp) => (

@@ -1,7 +1,74 @@
-.tpd-vencido-text {
-  color: #C62828;
+/* ─────────────────────────────────────────────
+   TRABAJO PRÁCTICO DETALLE (Alumno)
+───────────────────────────────────────────── */
+
+/* ── Header ───────────────────────────────── */
+.tpd-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex-wrap: wrap;
 }
 
+.tpd-chip {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  border-radius: 99px;
+  padding: 0.28rem 0.8rem;
+  white-space: nowrap;
+}
+
+.tpd-chip--activo {
+  background: var(--navy-ghost);
+  color: var(--navy);
+  border: 1px solid var(--navy-xs);
+}
+
+.tpd-chip--vencido {
+  background: #FFF1F1;
+  color: #DC2626;
+  border: 1px solid rgba(220,38,38,.2);
+}
+
+.tpd-chip--pendiente {
+  background: var(--orange-xs);
+  color: var(--orange-d);
+  border: 1px solid rgba(255,152,0,.22);
+}
+
+.tpd-chip--corregido {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid rgba(46,125,50,.2);
+}
+
+.tpd-fecha-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--t3);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 0.3rem 0.875rem;
+}
+
+.tpd-fecha-chip svg { width: 13px; height: 13px; color: var(--t4); }
+
+.tpd-fecha-chip--vencido {
+  color: #DC2626;
+  background: #FFF1F1;
+  border-color: rgba(220,38,38,.18);
+}
+
+.tpd-fecha-chip--vencido svg { color: #DC2626; }
+
+/* ── Layout ───────────────────────────────── */
 .tpd-layout {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
@@ -9,115 +76,255 @@
   align-items: start;
 }
 
-.tpd-consigna,
-.tpd-entrega {
+@media (max-width: 900px) {
+  .tpd-layout { grid-template-columns: 1fr; }
+}
+
+/* ── Paneles ──────────────────────────────── */
+.tpd-panel {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--r3);
   box-shadow: var(--sh-sm);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.875rem;
+  overflow: hidden;
   animation: fadeInUp var(--dur-slow) var(--ease) both;
   transition: box-shadow var(--dur-md) var(--ease);
 }
 
-.tpd-entrega { animation-delay: 0.06s; }
-.tpd-consigna:hover, .tpd-entrega:hover { box-shadow: var(--sh-md); }
+.tpd-panel:nth-child(2) { animation-delay: 0.06s; }
+.tpd-panel:hover { box-shadow: var(--sh-md); }
 
-.tpd-section-title {
+.tpd-panel--corregido {
+  border-color: rgba(46,125,50,.25);
+}
+
+.tpd-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.125rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--s1);
+}
+
+.tpd-panel-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r2);
+  background: var(--navy-ghost);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tpd-panel-icon svg { width: 16px; height: 16px; }
+
+.tpd-panel-icon--ok {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.tpd-panel-title {
   font-family: var(--fd);
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--t1);
+  margin: 0;
 }
 
+.tpd-panel-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Consigna ─────────────────────────────── */
 .tpd-descripcion {
-  font-size: 0.88rem;
-  color: var(--t3);
-  line-height: 1.65;
+  font-size: 0.9rem;
+  color: var(--t2);
+  line-height: 1.75;
   white-space: pre-wrap;
+  margin: 0;
 }
 
-.tpd-consigna-link {
+.tpd-descripcion--empty {
+  color: var(--t4);
+  font-style: italic;
+}
+
+.tpd-material-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--navy);
+  gap: 0.5rem;
   align-self: flex-start;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--navy);
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  border-radius: var(--r2);
+  padding: 0.55rem 1rem;
+  transition: all 0.18s var(--ease);
 }
 
-.tpd-consigna-link:hover {
-  text-decoration: underline;
+.tpd-material-btn svg { width: 14px; height: 14px; }
+
+.tpd-material-btn:hover {
+  background: var(--navy-xs);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-sm);
 }
 
+/* ── Corregido ────────────────────────────── */
 .tpd-corregido {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
-.tpd-nota-chip {
+.tpd-nota-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
   align-self: flex-start;
-  font-family: var(--fd);
-  font-size: 1.1rem;
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-  color: #2E7D32;
   background: #E8F5E9;
   border: 1px solid rgba(46,125,50,.2);
-  border-radius: var(--r2);
-  padding: 0.5rem 1rem;
+  border-radius: var(--r3);
+  padding: 0.875rem 1.75rem;
   animation: scaleIn var(--dur-md) var(--ease-spring) both;
 }
 
+.tpd-nota-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #2E7D32;
+}
+
+.tpd-nota-value {
+  font-family: var(--fd);
+  font-size: 2rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #16A34A;
+  line-height: 1.1;
+}
+
 .tpd-comentario-docente {
-  font-size: 0.85rem;
+  margin: 0;
+  padding: 0.875rem 1rem 0.875rem 1.125rem;
+  border-left: 3px solid var(--orange);
+  background: var(--s1);
+  border-radius: 0 var(--r2) var(--r2) 0;
+  font-size: 0.875rem;
   color: var(--t2);
-  font-style: italic;
-  line-height: 1.6;
+  line-height: 1.65;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.tpd-comentario-docente cite {
+  font-style: normal;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--t4);
 }
 
 .tpd-fecha-correccion {
   font-size: 0.75rem;
   color: var(--t4);
+  margin: 0;
 }
 
-.tpd-pendiente-banner {
+/* ── Banners de estado ────────────────────── */
+.tpd-estado-banner {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  background: var(--orange-xs);
-  border: 1px solid rgba(255,152,0,.18);
+  align-items: flex-start;
+  gap: 0.75rem;
   border-radius: var(--r2);
-  padding: 0.75rem 1rem;
-  font-size: 0.82rem;
+  padding: 1rem 1.125rem;
+}
+
+.tpd-estado-banner svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.tpd-estado-banner strong {
+  display: block;
+  font-size: 0.875rem;
+  margin-bottom: 0.2rem;
+}
+
+.tpd-estado-banner p {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.tpd-estado-banner a {
+  display: inline-block;
+  margin-top: 0.375rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.tpd-estado-banner a:hover { text-decoration: underline; }
+
+.tpd-estado-banner--pendiente {
+  background: var(--orange-xs);
+  border: 1px solid rgba(255,152,0,.2);
   color: var(--t2);
 }
 
-.tpd-pendiente-banner a {
-  color: var(--navy);
-  font-weight: 600;
-  align-self: flex-start;
+.tpd-estado-banner--pendiente svg,
+.tpd-estado-banner--pendiente strong { color: var(--orange-d); }
+
+.tpd-estado-banner--vencido {
+  background: #FFF1F1;
+  border: 1px solid rgba(220,38,38,.18);
+  color: var(--t2);
 }
 
+.tpd-estado-banner--vencido svg,
+.tpd-estado-banner--vencido strong { color: #DC2626; }
+
+/* ── Drop zone ────────────────────────────── */
 .tpd-drop-zone {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.625rem;
   text-align: center;
-  padding: 1.75rem 1.25rem;
+  padding: 2rem 1.25rem;
   border: 1.5px dashed var(--border);
   border-radius: var(--r3);
   background: var(--s1);
   color: var(--t4);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s var(--ease);
+}
+
+.tpd-drop-zone > svg {
+  width: 40px;
+  height: 40px;
+  padding: 0.55rem;
+  border-radius: 50%;
+  background: var(--navy-ghost);
+  color: var(--navy);
+  transition: transform 0.2s var(--ease);
 }
 
 .tpd-drop-zone:hover,
@@ -125,24 +332,32 @@
   border-color: var(--navy-l);
   background: var(--navy-ghost);
   color: var(--navy);
-  transform: scale(1.01);
+}
+
+.tpd-drop-zone:hover > svg,
+.tpd-drop-zone--over > svg {
+  transform: translateY(-3px);
+  background: var(--white);
 }
 
 .tpd-drop-text {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--t2);
+  margin: 0;
 }
 
 .tpd-drop-sub {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--t4);
+  margin: 0;
 }
 
+/* ── Upload status ────────────────────────── */
 .tpd-upload-status {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.875rem;
   padding: 0.875rem 1.1rem;
   border-radius: var(--r3);
   border: 1.5px solid var(--border);
@@ -160,23 +375,56 @@
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--t1);
+  margin: 0;
 }
 
+.tpd-upload-sub {
+  font-size: 0.73rem;
+  color: var(--t4);
+  margin: 0;
+}
+
+.tpd-upload-remove {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r1);
+  background: var(--white);
+  border: 1px solid var(--border);
+  color: var(--t4);
+  transition: all 0.18s ease;
+}
+
+.tpd-upload-remove:hover {
+  color: #C62828;
+  border-color: rgba(198,40,40,.3);
+  background: #FFF1F1;
+}
+
+/* ── Entrega form ─────────────────────────── */
 .tpd-comentario-input {
   font-family: var(--fb);
-  font-size: 0.85rem;
-  color: var(--t1);
-  background: var(--white);
+  font-size: 0.875rem;
+  color: var(--t2);
+  background: var(--navy-ghost);
   border: 1.5px solid var(--border);
   border-radius: var(--r2);
-  padding: 0.7rem 0.9rem;
-  min-height: 72px;
+  padding: 0.72rem 0.9rem;
+  min-height: 80px;
   resize: vertical;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s;
 }
+
+.tpd-comentario-input::placeholder { color: var(--t4); }
 
 .tpd-comentario-input:focus {
   outline: none;
   border-color: var(--navy-l);
+  box-shadow: 0 0 0 3px rgba(26,35,126,.08);
+  background: var(--white);
 }
 
 .tpd-submit-btn {
@@ -184,7 +432,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.75rem;
+  padding: 0.72rem 1.75rem;
   background: var(--orange);
   color: var(--navy-d);
   font-size: 0.9rem;
@@ -205,8 +453,12 @@
   cursor: not-allowed;
 }
 
-@media (max-width: 900px) {
-  .tpd-layout {
-    grid-template-columns: 1fr;
-  }
+.tpd-btn-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(13,22,84,.25);
+  border-top-color: var(--navy-d);
+  animation: spinDual 0.7s linear infinite;
+  flex-shrink: 0;
 }

@@ -6,12 +6,16 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: var(--s1);
 }
 
 .main-content {
   flex: 1 0 auto;
+  /* El contenido ocupa al menos el viewport completo:
+     el footer solo aparece al scrollear */
+  min-height: 100vh;
+  width: 100%;
   padding: 2.25rem 2.75rem;
-  background: var(--s1);
   position: relative;
   isolation: isolate;
   animation: fadeIn var(--dur-slow) var(--ease) both;
@@ -70,12 +74,34 @@
   height: 3px;
   border-radius: 99px;
   background: linear-gradient(90deg, var(--orange), var(--navy-l));
+  transform-origin: left;
+  animation: underlineIn 0.5s var(--ease) 0.2s both;
+}
+
+@keyframes underlineIn {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
 .page-subtitle {
   font-size: 0.875rem;
   color: var(--t3);
   margin: 0.5rem 0 0;
+}
+
+/* Variante centrada — para páginas cuyo contenido está centrado
+   (formularios del gestor, crear/editar trabajo práctico) */
+.page-header--center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.875rem;
+}
+
+.page-header--center .page-title::after {
+  left: 50%;
+  margin-left: -19px;
+  transform-origin: center;
 }
 
 .page-badge {
@@ -160,40 +186,25 @@
   animation: spinDual 0.85s linear infinite;
 }
 
-.no-materias-fallback {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.75rem;
-  background: var(--white);
-  border: 1.5px dashed var(--border);
-  border-radius: var(--r4);
-  padding: 3.5rem 2rem;
-  max-width: 480px;
-  animation: scaleIn var(--dur-md) var(--ease) both;
-  transition: border-color var(--dur-fast) var(--ease);
+/* ── Skeleton shimmer — placeholders de carga ── */
+.sk {
+  position: relative;
+  overflow: hidden;
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
 }
 
-.no-materias-fallback:hover { border-color: var(--navy-xs); }
-
-.fallback-icon { font-size: 3rem; line-height: 1; animation: floatY 3.2s ease-in-out infinite; }
-
-.no-materias-fallback h3 {
-  font-family: var(--fd);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--t2);
-  margin: 0;
+.sk::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
 }
 
-.no-materias-fallback p {
-  font-size: 0.875rem;
-  color: var(--t4);
-  margin: 0;
-  max-width: 320px;
-  line-height: 1.6;
-}
+.sk-materia { height: 218px; }
 
 /* ─────────────────────────────────────────────
    SHARED GRIDS
@@ -544,129 +555,71 @@
   box-shadow: 0 8px 28px rgba(255,152,0,.42);
 }
 
-/* ── Welcome Banner ── */
-.welcome-banner {
+/* ─────────────────────────────────────────────
+   HOME LAYOUT — contenido principal + rail lateral
+   (usado por los inicios de Alumno y Profesor)
+───────────────────────────────────────────── */
+.home-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.home-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.home-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+@media (max-width: 1100px) {
+  .home-layout { grid-template-columns: 1fr; }
+  .home-rail { position: static; }
+}
+
+/* ── Section head — título de sección dentro de una página ── */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.section-title {
+  font-family: var(--fd);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.4px;
+  margin: 0;
+}
+
+.section-sub {
+  font-size: 0.8rem;
+  color: var(--t4);
+  margin: 0.15rem 0 0;
+}
+
+.section-count {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--t4);
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: var(--r3);
-  box-shadow: var(--sh-sm);
-  padding: 1.5rem 2rem;
-  margin-bottom: 1.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  position: relative;
-  overflow: hidden;
-  flex-wrap: wrap;
-  animation: bannerIn 0.4s var(--ease);
-}
-
-@keyframes bannerIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.welcome-banner::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--orange) 0%, var(--navy-l) 60%, var(--navy-m) 100%);
-}
-
-.welcome-banner::after {
-  content: '';
-  position: absolute;
-  top: -50px; right: -50px;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(255,152,0,.07) 0%, transparent 70%);
-  pointer-events: none;
-  animation: floatY 6s ease-in-out infinite;
-}
-
-.wb-badge--ia {
-  animation: pulseGlow 2.6s ease-in-out infinite;
-}
-
-.wb-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  position: relative;
-  z-index: 1;
-}
-
-.wb-saludo {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--orange-d);
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-}
-
-.wb-name {
-  font-family: var(--fd);
-  font-size: clamp(1.25rem, 2vw, 1.6rem);
-  font-weight: 800;
-  color: var(--t1);
-  letter-spacing: -0.7px;
-  margin: 0 0 0.1rem;
-  line-height: 1.15;
-}
-
-.wb-star {
-  color: var(--orange);
-  font-size: 0.82em;
-}
-
-.wb-date {
-  font-size: 0.78rem;
-  color: var(--t4);
-  margin: 0;
-  font-weight: 500;
-}
-
-.wb-badges {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  align-items: flex-end;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.wb-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.28rem 0.875rem;
   border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 0.2rem 0.75rem;
   white-space: nowrap;
 }
-
-.wb-badge--count {
-  background: var(--navy-ghost);
-  color: var(--navy);
-  border: 1px solid var(--navy-xs);
-}
-
-.wb-badge--ia {
-  background: rgba(255,152,0,.08);
-  color: var(--orange-d);
-  border: 1px solid rgba(255,152,0,.16);
-}
-
-/* Legacy aliases */
-.wb-left     { display: flex; align-items: center; gap: 1rem; }
-.wb-emoji    { font-size: 2rem; line-height: 1; flex-shrink: 0; }
-.wb-title    { font-family: var(--fd); font-size: clamp(1.1rem,2vw,1.35rem); font-weight: 800; color: var(--t1); letter-spacing: -0.4px; margin-bottom: 0.2rem; }
-.wb-subtitle { font-size: 0.82rem; color: var(--t3); }
-.wb-right    { display: flex; align-items: center; gap: 0.75rem; }
-.wb-chip     { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.875rem; background: rgba(255,152,0,.08); border: 1px solid rgba(255,152,0,.18); border-radius: 99px; font-size: 0.75rem; font-weight: 700; color: var(--orange-d); }
 
 /* ─────────────────────────────────────────────
    RESPONSIVE

@@ -63,11 +63,12 @@ const TrabajoPracticoForm: React.FC<Props> = ({ initialValues, submitLabel, subm
     try {
       const fd = new FormData();
       fd.append('archivo', file);
-      const res = await api.post('http://localhost:3000/api/trabajos-practicos/upload', fd);
+      const res = await api.post('/api/trabajos-practicos/upload', fd);
       setArchivoUrl(res.data.data.url);
       setUploadState('done');
-    } catch (err: any) {
-      setUploadError(err.response?.data?.message || 'Error al subir el archivo.');
+    } catch (err: unknown) {
+      const ex = err as { response?: { data?: { message?: string } } };
+      setUploadError(ex.response?.data?.message || 'Error al subir el archivo.');
       setUploadState('error');
     }
   };
@@ -95,43 +96,70 @@ const TrabajoPracticoForm: React.FC<Props> = ({ initialValues, submitLabel, subm
   };
 
   return (
-    <form onSubmit={handleSubmit} className="tpf-form">
-      {submitError && <div className="alert-error">{submitError}</div>}
-
-      <div className="tpf-section">
-        <label className="tpf-label">Título *</label>
-        <input
-          className="tpf-input"
-          placeholder="Ej: Trabajo práctico N°3 — Ecuaciones"
-          value={titulo}
-          onChange={(e) => setTitulo(e.target.value)}
-          required
-        />
+    <form onSubmit={handleSubmit} className="tpf-card">
+      <div className="tpf-card-header">
+        <div className="tpf-card-header-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+            <rect x="9" y="3" width="6" height="4" rx="1" />
+            <line x1="9" y1="12" x2="15" y2="12" /><line x1="9" y1="16" x2="13" y2="16" />
+          </svg>
+        </div>
+        <div>
+          <span className="tpf-card-title">Detalles del trabajo</span>
+          <span className="tpf-card-sub">Esto es lo que van a ver los alumnos de la materia</span>
+        </div>
       </div>
 
-      <div className="tpf-section">
-        <label className="tpf-label">Consigna</label>
-        <textarea
-          className="tpf-input tpf-textarea"
-          placeholder="Describí la consigna del trabajo (opcional)"
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-        />
-      </div>
+      <div className="tpf-card-body stagger-in">
+        {submitError && <div className="tpf-error">{submitError}</div>}
 
-      <div className="tpf-section">
-        <label className="tpf-label">Fecha límite de entrega</label>
-        <input
-          type="datetime-local"
-          className="tpf-input"
-          value={fechaLimite}
-          onChange={(e) => setFechaLimite(e.target.value)}
-        />
-        <p className="tpf-hint">Si no cargás una fecha, los alumnos podrán entregar en cualquier momento.</p>
-      </div>
+        <div className="tpf-section">
+          <label className="tpf-label" htmlFor="tpf-titulo">Título</label>
+          <input
+            id="tpf-titulo"
+            className="tpf-input"
+            placeholder="Ej: Trabajo práctico N°3 — Ecuaciones"
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)}
+            required
+          />
+        </div>
 
-      <div className="tpf-section">
-        <label className="tpf-label">Archivo de la consigna</label>
+        <div className="tpf-section">
+          <label className="tpf-label" htmlFor="tpf-consigna">
+            Consigna
+            <span className="tpf-optional">opcional</span>
+          </label>
+          <textarea
+            id="tpf-consigna"
+            className="tpf-input tpf-textarea"
+            placeholder="Describí qué tienen que hacer, criterios de evaluación, formato de entrega…"
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
+          />
+        </div>
+
+        <div className="tpf-section">
+          <label className="tpf-label" htmlFor="tpf-fecha">
+            Fecha límite de entrega
+            <span className="tpf-optional">opcional</span>
+          </label>
+          <input
+            id="tpf-fecha"
+            type="datetime-local"
+            className="tpf-input tpf-input--fecha"
+            value={fechaLimite}
+            onChange={(e) => setFechaLimite(e.target.value)}
+          />
+          <p className="tpf-hint">Si no cargás una fecha, los alumnos podrán entregar en cualquier momento.</p>
+        </div>
+
+        <div className="tpf-section">
+          <label className="tpf-label">
+            Archivo de la consigna
+            <span className="tpf-optional">opcional</span>
+          </label>
 
         {uploadState === 'idle' || uploadState === 'error' ? (
           <div
@@ -184,16 +212,20 @@ const TrabajoPracticoForm: React.FC<Props> = ({ initialValues, submitLabel, subm
               aria-label="Quitar archivo"
               onClick={() => { setUploadState('idle'); setUploadError(''); setArchivoUrl(''); setUploadedFileName(''); }}
             >
-              ✕
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
+                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
             </button>
           </div>
         )}
+        </div>
       </div>
 
-      <div className="tpf-actions">
+      <div className="tpf-card-footer">
         {extraAction}
         <button type="submit" className="tpf-submit-btn" disabled={submitting || uploadState === 'uploading'}>
-          {submitting ? 'Guardando...' : submitLabel}
+          {submitting && <span className="tpf-btn-spinner" aria-hidden="true" />}
+          {submitting ? 'Guardando…' : submitLabel}
         </button>
       </div>
     </form>

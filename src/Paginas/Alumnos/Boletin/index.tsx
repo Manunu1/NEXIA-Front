@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import Sidebar from '../../../Componentes/alumnos/Sidebar';
+import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import type { typeBoletin } from '../../../Types/profesores/types';
 import api from '../../../api';
 import './boletin.css';
+import EmptyState from '../../../Componentes/EmptyState';
 
 function formatFecha(iso?: string | null): string {
   if (!iso) return '';
@@ -29,7 +30,7 @@ function getAlumnoId(): string | null {
       const alumnoId = JSON.parse(session).alumno_id;
       if (alumnoId) return String(alumnoId);
     }
-  } catch {}
+  } catch { /* sesión ilegible */ }
   return localStorage.getItem('alumno_id');
 }
 
@@ -102,11 +103,11 @@ const Boletin: React.FC = () => {
               <section className="bol-section">
                 <h2 className="bol-section-title">Notas finales</h2>
                 {materias.length === 0 ? (
-                  <div className="no-materias-fallback">
-                    <div className="fallback-icon">📋</div>
-                    <h3>Sin materias asignadas</h3>
-                    <p>No te encontrás inscrito en ninguna materia para este ciclo lectivo.</p>
-                  </div>
+                  <EmptyState
+              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" /><rect x="9" y="3" width="6" height="4" rx="1" /></svg>}
+              title="Sin materias asignadas"
+              description="No te encontrás inscrito en ninguna materia para este ciclo lectivo."
+            />
                 ) : (
                   <div className="bol-table-wrap">
                     <table className="bol-table">
@@ -153,11 +154,11 @@ const Boletin: React.FC = () => {
               <section className="bol-section">
                 <h2 className="bol-section-title">Trabajos prácticos corregidos</h2>
                 {notasTP.length === 0 ? (
-                  <div className="no-materias-fallback">
-                    <div className="fallback-icon">🗂️</div>
-                    <h3>Sin trabajos corregidos</h3>
-                    <p>Todavía no tenés trabajos prácticos corregidos.</p>
-                  </div>
+                  <EmptyState
+              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /></svg>}
+              title="Sin trabajos corregidos"
+              description="Todavía no tenés trabajos prácticos corregidos."
+            />
                 ) : (
                   <div className="bol-table-wrap">
                     <table className="bol-table">

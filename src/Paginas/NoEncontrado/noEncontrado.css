@@ -1,0 +1,23 @@
+/* ─────────────────────────────────────────────
+   404 — overrides sobre la pantalla de error base
+───────────────────────────────────────────── */
+.nf-fullscreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: var(--s1);
+}
+
+.ad-panel--404::before {
+  background: linear-gradient(90deg, var(--navy-l), var(--orange));
+}
+
+.ad-icon--404 {
+  background: var(--navy-ghost);
+  color: var(--navy);
+  animation: floatY 4s ease-in-out infinite;
+}
+
+.ad-code--404 { color: var(--navy-l); }

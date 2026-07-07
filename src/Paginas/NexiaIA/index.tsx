@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Sidebar from '../../Componentes/alumnos/Sidebar';
+import Sidebar from '../../Componentes/Sidebar';
+import Markdown from '../../Componentes/Markdown';
 import api from '../../api';
 import './nexiaIA.css';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 interface HistorialItem {
   rol: 'usuario' | 'ia';
@@ -21,6 +23,10 @@ interface Message {
 // para no hacer crecer el payload indefinidamente en conversaciones largas.
 const MAX_HISTORIAL = 16;
 
+// Ids de mensaje secuenciales (fuera del render para mantenerlo puro)
+let msgSeq = 0;
+const nextMsgId = (prefix: string) => `${prefix}-${++msgSeq}`;
+
 function toHistorial(messages: Message[]): HistorialItem[] {
   return messages
     .filter((m) => !m.error)
@@ -35,7 +41,9 @@ const SUGGESTED_PROMPTS = [
   'Ayudame a entender las ecuaciones de segundo grado',
 ];
 
+// El control de acceso por rol (sin Gestor) se aplica en la ruta (App.tsx)
 const NexiaIA: React.FC = () => {
+  usePageTitle('Nexia IA');
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -56,15 +64,16 @@ const NexiaIA: React.FC = () => {
       setMessages(prev => [
         ...prev,
         {
-          id: `a-${Date.now()}`,
+          id: nextMsgId('a'),
           role: 'ai',
           content: respuesta || 'No pude generar una respuesta. Intentá nuevamente.',
           timestamp: new Date(),
         },
       ]);
-    } catch (err: any) {
-      const status = err.response?.status;
-      const serverMessage: string | undefined = err.response?.data?.message;
+    } catch (err: unknown) {
+      const ex = err as { response?: { status?: number; data?: { message?: string } } };
+      const status = ex.response?.status;
+      const serverMessage: string | undefined = ex.response?.data?.message;
       let content = 'No se pudo conectar con el tutor IA, intentá de nuevo.';
       if (status === 400) {
         content = 'Hubo un problema con el mensaje enviado. Reformulalo e intentá de nuevo.';
@@ -75,7 +84,7 @@ const NexiaIA: React.FC = () => {
       setMessages(prev => [
         ...prev,
         {
-          id: `err-${Date.now()}`,
+          id: nextMsgId('err'),
           role: 'ai',
           content,
           timestamp: new Date(),
@@ -95,7 +104,7 @@ const NexiaIA: React.FC = () => {
     const historial = toHistorial(messages);
 
     const userMsg: Message = {
-      id: `u-${Date.now()}`,
+      id: nextMsgId('u'),
       role: 'user',
       content: pregunta,
       timestamp: new Date(),
@@ -132,6 +141,18 @@ const NexiaIA: React.FC = () => {
   const clearChat = () => {
     setMessages([]);
     inputRef.current?.focus();
+  };
+
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const copyMessage = async (msg: Message) => {
+    try {
+      await navigator.clipboard.writeText(msg.content);
+      setCopiedId(msg.id);
+      setTimeout(() => setCopiedId(null), 1600);
+    } catch {
+      /* clipboard no disponible (permisos / contexto no seguro) */
+    }
   };
 
   const formatTime = (date: Date) =>
@@ -216,7 +237,11 @@ const NexiaIA: React.FC = () => {
                     </div>
                   )}
                   <div className={`nia-bubble${msg.error ? ' nia-bubble--error' : ''}`}>
-                    <p className="nia-bubble-text">{msg.content}</p>
+                    {msg.role === 'ai' && !msg.error ? (
+                      <Markdown text={msg.content} className="nia-bubble-md" />
+                    ) : (
+                      <p className="nia-bubble-text">{msg.content}</p>
+                    )}
                     {msg.error && msg.retryPayload && (
                       <button
                         type="button"
@@ -230,7 +255,35 @@ const NexiaIA: React.FC = () => {
                         Reintentar
                       </button>
                     )}
-                    <span className="nia-bubble-time">{formatTime(msg.timestamp)}</span>
+                    <div className="nia-bubble-footer">
+                      {msg.role === 'ai' && !msg.error && (
+                        <button
+                          type="button"
+                          className={`nia-copy-btn${copiedId === msg.id ? ' nia-copy-btn--copied' : ''}`}
+                          onClick={() => copyMessage(msg)}
+                          aria-label="Copiar respuesta"
+                          title="Copiar respuesta"
+                        >
+                          {copiedId === msg.id ? (
+                            <>
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                              Copiado
+                            </>
+                          ) : (
+                            <>
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                              </svg>
+                              Copiar
+                            </>
+                          )}
+                        </button>
+                      )}
+                      <span className="nia-bubble-time">{formatTime(msg.timestamp)}</span>
+                    </div>
                   </div>
                 </div>
               ))}

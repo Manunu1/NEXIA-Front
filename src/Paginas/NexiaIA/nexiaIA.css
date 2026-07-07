@@ -376,6 +376,12 @@
   margin: 0;
 }
 
+/* Respuestas de la IA renderizadas como texto enriquecido */
+.nia-bubble-md {
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
 .nia-msg--user .nia-bubble-text {
   color: rgba(255,255,255,.95);
 }
@@ -383,9 +389,49 @@
 .nia-bubble-time {
   font-size: 0.63rem;
   opacity: 0.45;
-  align-self: flex-end;
   white-space: nowrap;
   font-weight: 500;
+}
+
+/* Footer de burbuja: copiar + hora */
+.nia-bubble-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  margin-top: 0.1rem;
+}
+
+.nia-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--t4);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--r1);
+  opacity: 0.55;
+  transition: all 0.18s var(--ease);
+}
+
+.nia-copy-btn svg { width: 12px; height: 12px; }
+
+.nia-bubble:hover .nia-copy-btn { opacity: 1; }
+
+.nia-copy-btn:hover {
+  background: var(--navy-ghost);
+  color: var(--navy);
+}
+
+.nia-copy-btn--copied {
+  opacity: 1;
+  color: #16A34A;
+}
+
+.nia-copy-btn--copied:hover {
+  background: rgba(34,197,94,.08);
+  color: #16A34A;
 }
 
 /* ── Typing indicator ────────────────────────── */

@@ -29,11 +29,18 @@
 }
 
 .prox-icon {
-  font-size: 3.5rem;
-  line-height: 1;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,.08));
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--navy-ghost);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   animation: floatY 3.5s ease-in-out infinite;
 }
+
+.prox-icon svg { width: 34px; height: 34px; }
 
 .prox-title {
   font-family: var(--fd);

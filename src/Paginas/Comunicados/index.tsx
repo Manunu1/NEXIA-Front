@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import Sidebar from "../../Componentes/alumnos/Sidebar";
-import SidebarGestor from "../../Componentes/Gestor/SidebarGestor";
+import Sidebar from "../../Componentes/Sidebar";
 import Footer from "../../Componentes/footer";
+import ConfirmDialog from "../../Componentes/ConfirmDialog";
+import EditarComunicadoModal from "../../Componentes/Gestor/EditarComunicadoModal";
+import type { ComunicadoCambios } from "../../Componentes/Gestor/EditarComunicadoModal";
 import api from "../../api";
 import "./comunicados.css";
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 interface Comunicado {
   id: number;
@@ -26,6 +29,7 @@ function formatFecha(isoStr: string): string {
 }
 
 function Comunicados() {
+  usePageTitle('Comunicados');
   const [comunicados, setComunicados] = useState<Comunicado[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -40,6 +44,12 @@ function Comunicados() {
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
+
+  // Edición / eliminación (GESTOR only)
+  const [editTarget, setEditTarget] = useState<Comunicado | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Comunicado | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [actionError, setActionError] = useState("");
 
   useEffect(() => {
     try {
@@ -112,11 +122,34 @@ function Comunicados() {
   };
 
   const isGestor = rol === 'GESTOR';
-  const SidebarComponent = isGestor ? SidebarGestor : Sidebar;
+
+  const guardarEdicion = (cambios: ComunicadoCambios) => {
+    if (!editTarget) return;
+    setComunicados(prev =>
+      prev.map(c => (c.id === editTarget.id ? { ...c, ...cambios } : c))
+    );
+  };
+
+  const confirmarEliminacion = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    setActionError("");
+    try {
+      await api.delete(`/api/comunicados/${deleteTarget.id}`);
+      setComunicados(prev => prev.filter(c => c.id !== deleteTarget.id));
+      setDeleteTarget(null);
+    } catch (err: unknown) {
+      const ex = err as { response?: { data?: { message?: string } } };
+      setActionError(ex?.response?.data?.message || 'Error al eliminar el comunicado. Intentá nuevamente.');
+      setDeleteTarget(null);
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   return (
     <>
-      <SidebarComponent />
+      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
 
@@ -234,6 +267,7 @@ function Comunicados() {
 
           {/* Error state */}
           {error && <div className="alert-error">{error}</div>}
+          {actionError && <div className="alert-error">{actionError}</div>}
 
           {/* Loading state */}
           {loading ? (
@@ -294,12 +328,44 @@ function Comunicados() {
                     <h2 className="com-card-title">{com.titulo}</h2>
                     <p className="com-card-text">{com.contenido}</p>
 
-                    {com.gestor_nombre && (
-                      <div className="com-card-author">
-                        <div className="com-card-author-avatar">
-                          {com.gestor_nombre.charAt(0).toUpperCase()}
-                        </div>
-                        <span className="com-card-author-name">{com.gestor_nombre}</span>
+                    {(com.gestor_nombre || isGestor) && (
+                      <div className="com-card-footer">
+                        {com.gestor_nombre && (
+                          <div className="com-card-author">
+                            <div className="com-card-author-avatar">
+                              {com.gestor_nombre.charAt(0).toUpperCase()}
+                            </div>
+                            <span className="com-card-author-name">{com.gestor_nombre}</span>
+                          </div>
+                        )}
+                        {isGestor && (
+                          <div className="com-card-actions">
+                            <button
+                              type="button"
+                              className="com-action-btn"
+                              onClick={() => setEditTarget(com)}
+                              aria-label={`Editar comunicado: ${com.titulo}`}
+                            >
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                              </svg>
+                              Editar
+                            </button>
+                            <button
+                              type="button"
+                              className="com-action-btn com-action-btn--danger"
+                              onClick={() => setDeleteTarget(com)}
+                              aria-label={`Eliminar comunicado: ${com.titulo}`}
+                            >
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                <path d="M10 11v6M14 11v6" />
+                              </svg>
+                              Eliminar
+                            </button>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -311,6 +377,33 @@ function Comunicados() {
         </main>
         <Footer />
       </div>
+
+      {/* Modal de edición — GESTOR only */}
+      {editTarget && (
+        <EditarComunicadoModal
+          comunicado={editTarget}
+          onClose={() => setEditTarget(null)}
+          onSaved={guardarEdicion}
+        />
+      )}
+
+      {/* Confirmación de eliminación — GESTOR only */}
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        danger
+        busy={deleting}
+        title="Eliminar comunicado"
+        message={
+          <>
+            ¿Estás seguro de que querés eliminar{' '}
+            <strong>{deleteTarget?.titulo}</strong>? Esta acción no se puede deshacer.
+          </>
+        }
+        confirmLabel="Eliminar"
+        cancelLabel="Cancelar"
+        onConfirm={confirmarEliminacion}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </>
   );
 }

@@ -1,0 +1,52 @@
+/* ─────────────────────────────────────────────
+   MATERIA IDENTITY
+───────────────────────────────────────────── */
+.mid {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
+.mid-tile {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r2);
+  color: var(--white);
+  font-family: var(--fd);
+  font-size: 0.95rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--sh-sm);
+}
+
+.mid-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
+.mid-nombre {
+  font-family: var(--fd);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mid-sub {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}

@@ -1,0 +1,91 @@
+/* ─────────────────────────────────────────────
+   NEXIA PROMO
+───────────────────────────────────────────── */
+.nxp {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(150deg, var(--navy-d) 0%, var(--navy-m) 100%);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-nv);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--white);
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
+}
+
+.nxp-orb {
+  position: absolute;
+  top: -70px;
+  right: -70px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,152,0,.25) 0%, transparent 68%);
+  pointer-events: none;
+  animation: floatY 7s ease-in-out infinite;
+}
+
+.nxp-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r2);
+  background: var(--orange);
+  color: var(--navy-d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(255,152,0,.35);
+  margin-bottom: 0.25rem;
+}
+
+.nxp-icon svg { width: 18px; height: 18px; }
+
+.nxp-title {
+  font-family: var(--fd);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--white);
+  margin: 0;
+  position: relative;
+}
+
+.nxp-desc {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,.62);
+  margin: 0;
+  position: relative;
+}
+
+.nxp-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.625rem;
+  padding: 0.6rem 1rem;
+  background: var(--orange);
+  color: var(--navy-d);
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: var(--r2);
+  transition: all 0.2s var(--ease);
+  position: relative;
+}
+
+.nxp-cta svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s var(--ease);
+}
+
+.nxp-cta:hover {
+  background: var(--orange-l);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-glow-orange);
+}
+
+.nxp-cta:hover svg { transform: translateX(3px); }

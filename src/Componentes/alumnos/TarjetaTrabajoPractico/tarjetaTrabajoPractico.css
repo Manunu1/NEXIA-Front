@@ -1,85 +1,122 @@
+/* ─────────────────────────────────────────────
+   TARJETA TRABAJO PRÁCTICO (Alumno)
+   Cada estado tiene su color de acento:
+   por entregar (navy), vencido (rojo),
+   en corrección (naranja), corregido (verde).
+───────────────────────────────────────────── */
 .ttp-card {
+  --ttp-accent: var(--navy);
+  --ttp-tint: var(--navy-ghost);
+
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  align-items: flex-start;
+  gap: 1rem;
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: var(--r4);
-  box-shadow: var(--sh-md);
-  padding: 1.5rem;
-  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s;
-  position: relative;
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+  padding: 1.25rem 1.375rem;
   overflow: hidden;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s;
 }
 
+/* Barra de acento por estado */
 .ttp-card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--navy), var(--navy-l));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s var(--ease);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--ttp-accent);
+  opacity: 0.85;
 }
 
 .ttp-card:hover {
-  box-shadow: var(--sh-nv);
-  border-color: rgba(26,35,126,.18);
-  transform: translateY(-6px);
+  transform: translateY(-4px);
+  box-shadow: var(--sh-md);
+  border-color: color-mix(in srgb, var(--ttp-accent) 25%, var(--border));
 }
 
-.ttp-card:hover::before {
-  transform: scaleX(1);
+/* ── Variantes ────────────────────────────── */
+.ttp-card--vencido {
+  --ttp-accent: #DC2626;
+  --ttp-tint: #FFF1F1;
 }
 
-.ttp-card-top {
+.ttp-card--pendiente {
+  --ttp-accent: var(--orange);
+  --ttp-tint: var(--orange-xs);
+}
+
+.ttp-card--corregido {
+  --ttp-accent: #16A34A;
+  --ttp-tint: #E8F5E9;
+}
+
+/* ── Ícono de estado ──────────────────────── */
+.ttp-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r2);
+  background: var(--ttp-tint);
+  color: var(--ttp-accent);
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.25s var(--ease-spring);
+}
+
+.ttp-icon svg { width: 19px; height: 19px; }
+
+.ttp-card:hover .ttp-icon { transform: scale(1.08); }
+
+/* ── Contenido ────────────────────────────── */
+.ttp-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ttp-top {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .ttp-badge {
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 99px;
-  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--ttp-accent);
 }
 
-.ttp-badge--sin-entrega {
-  background: var(--s2);
-  color: var(--t4);
-  border: 1px solid var(--border);
-}
-
-.ttp-badge--vencido {
-  background: #FFF1F1;
-  color: #C62828;
-  border: 1px solid rgba(198,40,40,.18);
-}
-
-.ttp-badge--pendiente {
-  background: var(--orange-xs);
-  color: var(--orange-d);
-  border: 1px solid rgba(255,152,0,.2);
-  animation: pulseGlow 2.6s ease-in-out infinite;
-}
-
-.ttp-badge--corregido {
+.ttp-nota {
+  font-family: var(--fd);
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #16A34A;
   background: #E8F5E9;
-  color: #2E7D32;
   border: 1px solid rgba(46,125,50,.2);
+  border-radius: 99px;
+  padding: 0.05rem 0.55rem;
 }
 
 .ttp-title {
   font-family: var(--fd);
-  font-size: 1.05rem;
-  font-weight: 800;
+  font-size: 1.02rem;
+  font-weight: 700;
   color: var(--t1);
   letter-spacing: -0.3px;
   line-height: 1.3;
+  margin: 0;
 }
 
 .ttp-fecha {
@@ -89,4 +126,47 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--t4);
+  margin: 0;
+}
+
+.ttp-card--vencido .ttp-fecha { color: #DC2626; }
+
+/* ── Acción ───────────────────────────────── */
+.ttp-accion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  align-self: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ttp-accent);
+  background: var(--ttp-tint);
+  border-radius: 99px;
+  padding: 0.4rem 0.9rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s var(--ease);
+}
+
+.ttp-accion svg {
+  width: 13px;
+  height: 13px;
+  transition: transform 0.2s var(--ease);
+}
+
+.ttp-card:hover .ttp-accion {
+  background: var(--ttp-accent);
+  color: var(--white);
+}
+
+.ttp-card--sin-entrega:hover .ttp-accion,
+.ttp-card--pendiente:hover .ttp-accion {
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--ttp-accent) 35%, transparent);
+}
+
+.ttp-card:hover .ttp-accion svg { transform: translateX(3px); }
+
+@media (max-width: 640px) {
+  .ttp-card { flex-wrap: wrap; }
+  .ttp-accion { align-self: flex-start; margin-left: 58px; }
 }

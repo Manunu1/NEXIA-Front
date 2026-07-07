@@ -1,0 +1,52 @@
+/* ─────────────────────────────────────────────
+   EMPTY STATE
+───────────────────────────────────────────── */
+.es {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.625rem;
+  background: var(--white);
+  border: 1.5px dashed var(--border);
+  border-radius: var(--r4);
+  padding: 3rem 2rem;
+  max-width: 480px;
+  animation: scaleIn var(--dur-md) var(--ease) both;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.es:hover { border-color: var(--navy-xs); }
+
+.es-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--navy-ghost);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+  animation: floatY 3.6s ease-in-out infinite;
+}
+
+.es-icon svg { width: 26px; height: 26px; }
+
+.es-title {
+  font-family: var(--fd);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--t2);
+  margin: 0;
+}
+
+.es-desc {
+  font-size: 0.875rem;
+  color: var(--t4);
+  margin: 0;
+  max-width: 340px;
+  line-height: 1.65;
+}
+
+.es-action { margin-top: 0.625rem; }

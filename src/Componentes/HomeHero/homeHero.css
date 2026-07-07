@@ -1,0 +1,210 @@
+/* ─────────────────────────────────────────────
+   HOME HERO
+───────────────────────────────────────────── */
+.hh {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(130deg, var(--navy-d) 0%, var(--navy) 55%, var(--navy-m) 100%);
+  border-radius: var(--r4);
+  box-shadow: var(--sh-nv);
+  margin-bottom: 2rem;
+  color: var(--white);
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
+}
+
+/* ── Decoración ───────────────────────────── */
+.hh-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hh-orb--orange {
+  top: -110px;
+  right: -60px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,152,0,.22) 0%, transparent 68%);
+  animation: floatY 8s ease-in-out infinite;
+}
+
+.hh-orb--indigo {
+  bottom: -140px;
+  left: 22%;
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, rgba(57,73,171,.4) 0%, transparent 70%);
+  animation: floatY 11s ease-in-out 1.5s infinite;
+}
+
+.hh-ring {
+  position: absolute;
+  top: -70px;
+  right: 14%;
+  width: 200px;
+  height: 200px;
+  border: 1.5px solid rgba(255,255,255,.07);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hh-ring::after {
+  content: '';
+  position: absolute;
+  inset: 28px;
+  border: 1.5px dashed rgba(255,255,255,.06);
+  border-radius: 50%;
+}
+
+/* ── Contenido principal ──────────────────── */
+.hh-main {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2rem 2.5rem;
+  flex-wrap: wrap;
+}
+
+.hh-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.hh-saludo {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--orange-l);
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+}
+
+.hh-name {
+  font-family: var(--fd);
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  line-height: 1.1;
+  color: var(--white);
+  margin: 0;
+}
+
+.hh-date {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,.55);
+  font-weight: 500;
+  margin: 0.25rem 0 0;
+}
+
+.hh-tagline { color: rgba(255,255,255,.38); }
+
+/* ── Stats ────────────────────────────────── */
+.hh-stats {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--r3);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.hh-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 1rem 1.5rem;
+  min-width: 96px;
+  text-align: center;
+}
+
+.hh-stat + .hh-stat {
+  border-left: 1px solid rgba(255,255,255,.09);
+}
+
+.hh-stat-value {
+  font-family: var(--fd);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.hh-stat-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.5);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+/* ── Notice strip ─────────────────────────── */
+.hh-notice {
+  position: relative;
+  border-top: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,152,0,.1);
+  padding: 0.75rem 2.5rem;
+}
+
+.hh-notice-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.92);
+  flex-wrap: wrap;
+}
+
+.hh-notice-inner svg {
+  width: 15px;
+  height: 15px;
+  color: var(--orange-l);
+  flex-shrink: 0;
+}
+
+.hh-notice-inner strong {
+  color: var(--orange-l);
+  font-weight: 800;
+}
+
+.hh-notice-link {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--navy-d);
+  background: var(--orange);
+  border-radius: 99px;
+  padding: 0.3rem 0.9rem;
+  white-space: nowrap;
+  transition: all 0.2s var(--ease);
+}
+
+.hh-notice-link:hover {
+  background: var(--orange-l);
+  transform: translateX(2px);
+  box-shadow: 0 4px 14px rgba(255,152,0,.35);
+}
+
+.hh-notice-link svg { width: 13px; height: 13px; }
+
+/* ── Responsive ───────────────────────────── */
+@media (max-width: 900px) {
+  .hh-main { padding: 1.5rem 1.5rem; }
+  .hh-notice { padding: 0.75rem 1.5rem; }
+  .hh-stats { width: 100%; justify-content: space-between; }
+  .hh-stat { flex: 1; padding: 0.875rem 0.75rem; min-width: 0; }
+  .hh-notice-link { margin-left: 0; }
+}

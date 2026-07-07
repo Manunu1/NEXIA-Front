@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import type { typeContenido, typeContenidoForm, typeTipoContenido } from '../../../Types/profesores/types';
 import './crearContenido.css';
 import api from '../../../api';
-import Sidebar from '../../../Componentes/alumnos/Sidebar';
+import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 

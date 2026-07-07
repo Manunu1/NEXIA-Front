@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import Sidebar from '../../../Componentes/alumnos/Sidebar';
+import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import RosterEntregas from '../../../Componentes/profesor/RosterEntregas';
 import type { typeEntregaRoster, typeTrabajoPractico } from '../../../Types/profesores/types';
 import api from '../../../api';
 import './corregirTrabajoPractico.css';
+import EmptyState from '../../../Componentes/EmptyState';
 
 function formatFecha(iso?: string | null): string {
   if (!iso) return '';
@@ -107,11 +108,11 @@ const CorregirTrabajoPractico: React.FC = () => {
           {tp.descripcion && <p className="ctp-descripcion">{tp.descripcion}</p>}
 
           {rows.length === 0 ? (
-            <div className="no-materias-fallback">
-              <div className="fallback-icon">👥</div>
-              <h3>Sin alumnos en este curso</h3>
-              <p>No hay alumnos asociados al curso de esta materia.</p>
-            </div>
+            <EmptyState
+              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>}
+              title="Sin alumnos en este curso"
+              description="No hay alumnos asociados al curso de esta materia."
+            />
           ) : (
             <RosterEntregas rows={rows} onGrade={handleGrade} />
           )}

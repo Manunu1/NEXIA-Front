@@ -1,5 +1,6 @@
 import "./App.css";
 
+import type { JSX } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Login from "./Paginas/Login";
@@ -26,188 +27,62 @@ import Notas from "./Paginas/Profesores/Notas";
 import TrabajosPracticosAlumno from "./Paginas/Alumnos/TrabajosPracticos";
 import TrabajoPracticoDetalle from "./Paginas/Alumnos/TrabajoPracticoDetalle";
 import Boletin from "./Paginas/Alumnos/Boletin";
+import Apuntes from "./Paginas/Alumnos/Apuntes";
+import NoEncontrado from "./Paginas/NoEncontrado";
+import ScrollToTop from "./Componentes/ScrollToTop";
+import type { Rol } from "./utils/session";
+
+/** Envuelve una página con autenticación y control de rol. */
+const guard = (element: JSX.Element, roles?: Rol[]) => (
+  <ProtectedRoute roles={roles}>{element}</ProtectedRoute>
+);
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
+        {/* ── Públicas ── */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
-         <Route
-          path="/verContenido/:contenidoId"
-          element={
-            <ProtectedRoute>
-              <VerContenido />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profesor"
-          element={
-            <ProtectedRoute>
-              <MisCursos />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/contenidos/:profeCursoMateriaId"
-          element={
-            <ProtectedRoute>
-              <Contenidos />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/crear-contenido/:profeCursoMateriaId"
-          element={
-            <ProtectedRoute>
-              <CrearContenido />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/editar-contenido/:contenidoId"
-          element={
-            <ProtectedRoute>
-              <CrearContenido />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/trabajos-practicos/:profeCursoMateriaId"
-          element={
-            <ProtectedRoute>
-              <TrabajosPracticos />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/crear-trabajo-practico/:profeCursoMateriaId"
-          element={
-            <ProtectedRoute>
-              <CrearTrabajoPractico />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/trabajo-practico/:id/editar"
-          element={
-            <ProtectedRoute>
-              <EditarTrabajoPractico />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/trabajo-practico/:id/entregas"
-          element={
-            <ProtectedRoute>
-              <CorregirTrabajoPractico />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/notas/:profeCursoMateriaId"
-          element={
-            <ProtectedRoute>
-              <Notas />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/alumnos"
-          element={
-            <ProtectedRoute>
-              <MisMaterias />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/materia/:profeCursoMateriaId"
-          element={
-            <ProtectedRoute>
-              <ContenidosAlumnos />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/materia/:profeCursoMateriaId/trabajos-practicos"
-          element={
-            <ProtectedRoute>
-              <TrabajosPracticosAlumno />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/trabajo-practico/:id"
-          element={
-            <ProtectedRoute>
-              <TrabajoPracticoDetalle />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/boletin"
-          element={
-            <ProtectedRoute>
-              <Boletin />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/comunicados"
-          element={
-            <ProtectedRoute>
-              <Comunicados />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/nexia-ia"
-          element={
-            <ProtectedRoute>
-              <NexiaIA />
-            </ProtectedRoute>
-          }
-        />
-        {['/calendario','/mensajes','/apuntes','/configuracion'].map(p => (
-          <Route
-            key={p}
-            path={p}
-            element={<ProtectedRoute><Proximamente /></ProtectedRoute>}
-          />
+
+        {/* ── Alumno ── */}
+        <Route path="/alumnos" element={guard(<MisMaterias />, ["alumno"])} />
+        <Route path="/materia/:profeCursoMateriaId" element={guard(<ContenidosAlumnos />, ["alumno"])} />
+        <Route path="/materia/:profeCursoMateriaId/trabajos-practicos" element={guard(<TrabajosPracticosAlumno />, ["alumno"])} />
+        <Route path="/trabajo-practico/:id" element={guard(<TrabajoPracticoDetalle />, ["alumno"])} />
+        <Route path="/boletin" element={guard(<Boletin />, ["alumno"])} />
+        <Route path="/apuntes" element={guard(<Apuntes />, ["alumno"])} />
+
+        {/* ── Profesor ── */}
+        <Route path="/profesor" element={guard(<MisCursos />, ["profesor"])} />
+        <Route path="/contenidos/:profeCursoMateriaId" element={guard(<Contenidos />, ["profesor"])} />
+        <Route path="/crear-contenido/:profeCursoMateriaId" element={guard(<CrearContenido />, ["profesor"])} />
+        <Route path="/editar-contenido/:contenidoId" element={guard(<CrearContenido />, ["profesor"])} />
+        <Route path="/trabajos-practicos/:profeCursoMateriaId" element={guard(<TrabajosPracticos />, ["profesor"])} />
+        <Route path="/crear-trabajo-practico/:profeCursoMateriaId" element={guard(<CrearTrabajoPractico />, ["profesor"])} />
+        <Route path="/trabajo-practico/:id/editar" element={guard(<EditarTrabajoPractico />, ["profesor"])} />
+        <Route path="/trabajo-practico/:id/entregas" element={guard(<CorregirTrabajoPractico />, ["profesor"])} />
+        <Route path="/notas/:profeCursoMateriaId" element={guard(<Notas />, ["profesor"])} />
+
+        {/* ── Alumno + Profesor ── */}
+        <Route path="/verContenido/:contenidoId" element={guard(<VerContenido />, ["alumno", "profesor"])} />
+        <Route path="/nexia-ia" element={guard(<NexiaIA />, ["alumno", "profesor"])} />
+
+        {/* ── Todos los roles autenticados ── */}
+        <Route path="/comunicados" element={guard(<Comunicados />)} />
+        {["/calendario", "/mensajes", "/configuracion"].map((p) => (
+          <Route key={p} path={p} element={guard(<Proximamente />)} />
         ))}
-        <Route
-          path="/gestor"
-          element={
-            <ProtectedRoute>
-              <HomeGestor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/gestor/profesores"
-          element={
-            <ProtectedRoute>
-              <ProfesoresGestor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/gestor/asignaciones"
-          element={
-            <ProtectedRoute>
-              <AsignacionesGestor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/gestor/alumnos"
-          element={
-            <ProtectedRoute>
-              <AlumnosGestor />
-            </ProtectedRoute>
-          }
-        />
+
+        {/* ── Gestor ── */}
+        <Route path="/gestor" element={guard(<HomeGestor />, ["gestor"])} />
+        <Route path="/gestor/profesores" element={guard(<ProfesoresGestor />, ["gestor"])} />
+        <Route path="/gestor/asignaciones" element={guard(<AsignacionesGestor />, ["gestor"])} />
+        <Route path="/gestor/alumnos" element={guard(<AlumnosGestor />, ["gestor"])} />
+
+        {/* ── 404 — cualquier otra ruta ── */}
+        <Route path="*" element={<NoEncontrado />} />
       </Routes>
     </BrowserRouter>
   );

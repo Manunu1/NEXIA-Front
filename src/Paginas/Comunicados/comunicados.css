@@ -296,14 +296,69 @@
   overflow: hidden;
 }
 
+/* Footer de card — autor + acciones */
+.com-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--border);
+}
+
 /* Autor */
 .com-card-author {
   display: flex;
   align-items: center;
   gap: 0.625rem;
-  margin-top: 0.25rem;
-  padding-top: 0.875rem;
-  border-top: 1px solid var(--border);
+  min-width: 0;
+}
+
+/* Acciones del gestor */
+.com-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.com-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 0.8rem;
+  border-radius: var(--r2);
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: var(--fb);
+  background: var(--navy-ghost);
+  color: var(--navy);
+  border: 1px solid var(--navy-xs);
+  cursor: pointer;
+  transition: all 0.18s var(--ease);
+  white-space: nowrap;
+}
+
+.com-action-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+.com-action-btn:hover {
+  background: var(--navy-xs);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-sm);
+}
+
+.com-action-btn:active { transform: scale(0.97); }
+
+.com-action-btn--danger {
+  background: #FFF1F1;
+  color: #DC2626;
+  border-color: rgba(220,38,38,.16);
+}
+
+.com-action-btn--danger:hover {
+  background: #FEE2E2;
+  box-shadow: 0 2px 8px rgba(220,38,38,.12);
 }
 
 .com-card-author-avatar {

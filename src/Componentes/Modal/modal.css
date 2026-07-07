@@ -1,0 +1,38 @@
+/* ─────────────────────────────────────────────
+   MODAL — overlay + diálogo reutilizable
+───────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(7, 17, 44, 0.55);
+  backdrop-filter: blur(3px);
+  animation: fadeIn var(--dur-fast) var(--ease) both;
+  overflow-y: auto;
+}
+
+.modal-dialog {
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r4);
+  box-shadow: var(--sh-lg);
+  outline: none;
+  animation: scaleIn var(--dur-md) var(--ease) both;
+  max-height: calc(100vh - 2.5rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-dialog--sm { max-width: 440px; }
+.modal-dialog--md { max-width: 600px; }
+
+@media (max-width: 600px) {
+  .modal-overlay { padding: 0.75rem; align-items: flex-end; }
+  .modal-dialog  { max-height: calc(100vh - 1.5rem); }
+}

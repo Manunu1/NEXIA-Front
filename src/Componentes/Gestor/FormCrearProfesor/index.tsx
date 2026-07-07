@@ -10,9 +10,14 @@ interface Institucion {
   nombre: string;
 }
 
+interface Option {
+  value: string;
+  label: string;
+}
+
 export default function FormCrearProfesor() {
-  const [instituciones, setInstituciones] = useState<any[]>([]);
-  const [selectedInstitucion, setSelectedInstitucion] = useState<any>(null);
+  const [instituciones, setInstituciones] = useState<Option[]>([]);
+  const [selectedInstitucion, setSelectedInstitucion] = useState<Option | null>(null);
   const [form, setForm] = useState({ nombre: "", apellido: "", email: "", password: "", dni: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -21,9 +26,13 @@ export default function FormCrearProfesor() {
   useEffect(() => {
     const fetchInstituciones = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/instituciones");
-        const data = await res.json();
-        setInstituciones(data.map((inst: Institucion) => ({ value: inst.id, label: inst.nombre })));
+        const res = await api.get("/api/instituciones");
+        const lista: Institucion[] = Array.isArray(res.data) ? res.data : res.data?.data || [];
+        const opciones = lista.map((inst) => ({ value: String(inst.id), label: inst.nombre }));
+        setInstituciones(opciones);
+        // Preseleccionar la institución del gestor logueado
+        const propia = opciones.find((o) => o.value === String(localStorage.getItem("institucion_id")));
+        if (propia) setSelectedInstitucion((prev) => prev ?? propia);
       } catch (err) {
         console.error("Error cargando instituciones", err);
       }
@@ -81,7 +90,7 @@ export default function FormCrearProfesor() {
         </div>
       </div>
 
-      <div className="gestor-form-body">
+      <div className="gestor-form-body stagger-in">
 
         <div className="gestor-form-row">
           <div className="form-field">

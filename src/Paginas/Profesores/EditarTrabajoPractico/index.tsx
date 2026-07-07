@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Sidebar from '../../../Componentes/alumnos/Sidebar';
+import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import TrabajoPracticoForm from '../../../Componentes/profesor/TrabajoPracticoForm';
 import type { TrabajoPracticoFormValues } from '../../../Componentes/profesor/TrabajoPracticoForm';
 import type { typeTrabajoPractico } from '../../../Types/profesores/types';
 import api from '../../../api';
 import './editarTrabajoPractico.css';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 
 const EditarTrabajoPractico: React.FC = () => {
+  usePageTitle('Editar trabajo práctico');
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [tp, setTp] = useState<typeTrabajoPractico | null>(null);
@@ -44,8 +46,9 @@ const EditarTrabajoPractico: React.FC = () => {
         fecha_limite: values.fecha_limite || null,
       });
       navigate(`/trabajos-practicos/${tp?.profe_curso_materia_id}`);
-    } catch (err: any) {
-      setSubmitError(err.response?.data?.message || 'Error al guardar los cambios.');
+    } catch (err: unknown) {
+      const ex = err as { response?: { data?: { message?: string } } };
+      setSubmitError(ex.response?.data?.message || 'Error al guardar los cambios.');
     } finally {
       setSubmitting(false);
     }
@@ -57,8 +60,9 @@ const EditarTrabajoPractico: React.FC = () => {
     try {
       const res = await api.patch(`http://localhost:3000/api/trabajos-practicos/${id}/estado`, { activo: !tp.activo });
       setTp({ ...tp, activo: res.data.data?.activo ?? !tp.activo });
-    } catch (err: any) {
-      setSubmitError(err.response?.data?.message || 'Error al cambiar el estado del trabajo práctico.');
+    } catch (err: unknown) {
+      const ex = err as { response?: { data?: { message?: string } } };
+      setSubmitError(ex.response?.data?.message || 'Error al cambiar el estado del trabajo práctico.');
     } finally {
       setTogglingEstado(false);
     }
@@ -98,12 +102,12 @@ const EditarTrabajoPractico: React.FC = () => {
       <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
-          <div className="page-header">
+          <div className="page-header page-header--center">
             <div>
               <button className="btn-back-page" onClick={() => navigate(`/trabajos-practicos/${tp.profe_curso_materia_id}`)}>
                 ← Volver a trabajos prácticos
               </button>
-              <h1 className="page-title">✎ Editar trabajo práctico</h1>
+              <h1 className="page-title">Editar trabajo práctico</h1>
               <p className="page-subtitle">Los cambios se guardan tanto en borrador como publicado</p>
             </div>
             <button
@@ -115,18 +119,20 @@ const EditarTrabajoPractico: React.FC = () => {
             </button>
           </div>
 
-          <TrabajoPracticoForm
-            initialValues={{
-              titulo: tp.titulo,
-              descripcion: tp.descripcion,
-              archivo_url: tp.archivo_url ?? '',
-              fecha_limite: tp.fecha_limite ?? '',
-            }}
-            submitLabel="Guardar cambios"
-            submitting={submitting}
-            submitError={submitError}
-            onSubmit={handleSubmit}
-          />
+          <div className="etp-form-wrap">
+            <TrabajoPracticoForm
+              initialValues={{
+                titulo: tp.titulo,
+                descripcion: tp.descripcion,
+                archivo_url: tp.archivo_url ?? '',
+                fecha_limite: tp.fecha_limite ?? '',
+              }}
+              submitLabel="Guardar cambios"
+              submitting={submitting}
+              submitError={submitError}
+              onSubmit={handleSubmit}
+            />
+          </div>
         </main>
         <Footer />
       </div>

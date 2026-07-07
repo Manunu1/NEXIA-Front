@@ -1,0 +1,98 @@
+/* ─────────────────────────────────────────────
+   MARKDOWN — tipografía de texto enriquecido
+───────────────────────────────────────────── */
+.md {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.md p {
+  margin: 0;
+  line-height: inherit;
+}
+
+.md h3,
+.md h4 {
+  font-family: var(--fd);
+  color: var(--t1);
+  letter-spacing: -0.2px;
+  margin: 0.25rem 0 0;
+  line-height: 1.35;
+}
+
+.md h3 { font-size: 1.02em; font-weight: 700; }
+.md h4 { font-size: 0.96em; font-weight: 700; }
+
+.md ul,
+.md ol {
+  margin: 0;
+  padding-left: 1.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* El reset global quita list-style; acá lo restauramos */
+.md ul { list-style: disc outside; }
+.md ol { list-style: decimal outside; }
+
+.md li {
+  line-height: inherit;
+  padding-left: 0.125rem;
+}
+
+.md li::marker {
+  color: var(--orange-d);
+  font-weight: 700;
+}
+
+.md strong { font-weight: 700; color: var(--t1); }
+.md em { font-style: italic; }
+
+.md a {
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.md a:hover { color: var(--navy-d); }
+
+.md code {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.1em 0.4em;
+  color: var(--navy-d);
+}
+
+.md pre {
+  background: #0d1525;
+  color: #E6EDF7;
+  border-radius: var(--r2);
+  padding: 0.875rem 1rem;
+  overflow-x: auto;
+  font-size: 0.82em;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.md pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.md blockquote {
+  margin: 0;
+  padding: 0.25rem 0 0.25rem 0.875rem;
+  border-left: 3px solid var(--orange);
+  color: var(--t3);
+}

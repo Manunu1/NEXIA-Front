@@ -1,14 +1,16 @@
-import SidebarGestor from "../../../Componentes/Gestor/SidebarGestor";
+import Sidebar from "../../../Componentes/Sidebar";
 import FormCrearAlumno from "../../../Componentes/Gestor/FormCrearAlumno";
 import "./CrearAlumnosGestor.css";
+import { usePageTitle } from '../../../hooks/usePageTitle';
 
 function AlumnosGestor() {
+  usePageTitle('Gestión de alumnos');
   return (
     <>
-      <SidebarGestor />
+      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
-          <div className="page-header">
+          <div className="page-header page-header--center">
             <div>
               <h1 className="page-title">Gestionar Alumnos</h1>
               <p className="page-subtitle">Registrá nuevos estudiantes en la institución</p>
@@ -42,6 +44,16 @@ function AlumnosGestor() {
                   <span className="gpi-step-text">Credenciales de acceso</span>
                 </li>
               </ul>
+              <div className="gpi-tip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+                <p>
+                  El alumno accede con su <strong>email y contraseña</strong>. Al elegir
+                  el curso queda inscripto en todas las materias asignadas a ese curso.
+                </p>
+              </div>
             </aside>
 
             <FormCrearAlumno />

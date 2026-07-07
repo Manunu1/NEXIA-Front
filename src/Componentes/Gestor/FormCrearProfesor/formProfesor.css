@@ -2,15 +2,25 @@
    FORMULARIOS GESTOR — base compartida
 ───────────────────────────────────────────── */
 .gestor-form-card {
+  position: relative;
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--r4);
   box-shadow: var(--sh-md);
   width: 100%;
-  max-width: 520px;
   overflow: hidden;
   animation: scaleIn var(--dur-slow) var(--ease) both;
   transition: box-shadow var(--dur-md) var(--ease);
+}
+
+/* Acento de marca en el borde superior */
+.gestor-form-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange) 0%, var(--navy-l) 60%, var(--navy-m) 100%);
+  z-index: 1;
 }
 
 .gestor-form-card:hover { box-shadow: var(--sh-lg); }
@@ -255,12 +265,14 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Página gestor: layout split ─────────── */
+/* ── Página gestor: layout split centrado ── */
 .gestor-page-layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 2.5rem;
+  grid-template-columns: 300px minmax(0, 560px);
+  gap: 3rem;
   align-items: flex-start;
+  justify-content: center;
+  padding-top: 0.5rem;
 }
 
 .gestor-page-info {
@@ -275,12 +287,12 @@
   width: 52px;
   height: 52px;
   border-radius: var(--r3);
-  background: var(--navy-ghost);
-  color: var(--navy);
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-m) 100%);
+  color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--navy-xs);
+  box-shadow: var(--sh-nv);
   animation: floatY 4s ease-in-out infinite;
 }
 
@@ -343,6 +355,34 @@
   color: var(--t3);
   font-weight: 500;
 }
+
+/* Tip contextual del panel informativo */
+.gpi-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  background: var(--orange-xs);
+  border: 1px solid rgba(255,152,0,.18);
+  border-radius: var(--r2);
+  padding: 0.875rem 1rem;
+}
+
+.gpi-tip svg {
+  width: 16px;
+  height: 16px;
+  color: var(--orange-d);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.gpi-tip p {
+  font-size: 0.78rem;
+  color: var(--t2);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.gpi-tip strong { color: var(--orange-d); }
 
 /* ── Responsive ───────────────────────────── */
 @media (max-width: 900px) {

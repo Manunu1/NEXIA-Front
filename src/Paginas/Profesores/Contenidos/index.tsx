@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../../../Componentes/alumnos/Sidebar';
+import Sidebar from '../../../Componentes/Sidebar';
 import ListaContenido from '../../../Componentes/profesor/listaContenido';
 import MateriaTabs from '../../../Componentes/profesor/MateriaTabs';
+import MateriaIdentity from '../../../Componentes/MateriaIdentity';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import type { typeContenido } from '../../../Types/profesores/types';
 import api from '../../../api';
 import './contenidos.css';
+
+interface MateriaDetalle {
+  materia_nombre: string;
+  anio: number;
+  division: string;
+}
 
 function getEmbedUrl(url: string | null | undefined): string {
   if (!url) return '';
@@ -34,6 +41,7 @@ const Contenidos: React.FC = () => {
   const { profeCursoMateriaId } = useParams<{ profeCursoMateriaId: string }>();
   const navigate = useNavigate();
   const [contenidos, setContenidos] = useState<typeContenido[]>([]);
+  const [materia, setMateria] = useState<MateriaDetalle | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<typeContenido | null>(null);
@@ -42,9 +50,10 @@ const Contenidos: React.FC = () => {
     const traerContenidos = async () => {
       try {
         const res = await api.get(
-          `http://localhost:3000/api/contenidos/profe-curso-materia/${profeCursoMateriaId}`
+          `/api/contenidos/profe-curso-materia/${profeCursoMateriaId}`
         );
-        const lista: typeContenido[] = (res.data.data.contenidos || []).map((c: any) => ({
+        setMateria(res.data.data.materia || null);
+        const lista: typeContenido[] = (res.data.data.contenidos || []).map((c: typeContenido & { archivo_url?: string }) => ({
           ...c,
           url: c.url || c.archivo_url || '',
         }));
@@ -76,7 +85,16 @@ const Contenidos: React.FC = () => {
             Volver
           </button>
           <div className="iv-header-center">
-            <h1 className="iv-title">Mis contenidos</h1>
+            {materia ? (
+              <MateriaIdentity
+                nombre={materia.materia_nombre}
+                anio={materia.anio}
+                division={materia.division}
+                seccion="Contenidos"
+              />
+            ) : (
+              <h1 className="iv-title">Mis contenidos</h1>
+            )}
             {!loading && (
               <span className="iv-count">{contenidos.length} recursos</span>
             )}

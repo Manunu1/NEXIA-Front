@@ -5,6 +5,10 @@ import api from '../../../api';
 
 interface Option { value: number; label: string; }
 
+interface ProfesorApi { profesor_id: number; nombre: string; apellido: string; }
+interface MateriaApi { materia_id: number; nombre: string; especialidad_nombre?: string | null; }
+interface CursoApi { curso_id: number; anio: number; division: string; }
+
 const FormAsignarMateriaProfesor = () => {
   const [profesores, setProfesores] = useState<Option[]>([]);
   const [materias, setMaterias] = useState<Option[]>([]);
@@ -22,7 +26,7 @@ const FormAsignarMateriaProfesor = () => {
     if (!institucionId) return;
     api.get(`/api/profesores?institucion_id=${institucionId}`)
       .then(res => {
-        setProfesores(res.data.data.map((p: any) => ({ value: p.profesor_id, label: `${p.apellido}, ${p.nombre}` })));
+        setProfesores(res.data.data.map((p: ProfesorApi) => ({ value: p.profesor_id, label: `${p.apellido}, ${p.nombre}` })));
       })
       .catch(err => console.error("Error cargando profesores:", err));
   }, [institucionId]);
@@ -31,7 +35,7 @@ const FormAsignarMateriaProfesor = () => {
     if (!institucionId) return;
     api.get(`/api/materias?institucion_id=${institucionId}`)
       .then(res => {
-        setMaterias(res.data.data.map((m: any) => ({ value: m.materia_id, label: `${m.nombre} (${m.especialidad_nombre || "General"})` })));
+        setMaterias(res.data.data.map((m: MateriaApi) => ({ value: m.materia_id, label: `${m.nombre} (${m.especialidad_nombre || "General"})` })));
       })
       .catch(err => console.error("Error cargando materias:", err));
   }, [institucionId]);
@@ -40,7 +44,7 @@ const FormAsignarMateriaProfesor = () => {
     if (!institucionId) return;
     api.get(`/api/cursos?institucion_id=${institucionId}`)
       .then(res => {
-        setCursos(res.data.data.map((c: any) => ({ value: c.curso_id, label: `${c.anio}° ${c.division}` })));
+        setCursos(res.data.data.map((c: CursoApi) => ({ value: c.curso_id, label: `${c.anio}° ${c.division}` })));
       })
       .catch(err => console.error("Error cargando cursos:", err));
   }, [institucionId]);
@@ -91,7 +95,7 @@ const FormAsignarMateriaProfesor = () => {
         </div>
       </div>
 
-      <div className="gestor-form-body">
+      <div className="gestor-form-body stagger-in">
 
         <div className="form-field">
           <label>Profesor</label>

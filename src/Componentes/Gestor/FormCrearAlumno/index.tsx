@@ -18,20 +18,23 @@ export default function FormCrearAlumno() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/instituciones")
-      .then((res) => res.json())
-      .then((data: Institucion[]) => {
-        setInstituciones(data.map((inst) => ({ value: inst.id, label: inst.nombre })));
+    api.get("/api/instituciones")
+      .then((res) => {
+        const lista: Institucion[] = Array.isArray(res.data) ? res.data : res.data?.data || [];
+        const opciones = lista.map((inst) => ({ value: String(inst.id), label: inst.nombre }));
+        setInstituciones(opciones);
+        // Preseleccionar la institución del gestor logueado
+        const propia = opciones.find((o) => o.value === String(localStorage.getItem("institucion_id")));
+        if (propia) setSelectedInstitucion((prev) => prev ?? propia);
       })
       .catch((err) => console.error(err));
   }, []);
 
   useEffect(() => {
     if (!selectedInstitucion) return;
-    fetch(`http://localhost:3000/api/cursos?institucionId=${selectedInstitucion.value}`)
-      .then((res) => res.json())
-      .then((response) => {
-        setCursos((response.data || []).map((curso: Curso) => ({
+    api.get(`/api/cursos?institucion_id=${selectedInstitucion.value}`)
+      .then((res) => {
+        setCursos((res.data.data || []).map((curso: Curso) => ({
           value: curso.curso_id,
           label: `${curso.anio}° ${curso.division}`,
         })));
@@ -97,7 +100,7 @@ export default function FormCrearAlumno() {
         </div>
       </div>
 
-      <div className="gestor-form-body">
+      <div className="gestor-form-body stagger-in">
 
         <div className="gestor-form-row">
           <div className="form-field">

@@ -1,42 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SidebarGestor from "../../../Componentes/Gestor/SidebarGestor";
+import Sidebar from "../../../Componentes/Sidebar";
+import HomeHero from "../../../Componentes/HomeHero";
 import api from '../../../api';
+import { getNombreUsuario } from '../../../utils/session';
 import "./homeGestor.css";
-
-const DAYS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-
-function formatDate(): string {
-  const d = new Date();
-  const s = `${DAYS[d.getDay()]}, ${d.getDate()} de ${MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-function getSaludo(): string {
-  const h = new Date().getHours();
-  if (h < 12) return 'Buenos días';
-  if (h < 19) return 'Buenas tardes';
-  return 'Buenas noches';
-}
+import { usePageTitle } from '../../../hooks/usePageTitle';
 
 function HomeGestor() {
+  usePageTitle('Panel de gestión');
   const navigate = useNavigate();
   const [alumnos, setAlumnos] = useState(0);
   const [profesores, setProfesores] = useState(0);
   const [cursos, setCursos] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [userName, setUserName] = useState('');
-
-  useEffect(() => {
-    try {
-      const session = localStorage.getItem('usuario');
-      if (session) {
-        const user = JSON.parse(session);
-        setUserName(`${user.nombre || ''} ${user.apellido || ''}`.trim());
-      }
-    } catch {}
-  }, []);
+  const [userName] = useState(() => getNombreUsuario(true));
 
   useEffect(() => {
     const cargarDatos = async () => {
@@ -74,28 +52,23 @@ function HomeGestor() {
 
   return (
     <>
-      <SidebarGestor />
+      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
 
-          {/* Welcome banner */}
-          <div className="welcome-banner">
-            <div className="wb-body">
-              <span className="wb-saludo">{getSaludo()}, bienvenido de vuelta</span>
-              <h2 className="wb-name">{userName || 'Gestor'}</h2>
-              <p className="wb-date">{formatDate()}</p>
-            </div>
-            <div className="wb-badges">
-              <span className="wb-badge wb-badge--count">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="12" height="12"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                Panel administrativo
-              </span>
-              <span className="wb-badge wb-badge--ia">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="12" height="12"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                Nexia IA activa
-              </span>
-            </div>
-          </div>
+          <HomeHero
+            userName={userName || 'Gestor'}
+            tagline="Panel administrativo"
+            stats={
+              loading
+                ? undefined
+                : [
+                    { value: alumnos, label: 'Alumnos' },
+                    { value: profesores, label: 'Profesores' },
+                    { value: cursos, label: 'Cursos' },
+                  ]
+            }
+          />
 
           {/* Page header */}
           <div className="page-header">
