@@ -300,6 +300,37 @@
 .tpd-estado-banner--vencido svg,
 .tpd-estado-banner--vencido strong { color: #DC2626; }
 
+.tpd-estado-banner--exito {
+  background: #E8F5E9;
+  border: 1px solid rgba(46,125,50,.22);
+  color: var(--t2);
+  animation: scaleIn var(--dur-md) var(--ease-spring) both;
+}
+
+.tpd-estado-banner--exito svg,
+.tpd-estado-banner--exito strong { color: #16A34A; }
+
+/* Publicado por (consigna) */
+.tpd-publicado-por {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--t3);
+  margin: 0;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+.tpd-publicado-por svg {
+  width: 14px;
+  height: 14px;
+  color: var(--t4);
+  flex-shrink: 0;
+}
+
+.tpd-publicado-por strong { color: var(--t1); font-weight: 700; }
+
 /* ── Drop zone ────────────────────────────── */
 .tpd-drop-zone {
   display: flex;

@@ -22,7 +22,7 @@ const Notas: React.FC = () => {
   useEffect(() => {
     const traerBimestres = async () => {
       try {
-        const res = await api.get('http://localhost:3000/api/bimestres');
+        const res = await api.get('/api/bimestres');
         const lista: typeBimestre[] = (res.data.data || []).sort((a: typeBimestre, b: typeBimestre) => a.orden - b.orden);
         setBimestres(lista);
         if (lista.length > 0) setBimestreId(lista[0].id);
@@ -42,7 +42,7 @@ const Notas: React.FC = () => {
       setLoadingRows(true);
       try {
         const res = await api.get(
-          `http://localhost:3000/api/calificaciones/profe-curso-materia/${profeCursoMateriaId}`,
+          `/api/calificaciones/profe-curso-materia/${profeCursoMateriaId}`,
           { params: { bimestre_id: bimestreId } }
         );
         setRows(res.data.data || []);
@@ -57,7 +57,7 @@ const Notas: React.FC = () => {
   }, [profeCursoMateriaId, bimestreId]);
 
   const handleSave = async (alumnoId: number, nota: number, observaciones: string) => {
-    await api.post('http://localhost:3000/api/calificaciones', {
+    await api.post('/api/calificaciones', {
       profe_curso_materia_id: Number(profeCursoMateriaId),
       alumno_id: alumnoId,
       bimestre_id: bimestreId,

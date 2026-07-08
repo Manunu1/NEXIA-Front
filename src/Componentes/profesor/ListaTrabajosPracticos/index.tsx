@@ -13,9 +13,13 @@ function formatFecha(iso?: string | null): string {
 
 type Props = {
   trabajos: typeTrabajoPractico[];
+  /** Publica un borrador directamente desde la lista */
+  onPublicar?: (tp: typeTrabajoPractico) => void;
+  /** Id del TP que se está publicando (para el spinner del botón) */
+  publicandoId?: number | null;
 };
 
-const ListaTrabajosPracticos: React.FC<Props> = ({ trabajos }) => {
+const ListaTrabajosPracticos: React.FC<Props> = ({ trabajos, onPublicar, publicandoId }) => {
   return (
     <div className="ltp-grid">
       {trabajos.map((tp) => (
@@ -24,6 +28,24 @@ const ListaTrabajosPracticos: React.FC<Props> = ({ trabajos }) => {
             <span className={`ltp-badge ${tp.activo ? 'ltp-badge--activo' : 'ltp-badge--borrador'}`}>
               {tp.activo ? 'Publicado' : 'Borrador'}
             </span>
+            {!tp.activo && onPublicar && (
+              <button
+                type="button"
+                className="ltp-publicar-btn"
+                onClick={() => onPublicar(tp)}
+                disabled={publicandoId === tp.trabajo_practico_id}
+              >
+                {publicandoId === tp.trabajo_practico_id ? (
+                  <span className="ltp-publicar-spinner" aria-hidden="true" />
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="12" height="12">
+                    <line x1="22" y1="2" x2="11" y2="13" />
+                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                  </svg>
+                )}
+                Publicar
+              </button>
+            )}
             <Link
               to={`/trabajo-practico/${tp.trabajo_practico_id}/editar`}
               className="ltp-edit-btn"

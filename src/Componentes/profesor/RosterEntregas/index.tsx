@@ -45,16 +45,17 @@ const RosterEntregas: React.FC<Props> = ({ rows, onGrade }) => {
   const handleGuardar = async (row: typeEntregaRoster) => {
     const state = rowState[row.alumno_id];
     const notaNum = Number(state.nota);
-    if (state.nota === '' || isNaN(notaNum)) {
-      patchRow(row.alumno_id, { error: 'Ingresá una nota válida.' });
+    if (state.nota === '' || isNaN(notaNum) || notaNum < 0 || notaNum > 10) {
+      patchRow(row.alumno_id, { error: 'La nota debe ser un número entre 0 y 10.' });
       return;
     }
     patchRow(row.alumno_id, { saving: true, error: null, saved: false });
     try {
       await onGrade(row.alumno_id, notaNum, state.comentario);
       patchRow(row.alumno_id, { saving: false, saved: true });
-    } catch (err: any) {
-      patchRow(row.alumno_id, { saving: false, error: err.response?.data?.message || 'No se pudo guardar la nota.' });
+    } catch (err: unknown) {
+      const ex = err as { response?: { data?: { message?: string } } };
+      patchRow(row.alumno_id, { saving: false, error: ex.response?.data?.message || 'No se pudo guardar la nota.' });
     }
   };
 
@@ -93,6 +94,9 @@ const RosterEntregas: React.FC<Props> = ({ rows, onGrade }) => {
                 type="number"
                 className="re-nota-input"
                 placeholder="—"
+                min={0}
+                max={10}
+                step={0.5}
                 value={state.nota}
                 disabled={!puedeCalificar}
                 onChange={(e) => patchRow(row.alumno_id, { nota: e.target.value, saved: false })}

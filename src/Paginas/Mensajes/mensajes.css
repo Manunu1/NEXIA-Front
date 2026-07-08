@@ -1,0 +1,371 @@
+/* ─────────────────────────────────────────────
+   MENSAJES — layout de dos paneles (lista + hilo)
+───────────────────────────────────────────── */
+.msj-beta-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--orange-d);
+  background: var(--orange-xs);
+  border: 1px solid rgba(255,152,0,.22);
+  border-radius: 99px;
+  padding: 0.25rem 0.75rem;
+  white-space: nowrap;
+}
+
+/* ── Lista de conversaciones ──────────────── */
+.msj-lista-vacia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 2.5rem 1.25rem;
+  text-align: center;
+  color: var(--t4);
+}
+
+.msj-lista-vacia svg {
+  width: 30px;
+  height: 30px;
+  opacity: 0.5;
+}
+
+.msj-lista-vacia p {
+  font-size: 0.82rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.msj-conv-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  gap: 0.25rem;
+}
+
+.msj-conv {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--r2);
+  text-align: left;
+  transition: background 0.18s var(--ease);
+}
+
+.msj-conv:hover { background: var(--s1); }
+
+.msj-conv--activa,
+.msj-conv--activa:hover { background: var(--navy-ghost); }
+
+.msj-conv-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--navy), var(--navy-l));
+  color: var(--white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fd);
+  font-size: 0.72rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.msj-conv-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.msj-conv-nombre {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--t1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msj-conv-preview {
+  font-size: 0.74rem;
+  color: var(--t4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msj-conv-hora {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--t4);
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+/* ── Panel del hilo ───────────────────────── */
+.msj-chat {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--s1);
+}
+
+.msj-chat-vacio {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.msj-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.msj-chat-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.msj-chat-nombre {
+  font-family: var(--fd);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--t1);
+}
+
+.msj-chat-sub {
+  font-size: 0.7rem;
+  color: var(--t4);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.msj-hilo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.msj-hilo-vacio {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--t4);
+  margin: auto;
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+.msj-burbuja {
+  max-width: 68%;
+  align-self: flex-start;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  border-bottom-left-radius: 4px;
+  padding: 0.75rem 1rem;
+  box-shadow: var(--sh-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  animation: fadeInUp var(--dur-fast) var(--ease) both;
+}
+
+.msj-burbuja--propia {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-m) 100%);
+  border: none;
+  border-radius: var(--r3);
+  border-bottom-right-radius: 4px;
+  color: var(--white);
+  box-shadow: 0 4px 16px rgba(26,35,126,.18);
+}
+
+.msj-burbuja-texto {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.msj-burbuja-hora {
+  font-size: 0.62rem;
+  opacity: 0.5;
+  align-self: flex-end;
+  font-weight: 500;
+}
+
+/* ── Composer ─────────────────────────────── */
+.msj-composer {
+  flex-shrink: 0;
+  padding: 0.75rem 1.5rem 1rem;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.msj-composer-aviso {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--orange-d);
+}
+
+.msj-composer-aviso svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.msj-input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.625rem;
+}
+
+.msj-input {
+  flex: 1;
+  font-family: var(--fb);
+  font-size: 0.9rem;
+  color: var(--t2);
+  background: var(--navy-ghost);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r3);
+  padding: 0.72rem 1rem;
+  resize: none;
+  outline: none;
+  min-height: 44px;
+  max-height: 120px;
+  line-height: 1.5;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s;
+}
+
+.msj-input::placeholder { color: var(--t4); }
+
+.msj-input:focus {
+  border-color: var(--navy-l);
+  box-shadow: 0 0 0 3px rgba(26,35,126,.08);
+  background: var(--white);
+}
+
+.msj-enviar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: var(--navy-d);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(255,152,0,.3);
+  transition: all 0.2s var(--ease);
+}
+
+.msj-enviar svg { width: 100%; height: 100%; }
+
+.msj-enviar:hover:not(:disabled) {
+  background: var(--orange-l);
+  transform: translateY(-2px);
+  box-shadow: var(--sh-glow-orange);
+}
+
+.msj-enviar:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Responsive ───────────────────────────── */
+@media (max-width: 768px) {
+  .msj-burbuja { max-width: 85%; }
+  .msj-composer { padding: 0.625rem 1rem 0.875rem; }
+  .msj-hilo { padding: 1rem; }
+}
+
+/* ── Elementos de la simulación ───────────── */
+.msj-demo-chip {
+  display: inline-block;
+  margin-left: 0.45rem;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--navy);
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  border-radius: 99px;
+  padding: 0.08rem 0.45rem;
+  vertical-align: middle;
+}
+
+.msj-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.msj-divider::before,
+.msj-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.msj-divider span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--t4);
+}
+
+/* Indicador "escribiendo…" */
+.msj-burbuja--typing {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.875rem 1.125rem;
+  width: fit-content;
+}
+
+.msj-burbuja--typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--t4);
+  animation: msjTyping 1.2s ease-in-out infinite;
+}
+
+.msj-burbuja--typing span:nth-child(2) { animation-delay: 0.18s; }
+.msj-burbuja--typing span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes msjTyping {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30%           { transform: translateY(-4px); opacity: 1; }
+}

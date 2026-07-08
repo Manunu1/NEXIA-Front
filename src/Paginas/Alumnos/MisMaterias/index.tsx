@@ -8,7 +8,7 @@ import QuickLinks from '../../../Componentes/QuickLinks';
 import type { QuickLinkItem } from '../../../Componentes/QuickLinks';
 import NexiaPromo from '../../../Componentes/NexiaPromo';
 import EmptyState from '../../../Componentes/EmptyState';
-import type { typeTrabajoPracticoAlumno } from '../../../Types/profesores/types';
+import type { typeTrabajoPracticoAlumno, typeBoletinNotaFinal } from '../../../Types/profesores/types';
 import api from '../../../api';
 import { getNombreUsuario, getUsuarioSesion } from '../../../utils/session';
 import { materiaTheme } from '../../../utils/materiaTheme';
@@ -64,6 +64,53 @@ const QUICK_LINKS: QuickLinkItem[] = [
   },
 ];
 
+interface PromedioBimestre {
+  orden: number;
+  nombre: string;
+  promedio: number;
+}
+
+interface MateriaFloja {
+  materia: string;
+  promedio: number;
+}
+
+/** Promedio general por bimestre a partir de las notas finales del boletín */
+function promediosPorBimestre(notas: typeBoletinNotaFinal[]): PromedioBimestre[] {
+  const porBimestre = new Map<number, { nombre: string; notas: number[] }>();
+  for (const n of notas) {
+    if (n.nota == null) continue;
+    const entry = porBimestre.get(n.orden) ?? { nombre: n.bimestre_nombre, notas: [] };
+    entry.notas.push(Number(n.nota));
+    porBimestre.set(n.orden, entry);
+  }
+  return Array.from(porBimestre.entries())
+    .map(([orden, { nombre, notas: ns }]) => ({
+      orden,
+      nombre,
+      promedio: Math.round((ns.reduce((a, b) => a + b, 0) / ns.length) * 10) / 10,
+    }))
+    .sort((a, b) => a.orden - b.orden);
+}
+
+/** Materias con promedio de notas finales por debajo de 6 */
+function materiasEnRojo(notas: typeBoletinNotaFinal[]): MateriaFloja[] {
+  const porMateria = new Map<string, number[]>();
+  for (const n of notas) {
+    if (n.nota == null) continue;
+    const arr = porMateria.get(n.materia_nombre) ?? [];
+    arr.push(Number(n.nota));
+    porMateria.set(n.materia_nombre, arr);
+  }
+  return Array.from(porMateria.entries())
+    .map(([materia, ns]) => ({
+      materia,
+      promedio: Math.round((ns.reduce((a, b) => a + b, 0) / ns.length) * 10) / 10,
+    }))
+    .filter((m) => m.promedio < 6)
+    .sort((a, b) => a.promedio - b.promedio);
+}
+
 /** Etiqueta de vencimiento legible ("Vence hoy", "Vence en 3 días", …) */
 function vencimiento(fechaLimite: string | null | undefined): { label: string; urgente: boolean } {
   if (!fechaLimite) return { label: 'Sin fecha límite', urgente: false };
@@ -91,6 +138,9 @@ const MisMaterias: React.FC = () => {
   const [userName] = useState(getNombreUsuario);
   const [pendientes, setPendientes] = useState<typeTrabajoPracticoAlumno[]>([]);
   const [corregidos, setCorregidos] = useState(0);
+  const [tpTotales, setTpTotales] = useState(0);
+  const [promedios, setPromedios] = useState<PromedioBimestre[]>([]);
+  const [flojas, setFlojas] = useState<MateriaFloja[]>([]);
 
   useEffect(() => {
     const traerDatos = async () => {
@@ -99,11 +149,12 @@ const MisMaterias: React.FC = () => {
       const alumnoId = usuario.alumno_id;
       if (!alumnoId) { setError('El perfil no corresponde a un alumno válido.'); return; }
 
-      // Materias (contenido principal) y trabajos prácticos (hero + próximas
-      // entregas) se piden en paralelo; si los TPs fallan, el inicio no se rompe.
-      const [materiasRes, tpsRes] = await Promise.allSettled([
+      // Materias, trabajos prácticos y boletín en paralelo; si alguno
+      // secundario falla, el inicio no se rompe.
+      const [materiasRes, tpsRes, boletinRes] = await Promise.allSettled([
         api.get(`/api/alumnos/${alumnoId}/materias`),
         api.get(`/api/trabajos-practicos/alumno/${alumnoId}`),
+        api.get(`/api/boletin/alumno/${alumnoId}`),
       ]);
 
       if (materiasRes.status === 'fulfilled') {
@@ -114,21 +165,31 @@ const MisMaterias: React.FC = () => {
 
       if (tpsRes.status === 'fulfilled') {
         const tps: typeTrabajoPracticoAlumno[] = tpsRes.value.data.data || [];
-        const sinEntregar = tps
-          .filter((tp) => tp.activo !== false && !tp.entrega_id)
+        const activos = tps.filter((tp) => tp.activo !== false);
+        const sinEntregar = activos
+          .filter((tp) => !tp.entrega_id)
           .sort((a, b) => {
             if (!a.fecha_limite) return 1;
             if (!b.fecha_limite) return -1;
             return new Date(a.fecha_limite).getTime() - new Date(b.fecha_limite).getTime();
           });
         setPendientes(sinEntregar);
+        setTpTotales(activos.length);
         setCorregidos(tps.filter((tp) => tp.estado === 'corregido').length);
+      }
+
+      if (boletinRes.status === 'fulfilled') {
+        const notasFinales: typeBoletinNotaFinal[] = boletinRes.value.data.data?.notas_finales || [];
+        setPromedios(promediosPorBimestre(notasFinales));
+        setFlojas(materiasEnRojo(notasFinales));
       }
 
       setLoading(false);
     };
     traerDatos();
   }, []);
+
+  const entregados = tpTotales - pendientes.length;
 
   return (
     <>
@@ -181,6 +242,118 @@ const MisMaterias: React.FC = () => {
 
               {/* ── Columna principal: materias ── */}
               <div className="home-main">
+                <div className="home-row">
+                {/* Próximas entregas — datos reales del alumno */}
+                <section className="pe-panel" id="proximas-entregas" aria-label="Próximas entregas">
+                  <div className="pe-head">
+                    <span className="ql-title">Próximas entregas</span>
+                    {pendientes.length > 0 && (
+                      <span className="pe-count">{pendientes.length}</span>
+                    )}
+                  </div>
+
+                  {pendientes.length === 0 ? (
+                    <div className="pe-empty">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                      <p>Estás al día — no tenés entregas pendientes.</p>
+                    </div>
+                  ) : (
+                    <ul className="pe-list">
+                      {pendientes.slice(0, 4).map((tp) => {
+                        const { label, urgente } = vencimiento(tp.fecha_limite);
+                        return (
+                          <li key={tp.trabajo_practico_id}>
+                            <Link to={`/trabajo-practico/${tp.trabajo_practico_id}`} className="pe-item">
+                              <span className="pe-item-top">
+                                {tp.materia_nombre && (
+                                  <span
+                                    className="pe-materia"
+                                    style={{ color: materiaTheme(tp.materia_nombre).accent }}
+                                  >
+                                    {tp.materia_nombre}
+                                  </span>
+                                )}
+                                <span className={`pe-fecha${urgente ? ' pe-fecha--urgente' : ''}`}>{label}</span>
+                              </span>
+                              <span className="pe-titulo">{tp.titulo}</span>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </section>
+
+                {/* Mi rendimiento — promedios reales del boletín */}
+                <section className="rp-panel" aria-label="Mi rendimiento">
+                  <span className="ql-title">Mi rendimiento</span>
+
+                  {promedios.length > 0 ? (
+                    <div
+                      className="rp-chart"
+                      role="img"
+                      aria-label={`Promedio general por bimestre: ${promedios.map(p => `${p.nombre}: ${p.promedio}`).join(', ')}`}
+                    >
+                      {promedios.map((p) => (
+                        <div
+                          className="rp-col"
+                          key={p.orden}
+                          title={`${p.nombre}: promedio ${p.promedio}`}
+                        >
+                          <span className="rp-valor">{p.promedio}</span>
+                          <div className="rp-track">
+                            <div
+                              className="rp-fill"
+                              style={{ height: `${Math.max((p.promedio / 10) * 100, 6)}%` }}
+                            />
+                          </div>
+                          <span className="rp-etiqueta">B{p.orden}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="rp-sin-datos">Cuando tus docentes carguen notas, acá vas a ver tu promedio por bimestre.</p>
+                  )}
+
+                  {tpTotales > 0 && (
+                    <div className="rp-entregas">
+                      <div className="rp-entregas-head">
+                        <span>Entregas al día</span>
+                        <strong>{entregados} de {tpTotales}</strong>
+                      </div>
+                      <div
+                        className="rp-progress"
+                        role="progressbar"
+                        aria-valuemin={0}
+                        aria-valuemax={tpTotales}
+                        aria-valuenow={entregados}
+                        aria-label={`${entregados} de ${tpTotales} trabajos entregados`}
+                      >
+                        <div
+                          className="rp-progress-fill"
+                          style={{ width: `${tpTotales ? (entregados / tpTotales) * 100 : 0}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {flojas.slice(0, 3).map((m) => (
+                    <div className="rp-alerta" key={m.materia} role="status">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                        <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
+                      </svg>
+                      <span>
+                        Reforzá <strong>{m.materia}</strong> — promedio {m.promedio}
+                      </span>
+                    </div>
+                  ))}
+                </section>
+                </div>
+
                 <div className="section-head">
                   <div>
                     <h2 className="section-title">Mis materias</h2>
@@ -226,50 +399,6 @@ const MisMaterias: React.FC = () => {
 
               {/* ── Rail lateral ── */}
               <aside className="home-rail">
-
-                {/* Próximas entregas — datos reales del alumno */}
-                <section className="pe-panel" id="proximas-entregas" aria-label="Próximas entregas">
-                  <div className="pe-head">
-                    <span className="ql-title">Próximas entregas</span>
-                    {pendientes.length > 0 && (
-                      <span className="pe-count">{pendientes.length}</span>
-                    )}
-                  </div>
-
-                  {pendientes.length === 0 ? (
-                    <div className="pe-empty">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                        <polyline points="22 4 12 14.01 9 11.01" />
-                      </svg>
-                      <p>Estás al día — no tenés entregas pendientes.</p>
-                    </div>
-                  ) : (
-                    <ul className="pe-list">
-                      {pendientes.slice(0, 4).map((tp) => {
-                        const { label, urgente } = vencimiento(tp.fecha_limite);
-                        return (
-                          <li key={tp.trabajo_practico_id}>
-                            <Link to={`/trabajo-practico/${tp.trabajo_practico_id}`} className="pe-item">
-                              <span className="pe-item-top">
-                                {tp.materia_nombre && (
-                                  <span
-                                    className="pe-materia"
-                                    style={{ color: materiaTheme(tp.materia_nombre).accent }}
-                                  >
-                                    {tp.materia_nombre}
-                                  </span>
-                                )}
-                                <span className={`pe-fecha${urgente ? ' pe-fecha--urgente' : ''}`}>{label}</span>
-                              </span>
-                              <span className="pe-titulo">{tp.titulo}</span>
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
-                </section>
 
                 <QuickLinks items={QUICK_LINKS} />
 

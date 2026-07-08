@@ -128,3 +128,146 @@
   margin: 0;
   line-height: 1.5;
 }
+
+/* ── Mi rendimiento ───────────────────────── */
+.rp-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
+}
+
+/* Barras de promedio por bimestre (una serie, un solo tono) */
+.rp-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 0.5rem;
+  padding: 0.25rem 0.25rem 0;
+}
+
+.rp-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 1;
+  max-width: 56px;
+}
+
+.rp-valor {
+  font-family: var(--fd);
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--t2);
+}
+
+.rp-track {
+  width: 100%;
+  max-width: 30px;
+  height: 84px;
+  background: var(--s2);
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.rp-fill {
+  width: 100%;
+  background: linear-gradient(180deg, var(--navy-l), var(--navy));
+  border-radius: 4px 4px 0 0;
+  transition: height 0.6s var(--ease);
+  animation: rpGrow 0.7s var(--ease) both;
+  transform-origin: bottom;
+}
+
+@keyframes rpGrow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+.rp-etiqueta {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rp-sin-datos {
+  font-size: 0.78rem;
+  color: var(--t4);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0 0.25rem;
+}
+
+/* Progreso de entregas */
+.rp-entregas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.rp-entregas-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--t3);
+  font-weight: 600;
+}
+
+.rp-entregas-head strong {
+  font-family: var(--fd);
+  font-size: 0.82rem;
+  color: var(--t1);
+  font-variant-numeric: tabular-nums;
+}
+
+.rp-progress {
+  height: 8px;
+  background: var(--s2);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.rp-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy-l), var(--navy));
+  border-radius: 99px;
+  transition: width 0.6s var(--ease);
+}
+
+/* Alertas de materias flojas — estado con ícono + texto */
+.rp-alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: var(--orange-xs);
+  border: 1px solid rgba(255,152,0,.2);
+  border-radius: var(--r2);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.76rem;
+  color: var(--t2);
+  line-height: 1.5;
+}
+
+.rp-alerta svg {
+  width: 14px;
+  height: 14px;
+  color: var(--orange-d);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.rp-alerta strong { color: var(--orange-d); }

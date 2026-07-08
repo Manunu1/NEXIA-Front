@@ -84,7 +84,7 @@ const VerContenido: React.FC = () => {
     const traer = async () => {
       try {
         const res = await api.get(
-          `http://localhost:3000/api/contenidos/contenido/${contenidoId}`
+          `/api/contenidos/contenido/${contenidoId}`
         );
         const db = res.data.data || res.data;
         setContenido({

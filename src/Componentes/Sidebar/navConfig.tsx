@@ -203,6 +203,7 @@ export const NAV_BY_ROL: Record<Rol, NavSection[]> = {
     {
       label: 'General',
       items: [
+        { to: '/calendario', label: 'Calendario', icon: IconCalendario, match: ['/calendario'] },
         { to: '/comunicados', label: 'Comunicados', icon: IconComunicados, match: ['/comunicados'] },
         { to: '/configuracion', label: 'Configuración', icon: IconConfig, match: ['/configuracion'] },
       ],

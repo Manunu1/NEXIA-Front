@@ -16,3 +16,169 @@
 .cursos-grid > *:nth-child(4) { animation-delay: 0.14s; }
 .cursos-grid > *:nth-child(5) { animation-delay: 0.18s; }
 .cursos-grid > *:nth-child(n+6) { animation-delay: 0.22s; }
+
+/* ── Alumnos a acompañar ──────────────────── */
+.ar-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  scroll-margin-top: 1.5rem;
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
+}
+
+.ar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.25rem;
+}
+
+.ar-count {
+  font-family: var(--fd);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--white);
+  background: #DC2626;
+  border-radius: 99px;
+  min-width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.45rem;
+}
+
+.ar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.ar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--orange);
+  border-radius: var(--r2);
+  background: var(--s1);
+  transition: background 0.18s var(--ease);
+}
+
+.ar-item:hover { background: var(--orange-xs); }
+
+.ar-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--orange-xs);
+  color: var(--orange-d);
+  border: 1px solid rgba(255,152,0,.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fd);
+  font-size: 0.72rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.ar-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.ar-nombre {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--t1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ar-materia {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.ar-motivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--orange-d);
+}
+
+.ar-motivo svg {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+.ar-msg-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r2);
+  background: var(--navy);
+  color: var(--white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem;
+  flex-shrink: 0;
+  box-shadow: var(--sh-sm);
+  transition: all 0.18s var(--ease);
+}
+
+.ar-msg-btn svg { width: 100%; height: 100%; }
+
+.ar-msg-btn:hover {
+  background: var(--navy-d);
+  transform: translateY(-2px);
+  box-shadow: var(--sh-glow-navy);
+}
+
+.ar-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding: 1.25rem 0.75rem;
+  color: var(--t4);
+}
+
+.ar-empty svg {
+  width: 26px;
+  height: 26px;
+  color: #22C55E;
+}
+
+.ar-empty p {
+  font-size: 0.8rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* En la columna principal, los alumnos en riesgo se distribuyen en grilla */
+.home-main .ar-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 0.625rem;
+}

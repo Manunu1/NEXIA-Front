@@ -26,6 +26,8 @@ function normalizar(rawInput: unknown): typeTrabajoPracticoAlumno {
     fecha_publicacion: raw.fecha_publicacion ?? null,
     materia_id: raw.materia_id,
     materia_nombre: raw.materia_nombre ?? '',
+    profesor_nombre: raw.profesor_nombre ?? '',
+    profesor_apellido: raw.profesor_apellido ?? '',
     entrega_id: raw.entrega_id ?? null,
     estado: raw.estado ?? null,
     nota: raw.nota ?? null,
@@ -52,7 +54,7 @@ const TrabajosPracticosAlumno: React.FC = () => {
         const session = localStorage.getItem('usuario');
         const alumnoId = session ? JSON.parse(session).alumno_id : localStorage.getItem('alumno_id');
         if (!alumnoId) { setError('No se encontró el ID del alumno.'); return; }
-        const res = await api.get(`http://localhost:3000/api/trabajos-practicos/alumno/${alumnoId}`);
+        const res = await api.get(`/api/trabajos-practicos/alumno/${alumnoId}`);
         const lista: typeTrabajoPracticoAlumno[] = (res.data.data || []).map(normalizar);
         const deLaMateria = lista.filter(
           (tp) => String(tp.profe_curso_materia_id) === String(profeCursoMateriaId)

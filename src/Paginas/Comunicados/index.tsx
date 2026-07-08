@@ -5,6 +5,7 @@ import ConfirmDialog from "../../Componentes/ConfirmDialog";
 import EditarComunicadoModal from "../../Componentes/Gestor/EditarComunicadoModal";
 import type { ComunicadoCambios } from "../../Componentes/Gestor/EditarComunicadoModal";
 import api from "../../api";
+import { getUsuarioSesion } from "../../utils/session";
 import "./comunicados.css";
 import { usePageTitle } from '../../hooks/usePageTitle';
 
@@ -33,10 +34,17 @@ function Comunicados() {
   const [comunicados, setComunicados] = useState<Comunicado[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [rol, setRol] = useState("");
-  const [institucionId, setInstitucionId] = useState("");
-  const [institucionNombre, setInstitucionNombre] = useState("");
-  const [userName, setUserName] = useState("");
+
+  // Datos de sesión (estables durante toda la página)
+  const [rol] = useState(() => (localStorage.getItem('rol') || '').toUpperCase());
+  const [{ institucionId, institucionNombre, userName }] = useState(() => {
+    const usuario = getUsuarioSesion();
+    return {
+      institucionId: localStorage.getItem('institucion_id') || String(usuario?.institucion_id ?? ''),
+      institucionNombre: usuario?.institucion_nombre || '',
+      userName: `${usuario?.nombre || ''} ${usuario?.apellido || ''}`.trim(),
+    };
+  });
 
   // Form state (GESTOR only)
   const [showForm, setShowForm] = useState(false);
@@ -50,22 +58,6 @@ function Comunicados() {
   const [deleteTarget, setDeleteTarget] = useState<Comunicado | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [actionError, setActionError] = useState("");
-
-  useEffect(() => {
-    try {
-      const session = localStorage.getItem('usuario');
-      const rolStored = (localStorage.getItem('rol') || '').toUpperCase();
-      const instId = localStorage.getItem('institucion_id') || '';
-      setRol(rolStored);
-      setInstitucionId(instId);
-      if (session) {
-        const user = JSON.parse(session);
-        setInstitucionNombre(user.institucion_nombre || '');
-        setUserName(`${user.nombre || ''} ${user.apellido || ''}`.trim());
-        if (!instId && user.institucion_id) setInstitucionId(String(user.institucion_id));
-      }
-    } catch {}
-  }, []);
 
   useEffect(() => {
     if (!institucionId) return;
@@ -114,8 +106,8 @@ function Comunicados() {
       setSubmitSuccess(true);
       setTimeout(() => { setSubmitSuccess(false); setShowForm(false); }, 2500);
     } catch (err: unknown) {
-      const e = err as any;
-      setSubmitError(e?.response?.data?.message || e?.message || 'Error al publicar el comunicado');
+      const ex = err as { response?: { data?: { message?: string } }; message?: string };
+      setSubmitError(ex?.response?.data?.message || ex?.message || 'Error al publicar el comunicado');
     } finally {
       setSubmitting(false);
     }

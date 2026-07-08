@@ -98,7 +98,7 @@ const CrearContenido: React.FC = () => {
   useEffect(() => {
     const traerTipos = async () => {
       try {
-        const res = await api.get('http://localhost:3000/api/tipos-contenido');
+        const res = await api.get('/api/tipos-contenido');
         const lista: typeTipoContenido[] = res.data.data;
         setTipos(lista);
         // Si el objeto original no traía tipo_contenido_id por algún motivo,
@@ -147,14 +147,15 @@ const CrearContenido: React.FC = () => {
     try {
       const fd = new FormData();
       fd.append('archivo', file);
-      const res = await api.post('http://localhost:3000/api/contenidos/upload', fd);
+      const res = await api.post('/api/contenidos/upload', fd);
       const url: string = res.data.data.url;
       setFormData(prev => ({ ...prev, archivo_url: url }));
       setUrlPreview(url);
       setUploadState('done');
-    } catch (err: any) {
-      const msg = err.response?.data?.message || err.message || 'Error al conectar con el servidor.';
-      console.error('[Upload error]', err.response?.status, msg);
+    } catch (err: unknown) {
+      const ex = err as { response?: { status?: number; data?: { message?: string } }; message?: string };
+      const msg = ex.response?.data?.message || ex.message || 'Error al conectar con el servidor.';
+      console.error('[Upload error]', ex.response?.status, msg);
       setUploadError(msg);
       setUploadState('error');
     }
@@ -181,14 +182,14 @@ const CrearContenido: React.FC = () => {
     setSubmitStatus('loading');
     try {
       if (isEditMode) {
-        await api.put(`http://localhost:3000/api/contenidos/${contenidoId}`, {
+        await api.put(`/api/contenidos/${contenidoId}`, {
           titulo: formData.titulo,
           descripcion: formData.descripcion,
           archivo_url: formData.archivo_url,
           tipo_contenido_id: formData.tipo_contenido_id,
         });
       } else {
-        await api.post('http://localhost:3000/api/contenidos', {
+        await api.post('/api/contenidos', {
           ...formData,
           profe_curso_materia_id: Number(materiaId),
         });

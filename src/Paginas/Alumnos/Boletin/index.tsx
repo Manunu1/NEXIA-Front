@@ -44,7 +44,7 @@ const Boletin: React.FC = () => {
       try {
         const alumnoId = getAlumnoId();
         if (!alumnoId) { setError('No se encontró el ID del alumno.'); return; }
-        const res = await api.get(`http://localhost:3000/api/boletin/alumno/${alumnoId}`);
+        const res = await api.get(`/api/boletin/alumno/${alumnoId}`);
         setBoletin(res.data.data);
       } catch (err) {
         console.error('Error al obtener el boletín:', err);

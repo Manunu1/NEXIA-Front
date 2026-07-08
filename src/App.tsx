@@ -28,6 +28,8 @@ import TrabajosPracticosAlumno from "./Paginas/Alumnos/TrabajosPracticos";
 import TrabajoPracticoDetalle from "./Paginas/Alumnos/TrabajoPracticoDetalle";
 import Boletin from "./Paginas/Alumnos/Boletin";
 import Apuntes from "./Paginas/Alumnos/Apuntes";
+import Mensajes from "./Paginas/Mensajes";
+import Calendario from "./Paginas/Calendario";
 import NoEncontrado from "./Paginas/NoEncontrado";
 import ScrollToTop from "./Componentes/ScrollToTop";
 import type { Rol } from "./utils/session";
@@ -71,9 +73,9 @@ function App() {
 
         {/* ── Todos los roles autenticados ── */}
         <Route path="/comunicados" element={guard(<Comunicados />)} />
-        {["/calendario", "/mensajes", "/configuracion"].map((p) => (
-          <Route key={p} path={p} element={guard(<Proximamente />)} />
-        ))}
+        <Route path="/mensajes" element={guard(<Mensajes />)} />
+        <Route path="/calendario" element={guard(<Calendario />)} />
+        <Route path="/configuracion" element={guard(<Proximamente />)} />
 
         {/* ── Gestor ── */}
         <Route path="/gestor" element={guard(<HomeGestor />, ["gestor"])} />

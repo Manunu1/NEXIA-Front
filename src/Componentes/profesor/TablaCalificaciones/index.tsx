@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import type { typeCalificacionRoster } from '../../../Types/profesores/types';
 import './tablaCalificaciones.css';
 
@@ -9,22 +9,30 @@ type Props = {
   onSave: (alumnoId: number, nota: number, observaciones: string) => Promise<void>;
 };
 
-const TablaCalificaciones: React.FC<Props> = ({ rows, onSave }) => {
-  const [rowState, setRowState] = useState<Record<number, RowState>>({});
+function buildRowState(rows: typeCalificacionRoster[]): Record<number, RowState> {
+  const initial: Record<number, RowState> = {};
+  rows.forEach((r) => {
+    initial[r.alumno_id] = {
+      nota: r.nota != null ? String(r.nota) : '',
+      observaciones: r.observaciones ?? '',
+      saving: false,
+      error: null,
+      saved: false,
+    };
+  });
+  return initial;
+}
 
-  useEffect(() => {
-    const initial: Record<number, RowState> = {};
-    rows.forEach((r) => {
-      initial[r.alumno_id] = {
-        nota: r.nota != null ? String(r.nota) : '',
-        observaciones: r.observaciones ?? '',
-        saving: false,
-        error: null,
-        saved: false,
-      };
-    });
-    setRowState(initial);
-  }, [rows]);
+const TablaCalificaciones: React.FC<Props> = ({ rows, onSave }) => {
+  const [rowState, setRowState] = useState<Record<number, RowState>>(() => buildRowState(rows));
+
+  // Resincronizar cuando cambian las filas (patrón "derived state" en render,
+  // en lugar de un efecto que provoca doble render)
+  const [prevRows, setPrevRows] = useState(rows);
+  if (rows !== prevRows) {
+    setPrevRows(rows);
+    setRowState(buildRowState(rows));
+  }
 
   const patchRow = (alumnoId: number, patch: Partial<RowState>) => {
     setRowState((prev) => ({ ...prev, [alumnoId]: { ...prev[alumnoId], ...patch } }));
@@ -33,16 +41,17 @@ const TablaCalificaciones: React.FC<Props> = ({ rows, onSave }) => {
   const handleGuardar = async (row: typeCalificacionRoster) => {
     const state = rowState[row.alumno_id];
     const notaNum = Number(state.nota);
-    if (state.nota === '' || isNaN(notaNum)) {
-      patchRow(row.alumno_id, { error: 'Ingresá una nota válida.' });
+    if (state.nota === '' || isNaN(notaNum) || notaNum < 0 || notaNum > 10) {
+      patchRow(row.alumno_id, { error: 'La nota debe ser un número entre 0 y 10.' });
       return;
     }
     patchRow(row.alumno_id, { saving: true, error: null, saved: false });
     try {
       await onSave(row.alumno_id, notaNum, state.observaciones);
       patchRow(row.alumno_id, { saving: false, saved: true });
-    } catch (err: any) {
-      patchRow(row.alumno_id, { saving: false, error: err.response?.data?.message || 'No se pudo guardar la nota.' });
+    } catch (err: unknown) {
+      const ex = err as { response?: { data?: { message?: string } } };
+      patchRow(row.alumno_id, { saving: false, error: ex.response?.data?.message || 'No se pudo guardar la nota.' });
     }
   };
 
@@ -66,6 +75,9 @@ const TablaCalificaciones: React.FC<Props> = ({ rows, onSave }) => {
                 type="number"
                 className="tc-nota-input"
                 placeholder="—"
+                min={0}
+                max={10}
+                step={0.5}
                 value={state.nota}
                 onChange={(e) => patchRow(row.alumno_id, { nota: e.target.value, saved: false })}
               />

@@ -44,6 +44,8 @@ export interface typeTrabajoPractico {
   activo: boolean;
   fecha_publicacion: string | null;
   cantidad_entregas?: number;
+  profesor_nombre?: string;
+  profesor_apellido?: string;
 }
 
 // Item de la lista del alumno: TP + su propia entrega fusionados

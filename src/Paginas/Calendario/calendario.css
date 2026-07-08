@@ -1,0 +1,345 @@
+/* ─────────────────────────────────────────────
+   CALENDARIO INSTITUCIONAL
+───────────────────────────────────────────── */
+.cal-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .cal-layout { grid-template-columns: 1fr; }
+}
+
+/* ── Card del calendario ──────────────────── */
+.cal-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
+}
+
+.cal-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cal-mes-titulo {
+  flex: 1;
+  text-align: center;
+  font-family: var(--fd);
+  font-size: 1.15rem;
+  color: var(--t3);
+  letter-spacing: -0.3px;
+}
+
+.cal-mes-titulo strong {
+  color: var(--t1);
+  font-weight: 800;
+}
+
+.cal-nav-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r2);
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--t3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  transition: all 0.18s var(--ease);
+}
+
+.cal-nav-btn svg { width: 100%; height: 100%; }
+
+.cal-nav-btn:hover {
+  background: var(--navy-ghost);
+  border-color: var(--navy-xs);
+  color: var(--navy);
+}
+
+.cal-hoy-btn {
+  padding: 0.45rem 1rem;
+  border-radius: var(--r2);
+  border: 1px solid var(--navy-xs);
+  background: var(--navy-ghost);
+  color: var(--navy);
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: all 0.18s var(--ease);
+}
+
+.cal-hoy-btn:hover {
+  background: var(--navy-xs);
+  transform: translateY(-1px);
+}
+
+/* ── Encabezado de semana ─────────────────── */
+.cal-semana {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.cal-dia-nombre {
+  text-align: center;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--t4);
+  padding: 0.25rem 0;
+}
+
+/* ── Grilla de días ───────────────────────── */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.cal-celda {
+  min-height: 58px;
+  border-radius: var(--r2);
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.2rem;
+  padding: 0.45rem 0.25rem;
+  transition: all 0.15s var(--ease);
+}
+
+.cal-celda--vacia { pointer-events: none; }
+
+.cal-celda:not(.cal-celda--vacia):hover {
+  background: var(--s1);
+  border-color: var(--border);
+}
+
+.cal-celda-num {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--t2);
+  line-height: 1;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.cal-celda--hoy .cal-celda-num {
+  box-shadow: inset 0 0 0 1.5px var(--orange);
+  color: var(--orange-d);
+  font-weight: 800;
+}
+
+.cal-celda--activa {
+  background: var(--navy-ghost);
+  border-color: var(--navy-xs);
+}
+
+.cal-celda--activa .cal-celda-num {
+  background: var(--navy);
+  color: var(--white);
+  font-weight: 700;
+}
+
+/* Puntos de eventos por tipo */
+.cal-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.cal-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cal-dot--evento  { background: var(--navy-l); }
+.cal-dot--examen  { background: #C62828; }
+.cal-dot--entrega { background: var(--orange); }
+.cal-dot--feriado { background: #2E7D32; }
+
+.cal-sk { height: 340px; }
+
+/* Leyenda */
+.cal-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.cal-leyenda-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--t4);
+}
+
+/* ── Panel lateral ────────────────────────── */
+.cal-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+@media (max-width: 1000px) {
+  .cal-panel { position: static; }
+}
+
+.cal-panel-bloque {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
+}
+
+.cal-sin-eventos {
+  font-size: 0.8rem;
+  color: var(--t4);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0 0.25rem;
+}
+
+.cal-evento-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.cal-evento {
+  --cal-accent: var(--navy-l);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--cal-accent);
+  border-radius: var(--r2);
+  background: var(--s1);
+}
+
+.cal-evento--examen  { --cal-accent: #C62828; }
+.cal-evento--entrega { --cal-accent: var(--orange); }
+.cal-evento--feriado { --cal-accent: #2E7D32; }
+
+.cal-evento-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.cal-evento-tipo {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--cal-accent);
+}
+
+.cal-evento-titulo {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--t1);
+  line-height: 1.35;
+}
+
+.cal-evento-fecha {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--t4);
+}
+
+.cal-evento-desc {
+  font-size: 0.76rem;
+  color: var(--t3);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cal-evento-borrar {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--r1);
+  background: var(--white);
+  border: 1px solid var(--border);
+  color: var(--t4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem;
+  flex-shrink: 0;
+  transition: all 0.18s ease;
+}
+
+.cal-evento-borrar svg { width: 100%; height: 100%; }
+
+.cal-evento-borrar:hover {
+  color: #DC2626;
+  background: #FFF1F1;
+  border-color: rgba(220,38,38,.25);
+}
+
+/* ── Selector de tipo (modal) ─────────────── */
+.cal-tipos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.cal-tipo-chip {
+  --cal-accent: var(--navy-l);
+  padding: 0.4rem 0.8rem;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--t3);
+  transition: all 0.18s var(--ease);
+}
+
+.cal-tipo-chip--examen  { --cal-accent: #C62828; }
+.cal-tipo-chip--entrega { --cal-accent: var(--orange-d); }
+.cal-tipo-chip--feriado { --cal-accent: #2E7D32; }
+
+.cal-tipo-chip:hover:not(:disabled) { border-color: var(--cal-accent); color: var(--cal-accent); }
+
+.cal-tipo-chip--activo {
+  border-color: var(--cal-accent);
+  color: var(--cal-accent);
+  background: color-mix(in srgb, var(--cal-accent) 9%, var(--white));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cal-accent) 12%, transparent);
+}

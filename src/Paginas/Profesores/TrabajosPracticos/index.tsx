@@ -15,6 +15,27 @@ const TrabajosPracticos: React.FC = () => {
   const [materia, setMateria] = useState<{ materia_nombre: string; anio: number; division: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [publicandoId, setPublicandoId] = useState<number | null>(null);
+
+  const publicar = async (tp: typeTrabajoPractico) => {
+    setPublicandoId(tp.trabajo_practico_id);
+    try {
+      const res = await api.patch(`/api/trabajos-practicos/${tp.trabajo_practico_id}/estado`, { activo: true });
+      const actualizado = res.data.data;
+      setTrabajos(prev => prev.map(t =>
+        t.trabajo_practico_id === tp.trabajo_practico_id
+          ? { ...t, activo: actualizado?.activo ?? true, fecha_publicacion: actualizado?.fecha_publicacion ?? t.fecha_publicacion }
+          : t
+      ));
+    } catch (err: unknown) {
+      const ex = err as { response?: { data?: { message?: string } } };
+      setError(ex.response?.data?.message || 'No se pudo publicar el trabajo práctico.');
+    } finally {
+      setPublicandoId(null);
+    }
+  };
+
+  const borradores = trabajos.filter(t => !t.activo).length;
 
   useEffect(() => {
     const traer = async () => {
@@ -77,14 +98,34 @@ const TrabajosPracticos: React.FC = () => {
           <div className="iv-error">{error}</div>
         ) : trabajos.length === 0 ? (
           <div className="iv-empty tp-empty">
-            <span>🗂️</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" width="30" height="30">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+            </svg>
             <p>Todavía no creaste trabajos prácticos para esta materia</p>
             <Link to={`/crear-trabajo-practico/${profeCursoMateriaId}`} className="iv-empty-link">
               + Crear el primero →
             </Link>
           </div>
         ) : (
-          <ListaTrabajosPracticos trabajos={trabajos} />
+          <>
+            {borradores > 0 && (
+              <div className="tpp-aviso-borradores" role="status">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                  <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                  <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+                Tenés <strong>{borradores} {borradores === 1 ? 'trabajo en borrador' : 'trabajos en borrador'}</strong> —
+                los alumnos no {borradores === 1 ? 'lo ven' : 'los ven'} hasta que {borradores === 1 ? 'lo publiques' : 'los publiques'}.
+              </div>
+            )}
+            <ListaTrabajosPracticos
+              trabajos={trabajos}
+              onPublicar={publicar}
+              publicandoId={publicandoId}
+            />
+          </>
         )}
       </div>
     </>

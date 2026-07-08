@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../api";
 import "./login.css";
 import { usePageTitle } from '../../hooks/usePageTitle';
 
@@ -19,7 +20,7 @@ function Login() {
     if (!password.trim()) { setError("Ingresá tu contraseña"); return; }
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
+      const response = await fetch(`${BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ institucion_id: Number(institucionId), dni, password }),
@@ -76,7 +77,7 @@ function Login() {
   useEffect(() => {
     const fetchInstituciones = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/instituciones");
+        const res = await fetch(`${BASE_URL}/api/instituciones`);
         const data = await res.json();
         setInstituciones(data);
       } catch {
@@ -178,6 +179,8 @@ function Login() {
                 type="text"
                 className="login-field"
                 placeholder="Ej: 40123456"
+                autoComplete="username"
+                inputMode="numeric"
                 value={dni}
                 onChange={(e) => { setDni(e.target.value); setError(""); }}
                 onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
@@ -191,6 +194,7 @@ function Login() {
                   type={showPassword ? "text" : "password"}
                   className="login-field login-field--password"
                   placeholder="Tu contraseña"
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => { setPassword(e.target.value); setError(""); }}
                   onKeyDown={(e) => e.key === 'Enter' && handleLogin()}

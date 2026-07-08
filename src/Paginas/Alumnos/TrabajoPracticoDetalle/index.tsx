@@ -45,6 +45,7 @@ const TrabajoPracticoDetalle: React.FC = () => {
   const [dragOver, setDragOver] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [entregaExitosa, setEntregaExitosa] = useState(false);
 
   useEffect(() => {
     const traer = async () => {
@@ -116,6 +117,7 @@ const TrabajoPracticoDetalle: React.FC = () => {
       setEntrega({ ...data, entrega_id: data.id });
       setUploadState('idle');
       setArchivoUrl('');
+      setEntregaExitosa(true);
     } catch (err: unknown) {
       const ex = err as { response?: { data?: { message?: string } } };
       setSubmitError(ex.response?.data?.message || 'No se pudo enviar la entrega.');
@@ -208,6 +210,15 @@ const TrabajoPracticoDetalle: React.FC = () => {
               </div>
 
               <div className="tpd-panel-body">
+                {(tp.profesor_nombre || tp.profesor_apellido) && (
+                  <p className="tpd-publicado-por">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    Publicado por <strong>Prof. {[tp.profesor_nombre, tp.profesor_apellido].filter(Boolean).join(' ')}</strong>
+                  </p>
+                )}
                 {tp.descripcion ? (
                   <p className="tpd-descripcion">{tp.descripcion}</p>
                 ) : (
@@ -269,7 +280,25 @@ const TrabajoPracticoDetalle: React.FC = () => {
                   </div>
                 ) : (
                   <>
-                    {enCorreccion && (
+                    {entregaExitosa && (
+                      <div className="tpd-estado-banner tpd-estado-banner--exito" role="status">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                          <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                        <div>
+                          <strong>¡Trabajo entregado correctamente!</strong>
+                          <p>Tu docente lo va a revisar y vas a ver la nota acá cuando lo corrija.</p>
+                          {entrega?.archivo_url && (
+                            <a href={entrega.archivo_url} target="_blank" rel="noopener noreferrer">
+                              Ver mi entrega ↗
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {enCorreccion && !entregaExitosa && (
                       <div className="tpd-estado-banner tpd-estado-banner--pendiente">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <circle cx="12" cy="12" r="10" />
@@ -277,7 +306,7 @@ const TrabajoPracticoDetalle: React.FC = () => {
                         </svg>
                         <div>
                           <strong>Ya entregaste este trabajo</strong>
-                          <p>Tu docente lo está revisando. Vas a ver la nota acá cuando lo corrija.</p>
+                          <p>Tu docente lo está revisando. Vas a ver la nota acá cuando lo corrija. Si querés, podés reemplazar tu entrega más abajo.</p>
                           {entrega?.archivo_url && (
                             <a href={entrega.archivo_url} target="_blank" rel="noopener noreferrer">
                               Ver mi entrega actual ↗

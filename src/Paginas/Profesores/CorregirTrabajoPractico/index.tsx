@@ -28,8 +28,8 @@ const CorregirTrabajoPractico: React.FC = () => {
     const traer = async () => {
       try {
         const [tpRes, entregasRes] = await Promise.all([
-          api.get(`http://localhost:3000/api/trabajos-practicos/${id}`),
-          api.get(`http://localhost:3000/api/trabajos-practicos/${id}/entregas`),
+          api.get(`/api/trabajos-practicos/${id}`),
+          api.get(`/api/trabajos-practicos/${id}/entregas`),
         ]);
         setTp(tpRes.data.data);
         setRows(entregasRes.data.data.entregas || entregasRes.data.data || []);
@@ -44,7 +44,7 @@ const CorregirTrabajoPractico: React.FC = () => {
   }, [id]);
 
   const handleGrade = async (alumnoId: number, nota: number, comentario: string) => {
-    await api.put(`http://localhost:3000/api/trabajos-practicos/${id}/notas/${alumnoId}`, {
+    await api.put(`/api/trabajos-practicos/${id}/notas/${alumnoId}`, {
       nota,
       comentario_correccion: comentario || undefined,
     });

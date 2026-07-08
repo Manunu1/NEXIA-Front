@@ -23,7 +23,7 @@ const EditarTrabajoPractico: React.FC = () => {
   useEffect(() => {
     const traer = async () => {
       try {
-        const res = await api.get(`http://localhost:3000/api/trabajos-practicos/${id}`);
+        const res = await api.get(`/api/trabajos-practicos/${id}`);
         setTp(res.data.data);
       } catch (err) {
         console.error('Error al obtener el trabajo práctico:', err);
@@ -39,7 +39,7 @@ const EditarTrabajoPractico: React.FC = () => {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      await api.put(`http://localhost:3000/api/trabajos-practicos/${id}`, {
+      await api.put(`/api/trabajos-practicos/${id}`, {
         titulo: values.titulo,
         descripcion: values.descripcion,
         archivo_url: values.archivo_url || undefined,
@@ -58,7 +58,7 @@ const EditarTrabajoPractico: React.FC = () => {
     if (!tp) return;
     setTogglingEstado(true);
     try {
-      const res = await api.patch(`http://localhost:3000/api/trabajos-practicos/${id}/estado`, { activo: !tp.activo });
+      const res = await api.patch(`/api/trabajos-practicos/${id}/estado`, { activo: !tp.activo });
       setTp({ ...tp, activo: res.data.data?.activo ?? !tp.activo });
     } catch (err: unknown) {
       const ex = err as { response?: { data?: { message?: string } } };

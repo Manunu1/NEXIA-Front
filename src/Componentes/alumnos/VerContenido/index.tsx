@@ -60,7 +60,7 @@ export const VerContenido: React.FC = () => {
 
         // Consumo del endpoint tal como lo define la documentación de la API
         const response = await api.get<ApiResponse>(
-          `http://localhost:3000/api/alumnos/${alumnoId}/contenidos`,
+          `/api/alumnos/${alumnoId}/contenidos`,
           {
             params: { materia_id: materiaId }
           }
@@ -76,7 +76,7 @@ export const VerContenido: React.FC = () => {
         } else {
           setError(response.data.message || 'Error al cargar los contenidos.');
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Error al conectar con la API de NEXIA:', err);
         setError('Error de conexión con el servidor de la plataforma.');
       } finally {
