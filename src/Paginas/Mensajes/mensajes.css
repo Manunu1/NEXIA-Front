@@ -267,7 +267,7 @@
 
 .msj-input:focus {
   border-color: var(--navy-l);
-  box-shadow: 0 0 0 3px rgba(26,35,126,.08);
+  box-shadow: var(--focus-ring);
   background: var(--white);
 }
 

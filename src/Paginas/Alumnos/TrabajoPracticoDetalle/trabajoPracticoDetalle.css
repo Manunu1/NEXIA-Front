@@ -453,9 +453,9 @@
 
 .tpd-comentario-input:focus {
   outline: none;
-  border-color: var(--navy-l);
-  box-shadow: 0 0 0 3px rgba(26,35,126,.08);
-  background: var(--white);
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+  background: var(--ctrl-bg-focus);
 }
 
 .tpd-submit-btn {

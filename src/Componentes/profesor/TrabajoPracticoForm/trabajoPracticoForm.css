@@ -2,6 +2,7 @@
    TRABAJO PRÁCTICO FORM — card estructurada
 ───────────────────────────────────────────── */
 .tpf-card {
+  position: relative;
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--r4);
@@ -10,6 +11,16 @@
   width: 100%;
   animation: fadeInUp var(--dur-slow) var(--ease) both;
   transition: box-shadow var(--dur-md) var(--ease);
+}
+
+/* Acento de marca en el borde superior — mismo tratamiento que las form cards del gestor */
+.tpf-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange) 0%, var(--navy-l) 60%, var(--navy-m) 100%);
+  z-index: 1;
 }
 
 .tpf-card:hover { box-shadow: var(--sh-lg); }
@@ -95,21 +106,24 @@
   font-family: var(--fb);
   font-size: 0.9rem;
   color: var(--t2);
-  background: var(--navy-ghost);
+  background: var(--ctrl-bg);
   border: 1.5px solid var(--border);
   border-radius: var(--r2);
   padding: 0.72rem 0.9rem;
   outline: none;
-  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
 .tpf-input::placeholder { color: var(--t4); font-size: 0.875rem; }
 
 .tpf-input:focus {
-  border-color: var(--navy-l);
-  box-shadow: 0 0 0 3px rgba(26,35,126,.08);
-  background: var(--white);
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+  background: var(--ctrl-bg-focus);
 }
+
+/* Lift sutil solo en inputs de una línea (no en la consigna / textarea) */
+input.tpf-input:focus { transform: translateY(-1px); }
 
 .tpf-textarea {
   resize: vertical;

@@ -111,9 +111,9 @@
 .form-field input::placeholder { color: var(--t4); font-size: 0.875rem; }
 
 .form-field input:focus {
-  border-color: var(--navy-l);
-  box-shadow: 0 0 0 3px rgba(26,35,126,.1);
-  background: var(--white);
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+  background: var(--ctrl-bg-focus);
   transform: translateY(-1px);
 }
 
@@ -129,9 +129,9 @@
 }
 
 .gestor-form-card [class*="-control"]:focus-within {
-  border-color: var(--navy-l) !important;
-  box-shadow: 0 0 0 3px rgba(26,35,126,.08) !important;
-  background: var(--white) !important;
+  border-color: var(--focus-border) !important;
+  box-shadow: var(--focus-ring) !important;
+  background: var(--ctrl-bg-focus) !important;
 }
 
 .gestor-form-card [class*="-placeholder"] {

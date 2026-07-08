@@ -38,6 +38,13 @@
   --sh-glow-orange: 0 8px 28px rgba(255,152,0,.32);
   --sh-glow-navy:   0 8px 28px rgba(26,35,126,.28);
 
+  /* Form controls — foco unificado (fuente única de verdad) */
+  --focus-ring:        0 0 0 3px rgba(26,35,126,.12);
+  --focus-ring-orange: 0 0 0 3px rgba(255,152,0,.20);
+  --focus-border:      var(--navy-l);
+  --ctrl-bg:           var(--navy-ghost);
+  --ctrl-bg-focus:     var(--white);
+
   /* Typography — Space Grotesk (display, geométrica/distintiva) + Inter (lectura) */
   --fd: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
   --fb: 'Inter', sans-serif;
@@ -179,4 +186,78 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ─────────────────────────────────────────────
+   FORM CONTROLS — primitivas compartidas
+   Lenguaje único para inputs, labels y textareas.
+   Usar estas clases en formularios nuevos; los
+   formularios existentes consumen los mismos tokens
+   (--focus-ring, --focus-border, --ctrl-bg).
+───────────────────────────────────────────── */
+.nx-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.nx-label {
+  display: flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--t3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.nx-optional {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--t4);
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: var(--r5);
+  padding: 0.1rem 0.5rem;
+  margin-left: 0.5rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.nx-control {
+  width: 100%;
+  font-family: var(--fb);
+  font-size: 0.9rem;
+  color: var(--t2);
+  background: var(--ctrl-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  padding: 0.72rem 0.9rem;
+  outline: none;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.nx-control::placeholder { color: var(--t4); font-size: 0.875rem; }
+
+.nx-control:focus,
+.nx-control:focus-within {
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+  background: var(--ctrl-bg-focus);
+}
+
+/* El lift sutil solo en controles de una línea (no en textarea) */
+input.nx-control:focus,
+select.nx-control:focus { transform: translateY(-1px); }
+
+textarea.nx-control {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.65;
+}
+
+.nx-hint {
+  font-size: 0.75rem;
+  color: var(--t4);
+  margin: 0;
 }

@@ -224,18 +224,19 @@
   padding: 0.8rem 1rem;
   font-size: 0.9rem;
   font-family: var(--fb);
-  background: var(--navy-ghost);
+  background: var(--ctrl-bg);
   color: var(--t2);
   border: 1.5px solid var(--border);
   border-radius: var(--r2);
   outline: none;
-  transition: border-color 0.2s var(--ease), box-shadow 0.2s, background-color 0.2s;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background-color 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
 .login-field:focus {
-  border-color: var(--navy-l);
-  box-shadow: 0 0 0 3px rgba(26,35,126,.08);
-  background: var(--white);
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+  background: var(--ctrl-bg-focus);
+  transform: translateY(-1px);
 }
 
 select.login-field {
