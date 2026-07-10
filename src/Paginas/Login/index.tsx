@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../api";
 import "./login.css";
@@ -7,7 +7,6 @@ import { usePageTitle } from '../../hooks/usePageTitle';
 function Login() {
   usePageTitle('Iniciar sesión');
   const navigate = useNavigate();
-  const [institucionId, setInstitucionId] = useState("1");
   const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,11 +22,11 @@ function Login() {
       const response = await fetch(`${BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ institucion_id: Number(institucionId), dni, password }),
+        body: JSON.stringify({ dni, password }),
       });
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.message || "Institución, DNI o contraseña incorrectos");
+        setError(errorData.message || "DNI o contraseña incorrectos");
         return;
       }
       const responseData = await response.json();
@@ -71,22 +70,6 @@ function Login() {
       setLoading(false);
     }
   };
-
-  const [instituciones, setInstituciones] = useState<{ id: number; nombre: string }[]>([]);
-
-  useEffect(() => {
-    const fetchInstituciones = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/api/instituciones`);
-        const data = await res.json();
-        setInstituciones(data);
-      } catch {
-        setError("Error al cargar instituciones");
-      }
-    };
-    fetchInstituciones();
-  }, []);
-
 
   return (
     <div className="login-page">
@@ -157,22 +140,6 @@ function Login() {
           {error && <div className="error-message">{error}</div>}
 
           <div className="login-form-fields">
-            <div className="login-field-group">
-              <label className="login-label">Institución</label>
-              <select
-                className="login-field"
-                value={institucionId}
-                onChange={(e) => { setInstitucionId(e.target.value); setError(""); }}
-              >
-                {instituciones.map((inst) => (
-                <option key={inst.id} value={inst.id}>
-                  {inst.nombre}
-                </option>
-        ))}
-
-              </select>
-            </div>
-
             <div className="login-field-group">
               <label className="login-label">DNI</label>
               <input
