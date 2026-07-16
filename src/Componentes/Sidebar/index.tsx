@@ -17,6 +17,7 @@ interface SessionInfo {
   name: string;
   initials: string;
   roleLabel: string;
+  foto?: string;
 }
 
 function getSessionInfo(roleLabel: string): SessionInfo {
@@ -24,6 +25,7 @@ function getSessionInfo(roleLabel: string): SessionInfo {
     const session = localStorage.getItem('usuario');
     if (session) {
       const user = JSON.parse(session);
+      const foto = user.foto_perfil_url || undefined;
       const nombre = `${user.nombre || ''} ${user.apellido || ''}`.trim();
       if (nombre) {
         const initials = nombre
@@ -33,7 +35,7 @@ function getSessionInfo(roleLabel: string): SessionInfo {
           .join('')
           .slice(0, 2)
           .toUpperCase();
-        return { name: nombre, initials, roleLabel };
+        return { name: nombre, initials, roleLabel, foto };
       }
     }
   } catch {
@@ -124,7 +126,13 @@ const Sidebar: React.FC = () => {
 
         <div className="sidebar-user">
           <div className="user-avatar">
-            <span className="user-avatar-fallback" style={{ display: 'flex' }}>
+            {session.foto && (
+              <img src={session.foto} alt="" onError={handleImageError} />
+            )}
+            <span
+              className="user-avatar-fallback"
+              style={{ display: session.foto ? 'none' : 'flex' }}
+            >
               {session.initials}
             </span>
             <span className="status-indicator" />

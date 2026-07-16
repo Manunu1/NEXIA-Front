@@ -15,9 +15,9 @@ import MisMaterias from "./Paginas/Alumnos/MisMaterias";
 import ContenidosAlumnos from "./Paginas/Alumnos/ContenidosAlumnos";
 import VerContenido from "./Paginas/VerContenido";
 import ProtectedRoute from "./Componentes/ProtectedRoute";
-import Proximamente from "./Paginas/Proximamente";
 import LandingPage from "./Paginas/LandingPage";
 import Comunicados from "./Paginas/Comunicados";
+import Configuracion from "./Paginas/Configuracion";
 import NexiaIA from "./Paginas/NexiaIA";
 import TrabajosPracticos from "./Paginas/Profesores/TrabajosPracticos";
 import CrearTrabajoPractico from "./Paginas/Profesores/CrearTrabajoPractico";
@@ -75,7 +75,7 @@ function App() {
         <Route path="/comunicados" element={guard(<Comunicados />)} />
         <Route path="/mensajes" element={guard(<Mensajes />)} />
         <Route path="/calendario" element={guard(<Calendario />)} />
-        <Route path="/configuracion" element={guard(<Proximamente />)} />
+        <Route path="/configuracion" element={guard(<Configuracion />)} />
 
         {/* ── Gestor ── */}
         <Route path="/gestor" element={guard(<HomeGestor />, ["gestor"])} />

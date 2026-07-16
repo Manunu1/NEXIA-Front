@@ -70,6 +70,54 @@
   --footer-bg:      var(--navy);
   --footer-primary: var(--orange);
   --bg-neutral:     var(--s1);
+
+  color-scheme: light;
+}
+
+/* ─────────────────────────────────────────────
+   TEMA OSCURO — se activa con data-theme="oscuro"
+   en <html> (ver utils/theme.ts).
+
+   Sólo se re-mapean los tokens NEUTROS (superficies,
+   texto, bordes, sombras y fondo de controles). La
+   escala de marca (navy / orange) se mantiene intacta
+   a propósito: se usa tanto para texto de acento como
+   para fondos de botones, y cambiarla rompería el
+   contraste. La Sidebar y el Footer ya son oscuros por
+   diseño, de modo que el conjunto queda coherente.
+───────────────────────────────────────────── */
+html[data-theme='oscuro'] {
+  color-scheme: dark;
+
+  /* Superficies */
+  --white:  #161C2E;   /* tarjetas / superficie elevada */
+  --s1:     #0C1120;   /* fondo de la app */
+  --s2:     #1B2236;   /* paneles sutiles */
+  --border: #2A3348;   /* líneas divisorias */
+
+  /* Texto */
+  --t1: #F4F6FC;
+  --t2: #D9DFF0;
+  --t3: #9BA6C2;
+  --t4: #6E7A99;
+
+  /* Fondo de controles de formulario (inputs, selects, textareas) */
+  --ctrl-bg:       #121828;
+  --ctrl-bg-focus: #1A2136;
+
+  /* Sombras — más profundas sobre fondo oscuro */
+  --sh-sm: 0 1px 4px rgba(0,0,0,.4);
+  --sh-md: 0 6px 22px rgba(0,0,0,.46);
+  --sh-lg: 0 18px 50px rgba(0,0,0,.55);
+
+  /* Anillo de foco un poco más visible sobre oscuro */
+  --focus-ring: 0 0 0 3px rgba(92,107,192,.35);
+}
+
+/* El fondo del body sigue al token de superficie base */
+html[data-theme='oscuro'] body {
+  background-color: var(--s1);
+  color: var(--t2);
 }
 
 /* ─────────────────────────────────────────────
