@@ -2,6 +2,7 @@ import "./App.css";
 
 import type { JSX } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
 
 import Login from "./Paginas/Login";
 import MisCursos from "./Paginas/Profesores/MisMaterias";
@@ -40,6 +41,25 @@ const guard = (element: JSX.Element, roles?: Rol[]) => (
 );
 
 function App() {
+
+  useEffect(() => {
+    const tituloOriginal = document.title;
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        document.title = '¡A estudiar! 📚';
+      } else {
+        document.title = tituloOriginal;
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, []);
+
   return (
     <BrowserRouter>
       <ScrollToTop />
