@@ -1,0 +1,33 @@
+/* ─────────────────────────────────────────────
+   NEXIA AVATAR — sólo encuadre y tipografía.
+   Los colores de la figura viven en el SVG: el
+   avatar debe verse idéntico en claro y oscuro.
+   Lo único que sigue al tema es el fondo.
+───────────────────────────────────────────── */
+.nx-avatar {
+  --nx-avatar-bg1: #EEF1FB;
+  --nx-avatar-bg2: #E2F1EF;
+
+  display: inline-block;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--nx-avatar-bg1);
+  line-height: 0;
+}
+
+.nx-avatar--circle { border-radius: 50%; }
+.nx-avatar--head   { border-radius: 50%; }
+.nx-avatar--full   { border-radius: var(--r3); }
+
+.nx-avatar svg { display: block; }
+
+/* El logo de la remera usa la display de la marca */
+.nx-avatar-logo {
+  font-family: var(--fd);
+  user-select: none;
+}
+
+html[data-theme='oscuro'] .nx-avatar {
+  --nx-avatar-bg1: #202942;
+  --nx-avatar-bg2: #1B3038;
+}

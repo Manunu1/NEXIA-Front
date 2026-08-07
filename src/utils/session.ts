@@ -4,6 +4,8 @@
    y manejo del par de tokens (access + refresh).
 ───────────────────────────────────────────── */
 
+import type { AvatarConfig } from '../Types/perfil';
+
 export type Rol = 'alumno' | 'profesor' | 'gestor';
 
 export interface SesionUsuario {
@@ -14,8 +16,17 @@ export interface SesionUsuario {
   gestor_id?: string;
   institucion_id?: string | number;
   institucion_nombre?: string;
+  /** Imagen de perfil — leer siempre con getProfileImage(), nunca sueltos. */
+  avatar_config?: AvatarConfig | null;
+  foto_perfil_url?: string | null;
   [key: string]: unknown;
 }
+
+/**
+ * Se emite cuando el usuario edita su perfil. La sidebar (y cualquier otra
+ * vista montada) escucha para reflejar nombre e imagen sin recargar.
+ */
+export const EVENTO_PERFIL = 'nexia:perfil-actualizado';
 
 export function getUsuarioSesion(): SesionUsuario | null {
   try {
@@ -52,6 +63,19 @@ export function getRolActual(): Rol {
 
 export function haySesion(): boolean {
   return getUsuarioSesion() !== null;
+}
+
+/**
+ * Mezcla cambios en el usuario guardado y avisa a la app.
+ * Es el único camino para tocar la sesión después del login: escribir
+ * localStorage a mano deja la sidebar mostrando datos viejos.
+ */
+export function updateUsuarioSesion(cambios: Partial<SesionUsuario>): SesionUsuario {
+  const actual = getUsuarioSesion() ?? {};
+  const merged = { ...actual, ...cambios };
+  localStorage.setItem('usuario', JSON.stringify(merged));
+  window.dispatchEvent(new CustomEvent(EVENTO_PERFIL, { detail: merged }));
+  return merged;
 }
 
 /** Guarda el par de tokens emitido por el backend. */
