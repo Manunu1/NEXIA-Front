@@ -147,6 +147,39 @@ html[data-theme='oscuro'] .cfg-tab.is-active {
   margin: 0.3rem 0 0;
 }
 
+/* ── Estado de error de carga ── */
+.cfg-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 3rem 1.75rem;
+}
+
+.cfg-error > svg {
+  width: 40px;
+  height: 40px;
+  color: var(--orange);
+}
+
+.cfg-error-titulo {
+  font-family: var(--fd);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.cfg-error-msg {
+  font-size: 0.85rem;
+  color: var(--t3);
+  margin: 0 0 0.5rem;
+  max-width: 460px;
+  line-height: 1.6;
+}
+
 /* ── Formularios ── */
 .cfg-form {
   display: flex;

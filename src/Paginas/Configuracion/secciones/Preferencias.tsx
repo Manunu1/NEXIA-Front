@@ -20,6 +20,13 @@ import { useGuardarPerfil } from '../useGuardarPerfil';
 
 const IDIOMAS = [{ value: 'es', label: 'Español' }];
 
+/**
+ * El backend todavía acepta idiomas que la interfaz aún no ofrece (hay
+ * cuentas guardadas con 'en'). Sin esto el <select> quedaba en blanco.
+ */
+const idiomaOfrecido = (valor?: string | null) =>
+  IDIOMAS.some((i) => i.value === valor) ? (valor as string) : 'es';
+
 const IconSol = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <circle cx="12" cy="12" r="4" />
@@ -43,7 +50,7 @@ const Preferencias: React.FC<Props> = ({ perfil, onActualizado }) => {
   const { guardar, guardando } = useGuardarPerfil(onActualizado);
 
   const [tema, setTemaLocal] = useState<Tema>(perfil?.tema ?? getTemaGuardado());
-  const [idioma, setIdioma] = useState(perfil?.idioma ?? 'es');
+  const [idioma, setIdioma] = useState(() => idiomaOfrecido(perfil?.idioma));
   const [notiEmail, setNotiEmail] = useState(perfil?.notificaciones_email ?? true);
 
   const elegirTema = (t: Tema) => {

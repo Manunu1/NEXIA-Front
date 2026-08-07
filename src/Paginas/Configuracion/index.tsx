@@ -5,7 +5,7 @@ import ProfileImage from '../../Componentes/ProfileImage';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import api from '../../api';
 import type { Perfil } from '../../Types/perfil';
-import { estadoDeError } from '../../utils/apiError';
+import { estadoDeError, mensajeDeError } from '../../utils/apiError';
 import { getUsuarioSesion, updateUsuarioSesion } from '../../utils/session';
 import { setTema } from '../../utils/theme';
 import ImagenPerfil from './secciones/ImagenPerfil';
@@ -29,6 +29,13 @@ import './configuracion.css';
 ───────────────────────────────────────────── */
 
 type TabId = 'imagen' | 'datos' | 'ubicacion' | 'preferencias' | 'seguridad';
+
+/**
+ * 'sin-perfil' es exclusivamente el 403 del backend (gestor / director).
+ * 'error' es todo lo demás: un fallo de carga no puede disfrazarse de
+ * "tu cuenta no admite perfil".
+ */
+type EstadoCarga = 'cargando' | 'listo' | 'sin-perfil' | 'error';
 
 interface Tab {
   id: TabId;
@@ -94,10 +101,13 @@ const Configuracion: React.FC = () => {
   usePageTitle('Mi perfil');
 
   const [perfil, setPerfil] = useState<Perfil | null>(null);
-  const [cargando, setCargando] = useState(true);
-  /** true = cuenta sin perfil editable (gestor / director) */
-  const [sinPerfil, setSinPerfil] = useState(false);
+  const [estado, setEstado] = useState<EstadoCarga>('cargando');
+  const [errorCarga, setErrorCarga] = useState('');
+  /** Se incrementa para reintentar la carga. */
+  const [intento, setIntento] = useState(0);
   const [tab, setTab] = useState<TabId>('imagen');
+
+  const sinPerfil = estado === 'sin-perfil';
 
   /**
    * Toda respuesta del backend pasa por acá: además del estado local,
@@ -125,23 +135,33 @@ const Configuracion: React.FC = () => {
         aplicarPerfil(p);
         // El tema del backend manda: es la preferencia multi-dispositivo.
         if (p.tema === 'claro' || p.tema === 'oscuro') setTema(p.tema);
+        setEstado('listo');
       } catch (err) {
         if (!vivo) return;
-        const status = estadoDeError(err);
-        // 403/404 = cuenta sin perfil (gestor, director). No es un error a mostrar.
-        if (status === 403 || status === 404) {
-          setSinPerfil(true);
+        // SÓLO el 403 significa "esta cuenta no tiene perfil" (gestor/director):
+        // es lo único que el backend usa para decirlo. Cualquier otro fallo
+        // —404 porque la ruta no existe, 500, red caída— es un error real y hay
+        // que mostrarlo. Degradarlo a "no podés editar tu perfil" oculta el
+        // problema y le miente al usuario.
+        if (estadoDeError(err) === 403) {
+          setEstado('sin-perfil');
           setTab('preferencias');
+        } else {
+          setErrorCarga(mensajeDeError(err, 'No pudimos cargar tu perfil'));
+          setEstado('error');
         }
-      } finally {
-        if (vivo) setCargando(false);
       }
     })();
 
     return () => { vivo = false; };
-  }, [aplicarPerfil]);
+  }, [aplicarPerfil, intento]);
 
-  if (cargando) {
+  const reintentar = () => {
+    setEstado('cargando');
+    setIntento((n) => n + 1);
+  };
+
+  if (estado === 'cargando') {
     return (
       <>
         <Sidebar />
@@ -150,6 +170,36 @@ const Configuracion: React.FC = () => {
             <div className="nexia-status-container">
               <div className="nexia-loading-spinner" />
               <span>Cargando tu perfil…</span>
+            </div>
+          </main>
+          <Footer />
+        </div>
+      </>
+    );
+  }
+
+  if (estado === 'error') {
+    return (
+      <>
+        <Sidebar />
+        <div className="main-wrapper">
+          <main className="main-content">
+            <header className="page-header">
+              <div>
+                <h1 className="page-title">Mi perfil</h1>
+              </div>
+            </header>
+            <div className="cfg-layout">
+              <section className="cfg-card cfg-error">
+                <svg viewBox="0 0 24 24" {...trazo} aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" /><path d="M12 7.5v5M12 16v.5" />
+                </svg>
+                <h2 className="cfg-error-titulo">No pudimos cargar tu perfil</h2>
+                <p className="cfg-error-msg">{errorCarga}</p>
+                <button type="button" className="cfg-btn cfg-btn--primary" onClick={reintentar}>
+                  Reintentar
+                </button>
+              </section>
             </div>
           </main>
           <Footer />
