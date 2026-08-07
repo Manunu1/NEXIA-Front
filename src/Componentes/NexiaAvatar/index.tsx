@@ -11,6 +11,7 @@ import {
   ESCOTE,
   NARIZ,
   OJO_DER,
+  OJO_FELIZ,
   OJO_IZQ,
   PATILLA_DER,
   PATILLA_IZQ,
@@ -18,6 +19,7 @@ import {
   PUENTE_REDONDO,
   REMERA,
   SONRISA,
+  SONRISA_ALEGRE,
   VINCHA,
   VISERA_GORRA,
 } from './paths';
@@ -43,6 +45,13 @@ const MINT = '#E0F2F1';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
+/**
+ * Expresión de la cara. 'normal' es la de siempre y es el default en toda
+ * la app: el avatar tiene que ser reconocible como la misma persona. Las
+ * otras dos son puntuales, para cuando algo hay que celebrar.
+ */
+export type AvatarExpresion = 'normal' | 'alegre' | 'guino';
+
 /** Diámetro en px de cada tamaño nombrado. */
 const TAMANIOS: Record<AvatarSize, number> = {
   xs: 28,
@@ -66,6 +75,8 @@ export interface NexiaAvatarProps {
   frame?: 'circle' | 'full' | 'head';
   /** Fondo degradado detrás de la figura. */
   backdrop?: boolean;
+  /** Expresión de la cara. Por defecto la neutra de siempre. */
+  expresion?: AvatarExpresion;
   className?: string;
   /** Texto para lectores de pantalla. Sin él, el avatar es decorativo. */
   alt?: string;
@@ -76,6 +87,7 @@ const NexiaAvatar: React.FC<NexiaAvatarProps> = ({
   size = 'md',
   frame = 'circle',
   backdrop = true,
+  expresion = 'normal',
   className = '',
   alt,
 }) => {
@@ -235,23 +247,41 @@ const NexiaAvatar: React.FC<NexiaAvatarProps> = ({
             strokeLinecap="round"
           />
 
-          {/* Ojos */}
-          {[OJO_IZQ, OJO_DER].map((ojo) => (
-            <g key={ojo.cx}>
-              <ellipse cx={ojo.cx} cy={ojo.cy} rx="9" ry="10.5" fill="#FFFFFF" />
-              <circle cx={ojo.cx} cy={ojo.cy + 0.5} r="5.4" fill={eyes} />
-              <circle cx={ojo.cx} cy={ojo.cy + 0.5} r="2.4" fill="#101828" />
-              <circle cx={ojo.cx - 1.9} cy={ojo.cy - 2.6} r="1.9" fill="#FFFFFF" />
-            </g>
-          ))}
+          {/* Ojos — en 'alegre' se cierran en arco; en 'guino', sólo el derecho */}
+          {[OJO_IZQ, OJO_DER].map((ojo, i) => {
+            const cerrado =
+              expresion === 'alegre' || (expresion === 'guino' && i === 1);
 
-          <path
-            d={SONRISA}
-            fill="none"
-            stroke={mezclar(skin, -0.55)}
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
+            return cerrado ? (
+              <path
+                key={ojo.cx}
+                d={OJO_FELIZ(ojo.cx, ojo.cy)}
+                fill="none"
+                stroke={mezclar(skin, -0.6)}
+                strokeWidth="3.4"
+                strokeLinecap="round"
+              />
+            ) : (
+              <g key={ojo.cx}>
+                <ellipse cx={ojo.cx} cy={ojo.cy} rx="9" ry="10.5" fill="#FFFFFF" />
+                <circle cx={ojo.cx} cy={ojo.cy + 0.5} r="5.4" fill={eyes} />
+                <circle cx={ojo.cx} cy={ojo.cy + 0.5} r="2.4" fill="#101828" />
+                <circle cx={ojo.cx - 1.9} cy={ojo.cy - 2.6} r="1.9" fill="#FFFFFF" />
+              </g>
+            );
+          })}
+
+          {expresion === 'alegre' ? (
+            <path d={SONRISA_ALEGRE} fill={mezclar(skin, -0.62)} />
+          ) : (
+            <path
+              d={SONRISA}
+              fill="none"
+              stroke={mezclar(skin, -0.55)}
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+          )}
 
           {/* Cejas — el rapado no las pinta al ras, así que van siempre */}
           <g fill="none" stroke={peloSombra} strokeWidth="4" strokeLinecap="round">

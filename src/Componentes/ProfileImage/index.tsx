@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NexiaAvatar from '../NexiaAvatar';
-import type { AvatarSize } from '../NexiaAvatar';
+import type { AvatarExpresion, AvatarSize } from '../NexiaAvatar';
 import type { ConImagenDePerfil } from '../../Types/perfil';
 import { getIniciales, getProfileImage } from '../../utils/profileImage';
 import './profileImage.css';
@@ -29,6 +29,8 @@ interface ProfileImageProps {
   apellido?: string | null;
   className?: string;
   alt?: string;
+  /** Sólo aplica si la imagen es un avatar generado; una foto no gesticula. */
+  expresion?: AvatarExpresion;
 }
 
 const ProfileImage: React.FC<ProfileImageProps> = ({
@@ -38,6 +40,7 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
   apellido,
   className = '',
   alt,
+  expresion,
 }) => {
   const imagen = getProfileImage(usuario);
   const px = typeof size === 'number' ? size : TAMANIOS[size];
@@ -55,6 +58,7 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
         frame="circle"
         className={className}
         alt={alt}
+        expresion={expresion}
       />
     );
   }

@@ -7,7 +7,9 @@ import HomeHero from '../../../Componentes/HomeHero';
 import QuickLinks from '../../../Componentes/QuickLinks';
 import type { QuickLinkItem } from '../../../Componentes/QuickLinks';
 import NexiaPromo from '../../../Componentes/NexiaPromo';
+import NexiaBuddy from '../../../Componentes/NexiaBuddy';
 import EmptyState from '../../../Componentes/EmptyState';
+import { mensajesProfesor } from '../../../utils/buddy';
 import type { typeCurso } from '../../../Types/profesores/types';
 import api from '../../../api';
 import { getNombreUsuario } from '../../../utils/session';
@@ -118,6 +120,17 @@ const MisCursos: React.FC = () => {
   const cursosUnicos = useMemo(
     () => new Set(listaMaterias.map(m => `${m.anio}-${m.division}`)).size,
     [listaMaterias]
+  );
+
+  const mensajesBuddy = useMemo(
+    () =>
+      mensajesProfesor({
+        nombre: userName.split(' ')[0] ?? '',
+        materias: listaMaterias.length,
+        cursos: cursosUnicos,
+        enRiesgo: enRiesgo.length,
+      }),
+    [userName, listaMaterias.length, cursosUnicos, enRiesgo.length]
   );
 
   return (
@@ -264,6 +277,8 @@ const MisCursos: React.FC = () => {
 
               {/* ── Rail lateral ── */}
               <aside className="home-rail">
+
+                <NexiaBuddy mensajes={mensajesBuddy} />
 
                 <QuickLinks items={QUICK_LINKS} />
 

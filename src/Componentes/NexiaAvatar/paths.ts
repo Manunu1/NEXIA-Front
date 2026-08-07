@@ -19,8 +19,21 @@ export const CABEZA = { cx: 80, cy: 86, r: 46 } as const;
 export const OJO_IZQ = { cx: 63, cy: 88 } as const;
 export const OJO_DER = { cx: 97, cy: 88 } as const;
 
-/** Sonrisa — fija por diseño: es el rasgo que da identidad al avatar. */
+/** Sonrisa — la fija por diseño: es el rasgo que da identidad al avatar. */
 export const SONRISA = 'M 66 108 C 70 119 90 119 94 108';
+
+/* ── Expresiones ───────────────────────────────
+   Sólo las usa el compañero del inicio. El resto
+   de la app renderiza siempre la cara neutra, así
+   el avatar sigue siendo reconocible como "vos".
+───────────────────────────────────────────── */
+
+/** Boca abierta y contenta — para felicitar. */
+export const SONRISA_ALEGRE = 'M 64 106 C 68 124 92 124 96 106 Z';
+
+/** Ojo cerrado en arco (alegría / guiño). */
+export const OJO_FELIZ = (cx: number, cy: number) =>
+  `M ${cx - 9} ${cy + 2} C ${cx - 5} ${cy - 8} ${cx + 5} ${cy - 8} ${cx + 9} ${cy + 2}`;
 
 /** Cuello + torso. La remera se dibuja con el escote ya recortado. */
 export const CUELLO = { x: 67, y: 118, w: 26, h: 40, rx: 12 } as const;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CardMateria from '../../../Componentes/alumnos/CardMaterias';
 import Sidebar from '../../../Componentes/Sidebar';
@@ -7,7 +7,9 @@ import HomeHero from '../../../Componentes/HomeHero';
 import QuickLinks from '../../../Componentes/QuickLinks';
 import type { QuickLinkItem } from '../../../Componentes/QuickLinks';
 import NexiaPromo from '../../../Componentes/NexiaPromo';
+import NexiaBuddy from '../../../Componentes/NexiaBuddy';
 import EmptyState from '../../../Componentes/EmptyState';
+import { mensajesAlumno } from '../../../utils/buddy';
 import type { typeTrabajoPracticoAlumno, typeBoletinNotaFinal } from '../../../Types/profesores/types';
 import api from '../../../api';
 import { getNombreUsuario, getUsuarioSesion } from '../../../utils/session';
@@ -190,6 +192,27 @@ const MisMaterias: React.FC = () => {
   }, []);
 
   const entregados = tpTotales - pendientes.length;
+
+  // Lo que le dice su compañero sale de estos mismos datos, no de un pool
+  // de frases: si no hay nada que celebrar, no felicita.
+  const mensajesBuddy = useMemo(
+    () =>
+      mensajesAlumno({
+        nombre: userName.split(' ')[0] ?? '',
+        materias: materias.length,
+        pendientes: pendientes.length,
+        tpTotales,
+        corregidos,
+        vencidos: pendientes.filter((tp) => vencimiento(tp.fecha_limite).label === 'Vencido').length,
+        porVencer: pendientes.filter((tp) => {
+          const v = vencimiento(tp.fecha_limite);
+          return v.urgente && v.label !== 'Vencido';
+        }).length,
+        promedios,
+        flojas,
+      }),
+    [userName, materias.length, pendientes, tpTotales, corregidos, promedios, flojas]
+  );
 
   return (
     <>
@@ -399,6 +422,8 @@ const MisMaterias: React.FC = () => {
 
               {/* ── Rail lateral ── */}
               <aside className="home-rail">
+
+                <NexiaBuddy mensajes={mensajesBuddy} />
 
                 <QuickLinks items={QUICK_LINKS} />
 
