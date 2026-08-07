@@ -25,16 +25,9 @@
       .st2 {
         stroke: #f5a020;
       }
-
-      .st4 {
-        fill: #0a1248;
-        isolation: isolate;
-        opacity: .7;
-      }
     </style>
   </defs>
-  <rect class="st0" width="1000" height="1000"/>
-  <circle class="st4" cx="500" cy="500" r="310"/>
+  <rect class="st0" width="1000" height="1000" rx="282.22" ry="282.22"/>
   <line class="st1" x1="260" y1="730" x2="260" y2="230"/>
   <line class="st1" x1="260" y1="230" x2="740" y2="730"/>
   <line class="st2" x1="740" y1="230" x2="740" y2="730"/>
