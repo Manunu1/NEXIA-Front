@@ -42,8 +42,6 @@ const guard = (element: JSX.Element, roles?: Rol[]) => (
 
 function App() {
 
-  const tituloOriginal = document.title;
-
   useEffect(() => {
     const tituloOriginal = document.title;
 
