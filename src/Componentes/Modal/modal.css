@@ -31,8 +31,27 @@
 
 .modal-dialog--sm { max-width: 440px; }
 .modal-dialog--md { max-width: 600px; }
+.modal-dialog--lg { max-width: 860px; }
+
+/* Diálogos de trabajo (editor de avatar): superficie amplia y alto fijo,
+   para que el contenido scrollee adentro y no se mueva el encuadre. */
+.modal-dialog--full {
+  max-width: 1080px;
+  height: min(720px, calc(100vh - 3rem));
+  max-height: calc(100vh - 3rem);
+}
 
 @media (max-width: 600px) {
   .modal-overlay { padding: 0.75rem; align-items: flex-end; }
   .modal-dialog  { max-height: calc(100vh - 1.5rem); }
+
+  /* En mobile el editor ocupa toda la pantalla: no hay espacio para marco */
+  .modal-overlay:has(.modal-dialog--full) { padding: 0; align-items: stretch; }
+  .modal-dialog--full {
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+    border: none;
+  }
 }

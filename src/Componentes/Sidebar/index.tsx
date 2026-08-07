@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import './sidebar.css';
 import logoEscuela from '../../assets/Logo.png';
 import LogoutButton from '../Logout';
+import ProfileImage from '../ProfileImage';
+import { useSesionUsuario } from '../../hooks/useSesionUsuario';
 import { getRolActual, HOME_BY_ROL, NAV_BY_ROL } from './navConfig';
 import type { NavItem } from './navConfig';
 
@@ -13,44 +15,15 @@ import type { NavItem } from './navConfig';
    (ver navConfig), nunca de la página que la monta.
 ───────────────────────────────────────────── */
 
-interface SessionInfo {
-  name: string;
-  initials: string;
-  roleLabel: string;
-  foto?: string;
-}
-
-function getSessionInfo(roleLabel: string): SessionInfo {
-  try {
-    const session = localStorage.getItem('usuario');
-    if (session) {
-      const user = JSON.parse(session);
-      const foto = user.foto_perfil_url || undefined;
-      const nombre = `${user.nombre || ''} ${user.apellido || ''}`.trim();
-      if (nombre) {
-        const initials = nombre
-          .split(' ')
-          .filter(Boolean)
-          .map((p: string) => p[0])
-          .join('')
-          .slice(0, 2)
-          .toUpperCase();
-        return { name: nombre, initials, roleLabel, foto };
-      }
-    }
-  } catch {
-    /* sesión ilegible → datos de fallback */
-  }
-  return { name: 'Usuario', initials: 'US', roleLabel };
-}
-
 const Sidebar: React.FC = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
   const [rol] = useState(getRolActual);
-  const [session] = useState(() => getSessionInfo(rol.toUpperCase()));
+  // Reactivo: al editar el perfil, el nombre y la imagen se actualizan sin recargar.
+  const usuario = useSesionUsuario();
 
+  const nombreCompleto = `${usuario?.nombre ?? ''} ${usuario?.apellido ?? ''}`.trim() || 'Usuario';
   const sections = NAV_BY_ROL[rol];
 
   // En mobile, cerrar el panel al navegar a otra sección
@@ -126,20 +99,17 @@ const Sidebar: React.FC = () => {
 
         <div className="sidebar-user">
           <div className="user-avatar">
-            {session.foto && (
-              <img src={session.foto} alt="" onError={handleImageError} />
-            )}
-            <span
-              className="user-avatar-fallback"
-              style={{ display: session.foto ? 'none' : 'flex' }}
-            >
-              {session.initials}
-            </span>
+            <ProfileImage
+              usuario={usuario}
+              size={36}
+              nombre={usuario?.nombre}
+              apellido={usuario?.apellido}
+            />
             <span className="status-indicator" />
           </div>
           <div className="user-info">
-            <span className="user-name">{session.name}</span>
-            <span className="user-role">{session.roleLabel}</span>
+            <span className="user-name">{nombreCompleto}</span>
+            <span className="user-role">{rol.toUpperCase()}</span>
           </div>
           <LogoutButton />
         </div>

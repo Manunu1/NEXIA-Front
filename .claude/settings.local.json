@@ -12,7 +12,15 @@
       "Read(//c/Users/48803376/Downloads/NEXIA-back-/src/repositories/**)",
       "Bash(grep -rn \"materias\" /c/Users/48803376/Downloads/NEXIA-back-/src/controllers/alumnoController.js /c/Users/48803376/Downloads/NEXIA-back-/src/services/alumnoService.js /c/Users/48803376/Downloads/NEXIA-back-/src/repositories/alumnoRepository.js)",
       "Read(//c/Users/48803376/Downloads/NEXIA-back-/src/controllers/**)",
-      "Read(//c/Users/48803376/Downloads/NEXIA-back-/src/services/**)"
+      "Read(//c/Users/48803376/Downloads/NEXIA-back-/src/services/**)",
+      "Bash(npx vite *)",
+      "Read(//c/Users/49091323/AppData/Local/Temp/claude/c--Users-49091323-NEXIA-Front/7e81425c-62f4-4c9c-857a-d3259f47b4c6/scratchpad/**)",
+      "Bash(\"/c/Program Files \\(x86\\)/Microsoft/Edge/Application/msedge.exe\" --headless=new --disable-gpu --no-sandbox --hide-scrollbars --force-device-scale-factor=2 --screenshot=\"C:\\\\Users\\\\49091323\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-49091323-NEXIA-Front\\\\7e81425c-62f4-4c9c-857a-d3259f47b4c6\\\\scratchpad\\\\avatares.png\" --window-size=1180,1700 \"http://localhost:5199/galeria.html\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Microsoft/Edge/Application/msedge.exe\" --headless=new --disable-gpu --no-sandbox --user-data-dir=\"C:\\\\Users\\\\49091323\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\edgeprof\" --screenshot=\"C:\\\\Users\\\\49091323\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-49091323-NEXIA-Front\\\\7e81425c-62f4-4c9c-857a-d3259f47b4c6\\\\scratchpad\\\\avatares.png\" --window-size=1180,1700 \"http://localhost:5199/galeria.html\")",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Microsoft/Edge/Application/msedge.exe\" --headless=new --disable-gpu --no-sandbox --user-data-dir=\"C:\\\\Users\\\\49091323\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\edgeprof\" --screenshot=\"C:\\\\Users\\\\49091323\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-49091323-NEXIA-Front\\\\7e81425c-62f4-4c9c-857a-d3259f47b4c6\\\\scratchpad\\\\a2.png\" --window-size=1180,2600 \"http://localhost:5199/galeria.html\")",
+      "Bash(python -c ' *)",
+      "Bash(\"/c/Program Files \\(x86\\)/Microsoft/Edge/Application/msedge.exe\" --headless=new --disable-gpu --no-sandbox --user-data-dir=\"C:\\\\Users\\\\49091323\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\edgeprof\" --screenshot=\"C:\\\\Users\\\\49091323\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-49091323-NEXIA-Front\\\\7e81425c-62f4-4c9c-857a-d3259f47b4c6\\\\scratchpad\\\\a3.png\" --window-size=1180,560 \"http://localhost:5199/galeria.html\")"
     ]
   }
 }

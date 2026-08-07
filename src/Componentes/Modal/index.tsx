@@ -13,7 +13,8 @@ interface ModalProps {
   onClose: () => void;
   /** id del elemento que titula el diálogo (aria-labelledby) */
   labelledBy?: string;
-  size?: 'sm' | 'md';
+  /** 'full' ocupa casi todo el viewport y pasa a pantalla completa en mobile. */
+  size?: 'sm' | 'md' | 'lg' | 'full';
   children: React.ReactNode;
 }
 
