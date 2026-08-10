@@ -3,7 +3,7 @@ import "./landingPage.css"
 import { Link } from "react-router-dom";
 
 const LandingPage: React.FC = () => {
-// 1. Estados
+  // 1. Estados
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -16,11 +16,11 @@ const LandingPage: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     // Verificar estado inicial
-    handleScroll(); 
-    
+    handleScroll();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -63,7 +63,7 @@ const LandingPage: React.FC = () => {
     const counterObserver = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
-        
+
         const el = e.target as HTMLElement;
         const targetAttr = el.dataset.target;
         if (!targetAttr) return;
@@ -71,14 +71,14 @@ const LandingPage: React.FC = () => {
         const end = parseInt(targetAttr, 10);
         const inc = end / (1800 / 16);
         let cur = 0;
-        
+
         const t = setInterval(() => {
           cur = Math.min(cur + inc, end);
           el.textContent = Math.floor(cur).toString();
-          
+
           if (cur >= end) clearInterval(t);
         }, 16);
-        
+
         counterObserver.unobserve(el);
       });
     }, { threshold: 0.5 });
@@ -97,11 +97,11 @@ const LandingPage: React.FC = () => {
       const target = e.target as HTMLElement;
       // Buscamos si el click provino de un enlace con href que empiece por '#'
       const a = target.closest('a[href^="#"]');
-      
+
       if (a) {
         const href = a.getAttribute('href');
         if (href === '#' || href === '#contacto') return;
-        
+
         const targetElement = document.querySelector(href || '');
         if (targetElement) {
           e.preventDefault();
@@ -145,10 +145,10 @@ const LandingPage: React.FC = () => {
             <a href="#demo" className="btn btn-cta btn-desk">Solicitar demo</a>
           </div>
 
-          <button 
-            className="hamburger" 
-            id="hamburger" 
-            aria-label="Menú" 
+          <button
+            className="hamburger"
+            id="hamburger"
+            aria-label="Menú"
             aria-expanded={isMobileMenuOpen}
             onClick={toggleMobileMenu}
           >
@@ -483,47 +483,63 @@ const LandingPage: React.FC = () => {
           </div>
           <div className="price-grid">
             <div className="pc rv">
-              <div className="pc-tier">Starter</div>
-              <div className="pc-price">$4.900<sub>/mes</sub></div>
-              <p className="pc-desc">Para instituciones pequeñas que comienzan su transformación digital.</p>
+              <div className="pc-tier">Básico</div>
+              <div className="pc-price">USD 29<sub>/mes</sub></div>
+              <p className="pc-desc">Para instituciones pequeñas o en etapa inicial de digitalización.</p>
               <div className="pc-hr"></div>
               <div className="pc-feats">
-                <div className="pc-feat"><div className="pc-ck">✓</div>Hasta 150 alumnos</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>10 docentes incluidos</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>Calendario y mensajería</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>Dashboard básico</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>Soporte por email</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Hasta 150 cuentas</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Calendario institucional</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Mensajería interna</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Dashboard</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Personalización limitada</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Sin acceso a IA</div>
               </div>
               <a href="#demo" className="btn-pc-out">Empezar prueba gratis</a>
             </div>
+
             <div className="pc pc-pop rv d1">
               <div className="pc-badge">Más popular</div>
-              <div className="pc-tier">Profesional</div>
-              <div className="pc-price">$12.900<sub>/mes</sub></div>
-              <p className="pc-desc">Para instituciones que quieren aprovechar todo el potencial con IA incluida.</p>
+              <div className="pc-tier">Estándar</div>
+              <div className="pc-price">USD 79<sub>/mes</sub></div>
+              <p className="pc-desc">El plan principal, pensado para la mayoría de los colegios.</p>
               <div className="pc-hr"></div>
               <div className="pc-feats">
-                <div className="pc-feat"><div className="pc-ck">✓</div>Hasta 800 alumnos</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>Docentes ilimitados</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>IA Pedagógica</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>Analíticas avanzadas</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>Personalización institucional</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>Soporte prioritario 24/7</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Hasta 250 cuentas</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Calendario y mensajería</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Dashboard completo</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Personalización limitada</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>IA con créditos mensuales (uso controlado)</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Soporte prioritario básico</div>
               </div>
               <a href="#demo" className="btn-pc-cta">Solicitar demo</a>
             </div>
+
             <div className="pc rv d2">
-              <div className="pc-tier">Enterprise</div>
-              <div className="pc-price" style={{ fontSize: '28px', letterSpacing: '-1px' }}>A medida</div>
-              <p className="pc-desc">Para redes de colegios, municipios o ministerios de educación.</p>
+              <div className="pc-tier">Pro</div>
+              <div className="pc-price">USD 179<sub>/mes</sub></div>
+              <p className="pc-desc">Para instituciones más grandes o con uso intensivo.</p>
               <div className="pc-hr"></div>
               <div className="pc-feats">
-                <div className="pc-feat"><div className="pc-ck">✓</div>Alumnos ilimitados</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>Multi-institución</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>IA personalizada por red</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>API e integraciones propias</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>SLA garantizado</div>
-                <div className="pc-feat"><div className="pc-ck">✓</div>Gerente de cuenta dedicado</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Hasta 500 cuentas</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Acceso ampliado a IA (uso justo, no ilimitado)</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Personalización avanzada</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Soporte prioritario 24/7</div>
+              </div>
+              <a href="#demo" className="btn-pc-out">Solicitar demo</a>
+            </div>
+
+            <div className="pc rv d3">
+              <div className="pc-tier">Enterprise</div>
+              <div className="pc-price" style={{ fontSize: '28px', letterSpacing: '-1px' }}>Desde USD 300</div>
+              <p className="pc-desc">Para redes de colegios, municipios o grandes instituciones.</p>
+              <div className="pc-hr"></div>
+              <div className="pc-feats">
+                <div className="pc-feat"><div className="pc-ck">✓</div>Cantidad de cuentas personalizada</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>IA configurable según necesidad</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Integraciones propias</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Personalización completa</div>
+                <div className="pc-feat"><div className="pc-ck">✓</div>Soporte dedicado</div>
               </div>
               <a href="#contacto" className="btn-pc-out">Contactar ventas</a>
             </div>

@@ -548,7 +548,7 @@ button {
 .price-head h2 { font-family: var(--fd); font-size: clamp(30px, 3.8vw, 48px); font-weight: 700; letter-spacing: -1.5px; line-height: 1.1; color: var(--t1); margin-bottom: 10px; }
 .price-head p { font-size: 16px; color: var(--t3); line-height: 1.75; }
 
-.price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: start; }
+.price-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: start; }
 .pc { background: var(--white); border: 1px solid var(--border); border-radius: var(--r5); padding: 32px 28px; transition: all .3s var(--ease); position: relative; }
 .pc:hover:not(.pc-pop) { border-color: rgba(26, 35, 126, .2); }
 
@@ -805,4 +805,25 @@ button {
   .stats-grid { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr; }
   .prob-grid { max-width: 100%; }
+}
+/* Contenedor más ancho solo para la sección de precios (4 columnas) */
+.price-sec .wrap { max-width: 1320px; }
+
+.price-grid {
+  gap: 14px;
+  align-items: stretch; /* antes: start — esto igualaba mal las alturas */
+}
+
+.pc {
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pc-price { font-size: 36px; }
+.pc-tier { font-size: 9px; }
+.pc-desc { font-size: 12.5px; }
+
+.pc-feats {
+  flex: 1; /* empuja el botón hacia abajo, sin importar cuántos ítems tenga */
 }
