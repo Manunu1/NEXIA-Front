@@ -1,8 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
+import CompaneroCoach from '../../../Componentes/Companero/Coach';
 import type { typeBoletin } from '../../../Types/profesores/types';
 import api from '../../../api';
+import { mensajesBoletin } from '../../../utils/buddy';
+import { materiasFlojas, materiasFuertes, promediosPorBimestre } from '../../../utils/boletin';
 import './boletin.css';
 import EmptyState from '../../../Componentes/EmptyState';
 
@@ -79,6 +82,18 @@ const Boletin: React.FC = () => {
 
   const notasTP = boletin?.notas_trabajos_practicos || [];
 
+  // Cómo leer el boletín: qué materia atacar primero y hacia dónde va la
+  // tendencia. Todo sale de las mismas notas que muestra la tabla.
+  const mensajesCoach = useMemo(() => {
+    const notasFinales = boletin?.notas_finales || [];
+    return mensajesBoletin({
+      promedios: promediosPorBimestre(notasFinales),
+      flojas: materiasFlojas(notasFinales),
+      fuertes: materiasFuertes(notasFinales),
+      hayNotas: notasFinales.some((n) => n.nota != null),
+    });
+  }, [boletin]);
+
   return (
     <>
       <Sidebar />
@@ -100,6 +115,12 @@ const Boletin: React.FC = () => {
             </div>
           ) : (
             <>
+              {/* Antes de la tabla: una tabla de notas se lee mal sin saber
+                  qué mirar, y ese "qué mirar" es justo lo que aporta acá. */}
+              <div className="bol-coach">
+                <CompaneroCoach mensajes={mensajesCoach} rotulo="Cómo leer esto" />
+              </div>
+
               <section className="bol-section">
                 <h2 className="bol-section-title">Notas finales</h2>
                 {materias.length === 0 ? (

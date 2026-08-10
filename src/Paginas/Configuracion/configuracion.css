@@ -532,7 +532,7 @@ html[data-theme='oscuro'] .cfg-aviso--bloque {
 }
 
 .cfg-requisito svg { width: 14px; height: 14px; flex-shrink: 0; }
-.cfg-requisito.is-ok { color: #2E7D32; font-weight: 600; }
+.cfg-requisito.is-ok { color: var(--ok); font-weight: 600; }
 html[data-theme='oscuro'] .cfg-requisito.is-ok { color: #6EE7A2; }
 
 /* ── Barra de guardado ── */
@@ -594,7 +594,7 @@ html[data-theme='oscuro'] .cfg-btn--ghost {
 
 .cfg-link-btn:hover:not(:disabled) { color: var(--navy-l); }
 .cfg-link-btn:disabled { color: var(--t4); cursor: default; }
-.cfg-link-btn--danger { color: #C62828; }
+.cfg-link-btn--danger { color: var(--danger); }
 .cfg-link-btn--danger:hover:not(:disabled) { color: #B71C1C; }
 html[data-theme='oscuro'] .cfg-link-btn--danger { color: #FF8A80; }
 

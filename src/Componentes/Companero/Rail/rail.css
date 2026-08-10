@@ -1,12 +1,12 @@
 /* ─────────────────────────────────────────────
-   COMPAÑERO NEXIA — tarjeta del rail.
+   COMPAÑERO — rail.
    El color lo pone el tono del mensaje, y sólo
    en el acento: la tarjeta se mantiene neutra
    para no competir con el resto del inicio.
 ───────────────────────────────────────────── */
-.nb {
-  --nb-acento: var(--navy-l);
-  --nb-tinte: var(--navy-ghost);
+.cr {
+  --cr-acento: var(--navy-l);
+  --cr-tinte: var(--navy-ghost);
 
   position: relative;
   display: flex;
@@ -21,21 +21,21 @@
 }
 
 /* Filo de color: la única señal de tono en la tarjeta */
-.nb::before {
+.cr::before {
   content: '';
   position: absolute;
   inset: 0 auto 0 0;
   width: 3px;
-  background: var(--nb-acento);
+  background: var(--cr-acento);
 }
 
-.nb-top {
+.cr-top {
   display: flex;
   align-items: center;
   gap: 0.625rem;
 }
 
-.nb-rotulo {
+.cr-rotulo {
   flex: 1;
   min-width: 0;
   font-size: 0.68rem;
@@ -46,7 +46,7 @@
 }
 
 /* ── Avatar ── */
-.nb-avatar {
+.cr-avatar {
   flex-shrink: 0;
   padding: 0;
   border-radius: 50%;
@@ -56,57 +56,57 @@
   transition: transform var(--dur-fast) var(--ease-spring);
 }
 
-.nb-avatar:disabled { cursor: default; }
-.nb-avatar:not(:disabled):hover { transform: scale(1.06) rotate(-3deg); }
-.nb-avatar:not(:disabled):active { transform: scale(0.96); }
+.cr-avatar:disabled { cursor: default; }
+.cr-avatar:not(:disabled):hover { transform: scale(1.06) rotate(-3deg); }
+.cr-avatar:not(:disabled):active { transform: scale(0.96); }
 
-.nb-avatar-img {
-  box-shadow: 0 0 0 2.5px var(--nb-tinte), 0 0 0 3.5px var(--nb-acento);
-  animation: nbRebote 0.55s var(--ease-spring) both;
+.cr-avatar-img {
+  box-shadow: 0 0 0 2.5px var(--cr-tinte), 0 0 0 3.5px var(--cr-acento);
+  animation: crRebote 0.55s var(--ease-spring) both;
 }
 
-@keyframes nbRebote {
+@keyframes crRebote {
   0%   { transform: scale(0.82) translateY(4px); }
   55%  { transform: scale(1.06) translateY(-3px); }
   100% { transform: scale(1) translateY(0); }
 }
 
 /* ── Burbuja ── */
-.nb-bubble {
+.cr-bubble {
   position: relative;
   padding: 0.75rem 0.9rem;
-  background: var(--nb-tinte);
+  background: var(--cr-tinte);
   border-radius: var(--r2);
-  animation: nbEntra var(--dur-md) var(--ease) both;
+  animation: crEntra var(--dur-md) var(--ease) both;
 }
 
 /* Pico apuntando hacia arriba, al avatar */
-.nb-bubble::before {
+.cr-bubble::before {
   content: '';
   position: absolute;
   top: -4px;
   left: 16px;
   width: 10px;
   height: 10px;
-  background: var(--nb-tinte);
+  background: var(--cr-tinte);
   transform: rotate(45deg);
 }
 
-@keyframes nbEntra {
+@keyframes crEntra {
   from { opacity: 0; transform: translateY(-5px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.nb-bubble-icon {
+.cr-icono {
   flex-shrink: 0;
   width: 17px;
   height: 17px;
-  color: var(--nb-acento);
+  color: var(--cr-acento);
 }
 
-.nb-bubble-icon svg { width: 100%; height: 100%; }
+.cr-icono svg { width: 100%; height: 100%; }
 
-.nb-texto {
+.cr-texto {
   margin: 0;
   font-size: 0.82rem;
   line-height: 1.55;
@@ -114,14 +114,38 @@
   overflow-wrap: anywhere;
 }
 
-/* ── Acción ── */
-.nb-otra {
-  align-self: flex-end;
+/* ── Pie ── */
+.cr-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: -0.2rem -0.2rem 0 0;
+}
+
+/* La acción es lo único con peso: es la salida concreta del mensaje.
+   "Decime otra" queda en gris — es una preferencia, no un objetivo. */
+.cr-accion {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   padding: 0.3rem 0.5rem;
-  margin: -0.2rem -0.2rem 0 0;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--cr-acento);
+  border-radius: var(--r1);
+  transition: background var(--dur-fast) var(--ease), gap var(--dur-fast) var(--ease);
+}
+
+.cr-accion:hover { background: var(--cr-tinte); gap: 0.5rem; }
+.cr-accion svg { width: 13px; height: 13px; }
+
+.cr-otra {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.5rem;
   font-family: var(--fb);
   font-size: 0.74rem;
   font-weight: 600;
@@ -131,42 +155,29 @@
   transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
 }
 
-.nb-otra:hover { color: var(--nb-acento); background: var(--s2); }
-.nb-otra svg { width: 13px; height: 13px; }
+.cr-otra:hover { color: var(--cr-acento); background: var(--s2); }
+.cr-otra svg { width: 13px; height: 13px; }
 
-/* ── Tonos ── */
-.nb--logro {
-  --nb-acento: #2E7D32;
-  --nb-tinte: #EAF6EC;
+/* ── Tonos — todo sale de los tokens de estado, así el tema oscuro
+   se resuelve solo y la voz del compañero es idéntica en las dos
+   presentaciones. ── */
+.cr--logro {
+  --cr-acento: var(--ok);
+  --cr-tinte: var(--ok-bg);
 }
 
-.nb--alerta {
-  --nb-acento: var(--orange-d);
-  --nb-tinte: var(--orange-xs);
+.cr--alerta {
+  --cr-acento: var(--warn);
+  --cr-tinte: var(--warn-bg);
 }
 
-.nb--animo,
-.nb--tip,
-.nb--saludo {
-  --nb-acento: var(--navy-l);
-  --nb-tinte: var(--navy-ghost);
-}
-
-html[data-theme='oscuro'] .nb--logro {
-  --nb-acento: #6EE7A2;
-  --nb-tinte: rgba(46,125,50,.16);
-}
-
-html[data-theme='oscuro'] .nb--alerta {
-  --nb-tinte: rgba(255,152,0,.12);
-}
-
-html[data-theme='oscuro'] .nb--animo,
-html[data-theme='oscuro'] .nb--tip,
-html[data-theme='oscuro'] .nb--saludo {
-  --nb-tinte: rgba(57,73,171,.16);
+.cr--animo,
+.cr--tip,
+.cr--saludo {
+  --cr-acento: var(--info);
+  --cr-tinte: var(--info-bg);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nb-avatar-img, .nb-bubble { animation: none; }
+  .cr-avatar-img, .cr-bubble { animation: none; }
 }

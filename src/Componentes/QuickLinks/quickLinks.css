@@ -2,6 +2,7 @@
    QUICK LINKS — panel de accesos rápidos
 ───────────────────────────────────────────── */
 .ql {
+  /* Superficie heredada de .nx-panel — acá sólo va lo propio del panel */
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--r3);
@@ -13,14 +14,8 @@
   animation: fadeInUp var(--dur-slow) var(--ease) both;
 }
 
-.ql-title {
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: var(--t4);
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  padding: 0 0.25rem;
-}
+/* La tipografía la pone .nx-rotulo; acá sólo la sangría del panel */
+.ql-title { padding: 0 0.25rem; }
 
 .ql-list {
   display: flex;
@@ -100,4 +95,36 @@
   opacity: 1;
   transform: translateX(0);
   color: var(--navy);
+}
+
+/* ── Destacado ─────────────────────────────────
+   Absorbe a la vieja tarjeta de Nexia IA. Se
+   distingue por el ícono naranja y un tinte muy
+   leve, no por otra caja: la jerarquía se gana con
+   contraste, no con más superficie.
+───────────────────────────────────────────── */
+.ql-item--destacado {
+  background: var(--orange-xs);
+}
+
+.ql-item--destacado .ql-icon {
+  background: var(--orange);
+  color: var(--navy-d);
+  box-shadow: var(--sh-glow-orange);
+}
+
+.ql-item--destacado:hover {
+  background: var(--orange-xs);
+}
+
+.ql-item--destacado:hover .ql-icon {
+  background: var(--orange-d);
+  color: var(--white);
+}
+
+.ql-item--destacado:hover .ql-arrow { color: var(--orange-d); }
+
+html[data-theme='oscuro'] .ql-item--destacado,
+html[data-theme='oscuro'] .ql-item--destacado:hover {
+  background: rgba(255,152,0,.10);
 }

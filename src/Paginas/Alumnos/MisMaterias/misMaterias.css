@@ -1,14 +1,14 @@
 /* ─────────────────────────────────────────────
    MIS MATERIAS (Inicio Alumno)
-   Layout compartido en App.css (.home-layout)
+
+   El layout es compartido (App.css → .home-layout)
+   y la superficie de los paneles también: las dos
+   secciones montan .nx-panel y acá sólo queda lo
+   que es propio de cada una.
 ───────────────────────────────────────────── */
 
 /* ── Próximas entregas ────────────────────── */
 .pe-panel {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--r3);
-  box-shadow: var(--sh-sm);
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
@@ -89,9 +89,10 @@
   flex-shrink: 0;
 }
 
+/* Mismo significado que un .nx-badge--warn, en versión micro */
 .pe-fecha--urgente {
-  color: var(--orange-d);
-  background: var(--orange-xs);
+  color: var(--warn);
+  background: var(--warn-bg);
   border-radius: 99px;
   padding: 0.1rem 0.5rem;
 }
@@ -120,7 +121,7 @@
 .pe-empty svg {
   width: 26px;
   height: 26px;
-  color: #22C55E;
+  color: var(--ok);
 }
 
 .pe-empty p {
@@ -131,10 +132,6 @@
 
 /* ── Mi rendimiento ───────────────────────── */
 .rp-panel {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--r3);
-  box-shadow: var(--sh-sm);
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
@@ -248,26 +245,5 @@
   transition: width 0.6s var(--ease);
 }
 
-/* Alertas de materias flojas — estado con ícono + texto */
-.rp-alerta {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  background: var(--orange-xs);
-  border: 1px solid rgba(255,152,0,.2);
-  border-radius: var(--r2);
-  padding: 0.55rem 0.75rem;
-  font-size: 0.76rem;
-  color: var(--t2);
-  line-height: 1.5;
-}
-
-.rp-alerta svg {
-  width: 14px;
-  height: 14px;
-  color: var(--orange-d);
-  flex-shrink: 0;
-  margin-top: 0.1rem;
-}
-
-.rp-alerta strong { color: var(--orange-d); }
+/* Las alertas de materias flojas (.rp-alerta) se eliminaron: el compañero
+   ya las nombra una por una y con una salida concreta a Nexia IA. */

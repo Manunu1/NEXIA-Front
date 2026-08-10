@@ -10,39 +10,8 @@
   flex-wrap: wrap;
 }
 
-.tpd-chip {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.7px;
-  border-radius: 99px;
-  padding: 0.28rem 0.8rem;
-  white-space: nowrap;
-}
-
-.tpd-chip--activo {
-  background: var(--navy-ghost);
-  color: var(--navy);
-  border: 1px solid var(--navy-xs);
-}
-
-.tpd-chip--vencido {
-  background: #FFF1F1;
-  color: #DC2626;
-  border: 1px solid rgba(220,38,38,.2);
-}
-
-.tpd-chip--pendiente {
-  background: var(--orange-xs);
-  color: var(--orange-d);
-  border: 1px solid rgba(255,152,0,.22);
-}
-
-.tpd-chip--corregido {
-  background: #E8F5E9;
-  color: #2E7D32;
-  border: 1px solid rgba(46,125,50,.2);
-}
+/* Los chips de estado (.tpd-chip--*) se eliminaron: ahora son .nx-badge,
+   la primitiva compartida de App.css. */
 
 .tpd-fecha-chip {
   display: inline-flex;
@@ -61,12 +30,12 @@
 .tpd-fecha-chip svg { width: 13px; height: 13px; color: var(--t4); }
 
 .tpd-fecha-chip--vencido {
-  color: #DC2626;
-  background: #FFF1F1;
-  border-color: rgba(220,38,38,.18);
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-color: var(--danger-bd);
 }
 
-.tpd-fecha-chip--vencido svg { color: #DC2626; }
+.tpd-fecha-chip--vencido svg { color: var(--danger); }
 
 /* ── Layout ───────────────────────────────── */
 .tpd-layout {
@@ -122,8 +91,8 @@
 .tpd-panel-icon svg { width: 16px; height: 16px; }
 
 .tpd-panel-icon--ok {
-  background: #E8F5E9;
-  color: #2E7D32;
+  background: var(--ok-bg);
+  color: var(--ok);
 }
 
 .tpd-panel-title {
@@ -191,7 +160,7 @@
   align-items: center;
   gap: 0.1rem;
   align-self: flex-start;
-  background: #E8F5E9;
+  background: var(--ok-bg);
   border: 1px solid rgba(46,125,50,.2);
   border-radius: var(--r3);
   padding: 0.875rem 1.75rem;
@@ -203,7 +172,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #2E7D32;
+  color: var(--ok);
 }
 
 .tpd-nota-value {
@@ -292,16 +261,16 @@
 .tpd-estado-banner--pendiente strong { color: var(--orange-d); }
 
 .tpd-estado-banner--vencido {
-  background: #FFF1F1;
+  background: var(--danger-bg);
   border: 1px solid rgba(220,38,38,.18);
   color: var(--t2);
 }
 
 .tpd-estado-banner--vencido svg,
-.tpd-estado-banner--vencido strong { color: #DC2626; }
+.tpd-estado-banner--vencido strong { color: var(--danger); }
 
 .tpd-estado-banner--exito {
-  background: #E8F5E9;
+  background: var(--ok-bg);
   border: 1px solid rgba(46,125,50,.22);
   color: var(--t2);
   animation: scaleIn var(--dur-md) var(--ease-spring) both;
@@ -333,6 +302,10 @@
 
 /* ── Drop zone ────────────────────────────── */
 .tpd-drop-zone {
+  /* Ahora es un <button>: ancho completo, tipografía heredada y sin los
+     estilos de agente de usuario. Lo que se gana es teclado y foco. */
+  width: 100%;
+  font-family: var(--fb);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -430,33 +403,14 @@
 }
 
 .tpd-upload-remove:hover {
-  color: #C62828;
-  border-color: rgba(198,40,40,.3);
-  background: #FFF1F1;
+  color: var(--danger);
+  border-color: var(--danger-bd);
+  background: var(--danger-bg);
 }
 
 /* ── Entrega form ─────────────────────────── */
-.tpd-comentario-input {
-  font-family: var(--fb);
-  font-size: 0.875rem;
-  color: var(--t2);
-  background: var(--navy-ghost);
-  border: 1.5px solid var(--border);
-  border-radius: var(--r2);
-  padding: 0.72rem 0.9rem;
-  min-height: 80px;
-  resize: vertical;
-  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s;
-}
-
-.tpd-comentario-input::placeholder { color: var(--t4); }
-
-.tpd-comentario-input:focus {
-  outline: none;
-  border-color: var(--focus-border);
-  box-shadow: var(--focus-ring);
-  background: var(--ctrl-bg-focus);
-}
+/* El resto lo pone .nx-control (fondo, borde, foco): acá sólo el alto. */
+.tpd-comentario-input { min-height: 80px; }
 
 .tpd-submit-btn {
   align-self: flex-start;
@@ -492,4 +446,40 @@
   border-top-color: var(--navy-d);
   animation: spinDual 0.7s linear infinite;
   flex-shrink: 0;
+}
+
+/* ── Compañero ─────────────────────────────────
+   Cruza las dos columnas: es una nota al margen de
+   toda la pantalla, no de uno de los dos paneles.
+───────────────────────────────────────────── */
+.tpd-coach {
+  grid-column: 1 / -1;
+  animation: fadeInUp var(--dur-slow) var(--ease) 0.12s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tpd-coach { animation: none; }
+}
+
+/* ── Entrega ───────────────────────────────────
+   El input real queda fuera del flujo visual: lo
+   dispara la zona de drop, que sí es accesible.
+───────────────────────────────────────────── */
+.tpd-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Por qué el botón de entregar está deshabilitado */
+.tpd-submit-hint {
+  margin: -0.25rem 0 0;
+  font-size: 0.76rem;
+  color: var(--t4);
+  text-align: center;
 }

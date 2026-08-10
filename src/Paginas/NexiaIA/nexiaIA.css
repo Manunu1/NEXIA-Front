@@ -97,7 +97,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #22C55E;
+  background: var(--ok);
   flex-shrink: 0;
   animation: niaPulse 2.5s ease-in-out infinite;
 }
@@ -156,25 +156,6 @@
   max-width: 620px;
   margin: 0 auto;
   width: 100%;
-}
-
-.nia-welcome-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: var(--r3);
-  background: linear-gradient(135deg, var(--navy-d) 0%, var(--navy-l) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--white);
-  margin-bottom: 1.75rem;
-  box-shadow: var(--sh-nv);
-  animation: floatY 4s ease-in-out infinite;
-}
-
-.nia-welcome-icon svg {
-  width: 32px;
-  height: 32px;
 }
 
 .nia-welcome-title {
@@ -305,12 +286,10 @@
 .nia-ai-avatar {
   width: 32px;
   height: 32px;
-  border-radius: var(--r1);
-  background: linear-gradient(135deg, var(--navy-d) 0%, var(--navy-l) 100%);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
   flex-shrink: 0;
   align-self: flex-end;
   box-shadow: 0 2px 8px rgba(26,35,126,.2);
@@ -322,10 +301,7 @@
   to   { opacity: 1; transform: scale(1) rotate(0); }
 }
 
-.nia-ai-avatar svg {
-  width: 14px;
-  height: 14px;
-}
+
 
 /* Avatar mientras la IA "piensa" — glow pulsante */
 .nia-ai-avatar--thinking {
@@ -405,7 +381,7 @@
 .nia-bubble--error {
   background: #FFF1F1 !important;
   border-color: rgba(198,40,40,.2) !important;
-  color: #C62828 !important;
+  color: var(--danger) !important;
 }
 
 .nia-retry-btn {
@@ -416,7 +392,7 @@
   padding: 0.4rem 0.75rem;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #C62828;
+  color: var(--danger);
   background: var(--white);
   border: 1px solid rgba(198,40,40,.25);
   border-radius: var(--r2);
@@ -649,10 +625,35 @@
   .nia-prompts-grid { grid-template-columns: 1fr; }
   .nia-input-area   { padding: 0.875rem 1rem 1.1rem; }
   .nia-welcome      { padding: 2rem 1.25rem; }
-  .nia-welcome-icon { width: 56px; height: 56px; }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .nia-wrapper { margin-left: 220px; }
   .nia-header  { padding: 0 1.25rem; }
+}
+
+
+/* ── Nexo en la bienvenida ─────────────────────
+   Reemplaza al ícono de rayo: la IA tiene la misma
+   cara que el compañero del inicio, así se entiende
+   que es el mismo ayudante y no otro producto.
+───────────────────────────────────────────── */
+.nia-welcome-nexo {
+  margin-bottom: 1.75rem;
+  box-shadow: var(--sh-nv);
+  animation: floatY 4s ease-in-out infinite;
+}
+
+.nia-welcome-coach {
+  width: 100%;
+  max-width: 560px;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .nia-welcome-nexo { width: 72px !important; height: 72px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nia-welcome-nexo { animation: none; }
 }

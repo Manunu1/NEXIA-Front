@@ -405,3 +405,16 @@
   .iv-list-panel { width: 100%; border-right: none; border-bottom: 1px solid var(--border); max-height: 40vh; }
   .iv-body { flex-direction: column; }
 }
+
+/* ── Compañero ─────────────────────────────────
+   Anclado al pie del panel de material: la lista
+   scrollea por encima y el consejo queda siempre
+   visible sin robarle alto al visor.
+───────────────────────────────────────────── */
+.iv-coach {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 0.75rem;
+  border-top: 1px solid var(--border);
+  background: var(--white);
+}

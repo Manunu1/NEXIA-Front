@@ -154,11 +154,14 @@
 
 /* Badges */
 .nav-badge {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 700;
-  padding: 0.17rem 0.45rem;
+  padding: 0.15rem 0.42rem;
   border-radius: 99px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  color: var(--orange);
+  background: rgba(255,152,0,.14);
+  border: 1px solid rgba(255,152,0,.28);
 }
 
 .nav-badge.notification {
@@ -174,27 +177,64 @@
   font-size: 0.62rem;
 }
 
-.nav-badge.plus {
-  background: rgba(255,255,255,.12);
-  color: rgba(255,255,255,.7);
-  font-size: 0.58rem;
-  letter-spacing: 0.8px;
-}
-
-/* ── Usuario ──────────────────────────────── */
+/* ── Bloque de cuenta ──────────────────────────
+   El hover ya no vive en el contenedor: ahora hay
+   dos destinos distintos adentro (perfil y cerrar
+   sesión) y teñir todo el bloque al pasar por
+   cualquiera de los dos sugiere un solo control.
+───────────────────────────────────────────── */
 .sidebar-user {
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 0.875rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   border-top: 1px solid rgba(255,255,255,.07);
-  transition: background 0.2s ease;
   flex-shrink: 0;
 }
 
-.sidebar-user:hover { background: rgba(255,255,255,.04); }
+.sidebar-user-link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.375rem 0.5rem;
+  border-radius: var(--r2);
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.sidebar-user-link:hover,
+.sidebar-user-link.active { background: rgba(255,255,255,.07); }
+
+.sidebar-user-link:hover .user-avatar,
+.sidebar-user-link.active .user-avatar {
+  box-shadow: 0 0 0 3px rgba(255,152,0,.55);
+}
+
+/* El engranaje sólo aparece al acercarse: en reposo, el bloque tiene que
+   leerse como identidad, no como un botón de ajustes más. */
+.user-config {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  color: rgba(255,255,255,.32);
+  opacity: 0;
+  transform: rotate(-45deg);
+  transition: opacity var(--dur-fast) var(--ease), transform var(--dur-md) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.user-config svg { width: 100%; height: 100%; }
+
+.sidebar-user-link:hover .user-config,
+.sidebar-user-link.active .user-config,
+.sidebar-user-link:focus-visible .user-config {
+  opacity: 1;
+  transform: rotate(0deg);
+  color: var(--orange);
+}
 
 .user-avatar {
+  display: block;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -204,10 +244,6 @@
   flex-shrink: 0;
   box-shadow: 0 0 0 2px rgba(255,152,0,.3);
   transition: box-shadow var(--dur-fast) ease;
-}
-
-.sidebar-user:hover .user-avatar {
-  box-shadow: 0 0 0 3px rgba(255,152,0,.55);
 }
 
 .user-avatar img {
@@ -223,7 +259,7 @@
   right: 0;
   width: 9px;
   height: 9px;
-  background: #22C55E;
+  background: var(--ok);
   border: 2px solid var(--navy-d);
   border-radius: 50%;
   animation: statusPulse 2.4s ease-in-out infinite;

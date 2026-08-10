@@ -125,6 +125,84 @@
 }
 
 /* ─────────────────────────────────────────────
+   PRIMITIVAS — superficie, rótulo y estado.
+
+   Son el vocabulario compartido de la app. Antes
+   cada página redefinía su propio panel (mismo
+   blanco, mismo borde, mismo radio, mismo shadow
+   con otro nombre) y sus propios chips de estado
+   con hex sueltos: el resultado era que "vencido"
+   se veía distinto en una entrega y en el boletín.
+
+   Regla: si una pantalla nueva necesita una caja o
+   una etiqueta de estado, usa estas clases. Si no
+   alcanzan, se extienden acá — no se copian allá.
+───────────────────────────────────────────── */
+
+/* ── Superficie ── */
+.nx-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+}
+
+/* Sin sombra — para paneles embebidos dentro de otra superficie */
+.nx-panel--plano { box-shadow: none; }
+
+/* Encabezado de panel: rótulo a la izquierda, metadato o acción a la derecha */
+.nx-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.125rem 0.75rem;
+}
+
+.nx-panel-body { padding: 0 1.125rem 1.125rem; }
+
+/**
+ * Rótulo chico en versalitas. Es el mismo elemento que hasta ahora se
+ * llamaba .ql-title, .iv-list-label o .pe-head en cada página.
+ */
+.nx-rotulo {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--t4);
+  margin: 0;
+}
+
+/* ── Estado ────────────────────────────────────
+   Una sola forma para todos los chips de la app.
+   El modificador dice el SIGNIFICADO, no el color:
+   así cambiar la paleta no obliga a releer el HTML.
+───────────────────────────────────────────── */
+.nx-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  white-space: nowrap;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--s2);
+  color: var(--t3);
+}
+
+.nx-badge svg { width: 12px; height: 12px; }
+
+.nx-badge--ok     { background: var(--ok-bg);     color: var(--ok);     border-color: var(--ok-bd); }
+.nx-badge--warn   { background: var(--warn-bg);   color: var(--warn);   border-color: var(--warn-bd); }
+.nx-badge--danger { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-bd); }
+.nx-badge--info   { background: var(--info-bg);   color: var(--info);   border-color: var(--info-bd); }
+
+/* ─────────────────────────────────────────────
    BACK BUTTON — pequeño, para breadcrumb
 ───────────────────────────────────────────── */
 .btn-back-page {
@@ -150,9 +228,9 @@
    ALERTS
 ───────────────────────────────────────────── */
 .alert-error {
-  background: #FFF1F1;
-  border: 1px solid rgba(198,40,40,.18);
-  color: #C62828;
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-bd);
+  color: var(--danger);
   border-radius: var(--r3);
   padding: 0.875rem 1.25rem;
   font-size: 0.875rem;
@@ -363,8 +441,8 @@
 .iv-error {
   padding: 1.5rem;
   font-size: 0.82rem;
-  color: #c62828;
-  background: #fff1f1;
+  color: var(--danger);
+  background: var(--danger-bg);
   margin: 0.75rem;
   border-radius: var(--r2);
 }
@@ -600,6 +678,8 @@
 
 /* ── Section head — título de sección dentro de una página ── */
 .section-head {
+  /* Deja aire cuando se llega acá desde un ancla del hero */
+  scroll-margin-top: 1.5rem;
   display: flex;
   align-items: baseline;
   justify-content: space-between;

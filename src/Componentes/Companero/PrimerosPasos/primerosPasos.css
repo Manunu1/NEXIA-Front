@@ -1,0 +1,204 @@
+/* ─────────────────────────────────────────────
+   PRIMEROS PASOS — la única tarjeta del rail que
+   se permite un fondo de marca, porque es la
+   primera cosa que tiene que mirar alguien que
+   nunca entró. Se gana la jerarquía y después
+   desaparece para siempre.
+───────────────────────────────────────────── */
+.pp {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.125rem;
+  background: linear-gradient(150deg, var(--navy) 0%, var(--navy-d) 100%);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-nv);
+  color: #fff;
+  overflow: hidden;
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
+}
+
+/* Halo tenue — le da profundidad sin sumar un elemento más */
+.pp::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -25%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,152,0,.24) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.pp-cerrar {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  color: rgba(255,255,255,.55);
+  border-radius: 50%;
+  transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.pp-cerrar:hover { color: #fff; background: rgba(255,255,255,.14); }
+.pp-cerrar svg { width: 14px; height: 14px; }
+
+/* ── Encabezado ── */
+.pp-top {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-right: 1.75rem;
+}
+
+.pp-titulo {
+  margin: 0;
+  font-family: var(--fd);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  line-height: 1.25;
+}
+
+.pp-sub {
+  margin: 0.1rem 0 0;
+  font-size: 0.76rem;
+  color: rgba(255,255,255,.62);
+}
+
+/* ── Progreso ── */
+.pp-progreso {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.pp-barra {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,.16);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.pp-barra-fill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 99px;
+  transition: width var(--dur-slow) var(--ease);
+}
+
+.pp-conteo {
+  font-family: var(--fd);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.72);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Pasos ── */
+.pp-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.pp-paso {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: var(--r2);
+  transition: background var(--dur-fast) var(--ease);
+}
+
+/* Sólo el paso activo tiene fondo: es lo único que hay que hacer ahora */
+.pp-paso--activo { background: rgba(255,255,255,.09); }
+
+.pp-marca {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.1rem;
+  color: var(--orange);
+}
+
+.pp-marca svg { width: 14px; height: 14px; }
+
+.pp-punto {
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid rgba(255,255,255,.4);
+  border-radius: 50%;
+}
+
+.pp-paso--activo .pp-punto {
+  border-color: var(--orange);
+  background: var(--orange);
+  animation: pulseGlow 2.4s var(--ease) infinite;
+}
+
+.pp-paso-cuerpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pp-paso-titulo {
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: rgba(255,255,255,.9);
+}
+
+.pp-paso--hecho .pp-paso-titulo { color: rgba(255,255,255,.45); }
+
+.pp-paso-detalle {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,.62);
+}
+
+.pp-paso-cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.15rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--navy-d);
+  background: var(--orange);
+  border-radius: var(--r1);
+  transition: transform var(--dur-fast) var(--ease), gap var(--dur-fast) var(--ease);
+}
+
+.pp-paso-cta:hover { transform: translateY(-1px); gap: 0.5rem; }
+.pp-paso-cta svg { width: 13px; height: 13px; }
+
+.pp-listo {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pp { animation: none; }
+  .pp-paso--activo .pp-punto { animation: none; }
+}

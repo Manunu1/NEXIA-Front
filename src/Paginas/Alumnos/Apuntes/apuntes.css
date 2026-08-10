@@ -169,8 +169,8 @@
 }
 
 .ap-icon-btn--danger:hover {
-  color: #DC2626;
-  background: #FFF1F1;
+  color: var(--danger);
+  background: var(--danger-bg);
   border-color: rgba(220,38,38,.25);
 }
 

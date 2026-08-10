@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from '../../Componentes/Sidebar';
 import Markdown from '../../Componentes/Markdown';
+import NexiaMascota from '../../Componentes/NexiaMascota';
+import CompaneroCoach from '../../Componentes/Companero/Coach';
+import { mensajesIA } from '../../utils/buddy';
+import { marcarHito } from '../../utils/hitos';
 import api from '../../api';
 import './nexiaIA.css';
 import { usePageTitle } from '../../hooks/usePageTitle';
@@ -101,6 +105,10 @@ const NexiaIA: React.FC = () => {
     const pregunta = text.trim();
     if (!pregunta || loading) return;
 
+    // "Probar Nexia IA" es haber preguntado algo, no haber abierto la pantalla:
+    // el paso de la guía se marca acá y no en un efecto de montaje.
+    marcarHito('ia-usada');
+
     const historial = toHistorial(messages);
 
     const userMsg: Message = {
@@ -197,11 +205,16 @@ const NexiaIA: React.FC = () => {
         <div className="nia-messages" ref={messagesRef}>
           {messages.length === 0 ? (
             <div className="nia-welcome">
-              <div className="nia-welcome-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                </svg>
-              </div>
+              {/* Nexo en grande: la IA tiene la misma cara que el compañero
+                  del inicio. Es el mismo ayudante, no otro producto. */}
+              <NexiaMascota
+                size={96}
+                frame="head"
+                expresion="pensando"
+                animado
+                className="nia-welcome-nexo"
+                alt=""
+              />
               <h2 className="nia-welcome-title">Hola, soy Nexia IA</h2>
               <p className="nia-welcome-sub">
                 Estoy aquí para acompañarte en tu aprendizaje. No te daré respuestas directas
@@ -221,9 +234,11 @@ const NexiaIA: React.FC = () => {
                   </button>
                 ))}
               </div>
-              <p className="nia-welcome-disclaimer">
-                Nexia IA tiene acceso al material publicado por tus docentes para brindarte una ayuda contextualizada.
-              </p>
+              {/* Reemplaza al disclaimer fijo: dice lo mismo sobre el material
+                  y además enseña a preguntar, que es donde está el valor. */}
+              <div className="nia-welcome-coach">
+                <CompaneroCoach mensajes={mensajesIA()} rotulo="Cómo sacarle jugo" />
+              </div>
             </div>
           ) : (
             <div className="nia-msg-list">
@@ -231,9 +246,7 @@ const NexiaIA: React.FC = () => {
                 <div key={msg.id} className={`nia-msg nia-msg--${msg.role}`}>
                   {msg.role === 'ai' && (
                     <div className="nia-ai-avatar" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                      </svg>
+                      <NexiaMascota size={32} frame="head" />
                     </div>
                   )}
                   <div className={`nia-bubble${msg.error ? ' nia-bubble--error' : ''}`}>
@@ -291,9 +304,7 @@ const NexiaIA: React.FC = () => {
               {loading && (
                 <div className="nia-msg nia-msg--ai">
                   <div className="nia-ai-avatar nia-ai-avatar--thinking" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                    </svg>
+                    <NexiaMascota size={32} frame="head" expresion="pensando" animado />
                   </div>
                   <div className="nia-bubble nia-bubble--typing" aria-label="Nexia IA está escribiendo">
                     <span /><span /><span />

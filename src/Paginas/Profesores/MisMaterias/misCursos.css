@@ -44,7 +44,7 @@
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--white);
-  background: #DC2626;
+  background: var(--danger);
   border-radius: 99px;
   min-width: 22px;
   height: 22px;
@@ -167,7 +167,7 @@
 .ar-empty svg {
   width: 26px;
   height: 26px;
-  color: #22C55E;
+  color: var(--ok);
 }
 
 .ar-empty p {

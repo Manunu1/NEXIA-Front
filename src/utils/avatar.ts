@@ -1,4 +1,10 @@
-import type { AvatarConfig, GlassesStyle, HairStyle, HatStyle } from '../Types/perfil';
+import type {
+  AvatarConfig,
+  AvatarSize,
+  GlassesStyle,
+  HairStyle,
+  HatStyle,
+} from '../Types/perfil';
 
 /* ─────────────────────────────────────────────
    AVATAR — catálogo de opciones y utilidades.
@@ -79,6 +85,24 @@ export const COLORES_REMERA: OpcionColor[] = [
   { value: '#E0F2F1', label: 'Menta' },
   { value: '#FF9800', label: 'Naranja' },
 ];
+
+/* ── Tamaños ───────────────────────────────── */
+
+/**
+ * Diámetro en px de cada tamaño nombrado. Fuente única: lo consumen
+ * NexiaAvatar, NexiaMascota y ProfileImage, y las tres tienen que
+ * medir igual o los listados quedan desalineados.
+ */
+export const TAMANIOS_AVATAR: Record<AvatarSize, number> = {
+  xs: 28,
+  sm: 36,
+  md: 48,
+  lg: 96,
+  xl: 220,
+};
+
+export const pxAvatar = (size: AvatarSize | number): number =>
+  typeof size === 'number' ? size : TAMANIOS_AVATAR[size];
 
 export const AVATAR_POR_DEFECTO: AvatarConfig = {
   skin: '#EFC09A',

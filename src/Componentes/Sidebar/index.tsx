@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './sidebar.css';
 import logoEscuela from '../../assets/Logo.png';
 import LogoutButton from '../Logout';
 import ProfileImage from '../ProfileImage';
 import { useSesionUsuario } from '../../hooks/useSesionUsuario';
-import { getRolActual, HOME_BY_ROL, NAV_BY_ROL } from './navConfig';
+import { getRolActual, HOME_BY_ROL, IconConfig, NAV_BY_ROL } from './navConfig';
 import type { NavItem } from './navConfig';
 
 /* ─────────────────────────────────────────────
@@ -28,6 +28,20 @@ const Sidebar: React.FC = () => {
 
   // En mobile, cerrar el panel al navegar a otra sección
   const closeOnNavigate = () => setIsOpen(false);
+
+  /* El panel de mobile es un overlay: tiene que cerrarse con Escape. Sin esto,
+     quien navega con teclado queda atrapado detrás de la capa oscura, con el
+     único cierre disponible en un botón que ya pasó de largo. */
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const alEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    document.addEventListener('keydown', alEscape);
+    return () => document.removeEventListener('keydown', alEscape);
+  }, [isOpen]);
 
   const isActive = (item: NavItem) =>
     item.match.some(p =>
@@ -88,7 +102,7 @@ const Sidebar: React.FC = () => {
                     >
                       <span className="nav-icon">{item.icon}</span>
                       <span className="nav-text">{item.label}</span>
-                      {item.badge === 'plus' && <span className="nav-badge plus">PLUS</span>}
+                      {item.badge && <span className="nav-badge">{item.badge}</span>}
                     </Link>
                   </li>
                 ))}
@@ -97,20 +111,32 @@ const Sidebar: React.FC = () => {
           </ul>
         </nav>
 
+        {/* Bloque de cuenta. El avatar y el nombre ahora SON el acceso al
+            perfil: es donde todo el mundo hace clic para eso, y así
+            "Configuración" sale de la lista de navegación de contenido. */}
         <div className="sidebar-user">
-          <div className="user-avatar">
-            <ProfileImage
-              usuario={usuario}
-              size={36}
-              nombre={usuario?.nombre}
-              apellido={usuario?.apellido}
-            />
-            <span className="status-indicator" />
-          </div>
-          <div className="user-info">
-            <span className="user-name">{nombreCompleto}</span>
-            <span className="user-role">{rol.toUpperCase()}</span>
-          </div>
+          <Link
+            to="/configuracion"
+            className={`sidebar-user-link${location.pathname === '/configuracion' ? ' active' : ''}`}
+            onClick={closeOnNavigate}
+            aria-current={location.pathname === '/configuracion' ? 'page' : undefined}
+          >
+            <span className="user-avatar">
+              <ProfileImage
+                usuario={usuario}
+                size={36}
+                nombre={usuario?.nombre}
+                apellido={usuario?.apellido}
+              />
+              <span className="status-indicator" />
+            </span>
+            <span className="user-info">
+              <span className="user-name">{nombreCompleto}</span>
+              <span className="user-role">{rol.toUpperCase()}</span>
+            </span>
+            <span className="user-config" aria-hidden="true">{IconConfig}</span>
+          </Link>
+
           <LogoutButton />
         </div>
       </aside>

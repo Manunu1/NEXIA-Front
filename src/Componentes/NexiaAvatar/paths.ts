@@ -35,6 +35,16 @@ export const SONRISA_ALEGRE = 'M 64 106 C 68 124 92 124 96 106 Z';
 export const OJO_FELIZ = (cx: number, cy: number) =>
   `M ${cx - 9} ${cy + 2} C ${cx - 5} ${cy - 8} ${cx + 5} ${cy - 8} ${cx + 9} ${cy + 2}`;
 
+/**
+ * 'Pensando' — no cierra los ojos: mueve la mirada y aquieta la boca.
+ * Los mismos valores los usa Nexo, así el gesto es el mismo personaje
+ * pensando, sea un retrato o la mascota.
+ */
+export const MIRADA_PENSANDO = { dx: 2.5, dy: -2.5 } as const;
+
+/** Boca corta y quieta — mientras piensa. */
+export const BOCA_PENSANDO = 'M 72 110 L 88 110';
+
 /** Cuello + torso. La remera se dibuja con el escote ya recortado. */
 export const CUELLO = { x: 67, y: 118, w: 26, h: 40, rx: 12 } as const;
 

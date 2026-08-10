@@ -18,7 +18,13 @@ export interface NavItem {
   icon: ReactNode;
   /** Rutas que activan el item. Sufijo '*' = coincidencia por prefijo. */
   match: string[];
-  badge?: 'plus';
+  /**
+   * Etiqueta corta al final del item. Texto libre, pero con cuidado: decía
+   * "PLUS", y en un producto SaaS eso se lee como "función de plan pago".
+   * Nexia IA está incluida para todos los alumnos y docentes; la etiqueta
+   * ahora sólo la identifica.
+   */
+  badge?: string;
 }
 
 export interface NavSection {
@@ -101,7 +107,7 @@ const IconNexia = (
   </svg>
 );
 
-const IconConfig = (
+export const IconConfig = (
   <svg viewBox="0 0 24 24" {...stroke}>
     <circle cx="12" cy="12" r="3" />
     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
@@ -139,12 +145,14 @@ const IconAsignaciones = (
 
 /* ── Items compartidos entre alumno y profesor ── */
 
+/* Configuración ya no está en esta lista: vive en el bloque de cuenta, al
+   pie de la sidebar, junto al avatar y a cerrar sesión. Es donde el usuario
+   la busca, y saca un ítem de la navegación de contenido. */
 const ITEMS_GENERALES: NavItem[] = [
   { to: '/calendario', label: 'Calendario', icon: IconCalendario, match: ['/calendario'] },
   { to: '/mensajes', label: 'Mensajes', icon: IconMensajes, match: ['/mensajes'] },
   { to: '/comunicados', label: 'Comunicados', icon: IconComunicados, match: ['/comunicados'] },
-  { to: '/nexia-ia', label: 'Nexia IA', icon: IconNexia, match: ['/nexia-ia'], badge: 'plus' },
-  { to: '/configuracion', label: 'Configuración', icon: IconConfig, match: ['/configuracion'] },
+  { to: '/nexia-ia', label: 'Nexia IA', icon: IconNexia, match: ['/nexia-ia'], badge: 'IA' },
 ];
 
 export const NAV_BY_ROL: Record<Rol, NavSection[]> = {
@@ -205,7 +213,6 @@ export const NAV_BY_ROL: Record<Rol, NavSection[]> = {
       items: [
         { to: '/calendario', label: 'Calendario', icon: IconCalendario, match: ['/calendario'] },
         { to: '/comunicados', label: 'Comunicados', icon: IconComunicados, match: ['/comunicados'] },
-        { to: '/configuracion', label: 'Configuración', icon: IconConfig, match: ['/configuracion'] },
       ],
     },
   ],

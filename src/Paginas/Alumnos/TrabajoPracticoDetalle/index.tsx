@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
+import CompaneroCoach from '../../../Componentes/Companero/Coach';
+import { mensajesEntrega } from '../../../utils/buddy';
+import type { EstadoEntrega } from '../../../utils/buddy';
 import type { typeEntregaRoster, typeTrabajoPractico } from '../../../Types/profesores/types';
 import api from '../../../api';
 import { getUsuarioSesion } from '../../../utils/session';
@@ -25,6 +28,14 @@ function getAlumnoId(): string | null {
 
 function estaVencido(fechaLimite?: string | null): boolean {
   return !!fechaLimite && new Date(fechaLimite).getTime() < Date.now();
+}
+
+/** Días hasta la fecha límite. null si el TP no tiene fecha o es ilegible. */
+function diasHasta(fechaLimite?: string | null): number | null {
+  if (!fechaLimite) return null;
+  const limite = new Date(fechaLimite);
+  if (isNaN(limite.getTime())) return null;
+  return Math.ceil((limite.getTime() - Date.now()) / 86_400_000);
 }
 
 const TrabajoPracticoDetalle: React.FC = () => {
@@ -126,6 +137,28 @@ const TrabajoPracticoDetalle: React.FC = () => {
     }
   };
 
+  // Lo que te dice el compañero sale del estado real de esta entrega. Va antes
+  // de los early returns porque es un hook: no puede quedar detrás de un `if`.
+  const mensajesCoach = useMemo(() => {
+    if (!tp) return [];
+
+    const estado: EstadoEntrega =
+      entrega?.estado === 'corregido'
+        ? 'corregido'
+        : entrega
+          ? 'en-correccion'
+          : 'sin-entregar';
+
+    return mensajesEntrega({
+      estado,
+      vencido: estaVencido(tp.fecha_limite),
+      diasRestantes: diasHasta(tp.fecha_limite),
+      nota: entrega?.nota != null ? Number(entrega.nota) : null,
+      tieneDevolucion: Boolean(entrega?.comentario_correccion),
+      tieneMaterial: Boolean(tp.archivo_url),
+    });
+  }, [tp, entrega]);
+
   if (loading) {
     return (
       <>
@@ -160,13 +193,23 @@ const TrabajoPracticoDetalle: React.FC = () => {
   const vencido = estaVencido(tp.fecha_limite);
   const puedeEntregar = !corregido && !vencido;
 
-  const estadoChip = corregido
-    ? { label: 'Corregido', className: 'tpd-chip--corregido' }
+  // El rótulo nombra el momento en el que está el alumno: "antes de entregar"
+  // sobre un trabajo ya corregido sonaría a que el sistema no lo registró.
+  const rotuloCoach = corregido
+    ? 'Sobre tu devolución'
     : enCorreccion
-      ? { label: 'En corrección', className: 'tpd-chip--pendiente' }
+      ? 'Mientras esperás la corrección'
+      : 'Antes de entregar';
+
+  // Los cuatro estados usan el vocabulario compartido (.nx-badge): el mismo
+  // "Vencido" tiene que verse igual acá, en el listado y en el boletín.
+  const estadoChip = corregido
+    ? { label: 'Corregido', className: 'nx-badge--ok' }
+    : enCorreccion
+      ? { label: 'En corrección', className: 'nx-badge--warn' }
       : vencido
-        ? { label: 'Vencido', className: 'tpd-chip--vencido' }
-        : { label: 'Por entregar', className: 'tpd-chip--activo' };
+        ? { label: 'Vencido', className: 'nx-badge--danger' }
+        : { label: 'Por entregar', className: 'nx-badge--info' };
 
   return (
     <>
@@ -180,7 +223,7 @@ const TrabajoPracticoDetalle: React.FC = () => {
               </button>
               <div className="tpd-title-row">
                 <h1 className="page-title">{tp.titulo}</h1>
-                <span className={`tpd-chip ${estadoChip.className}`}>{estadoChip.label}</span>
+                <span className={`nx-badge ${estadoChip.className}`}>{estadoChip.label}</span>
               </div>
               {tp.fecha_limite && (
                 <p className={`tpd-fecha-chip${vencido ? ' tpd-fecha-chip--vencido' : ''}`}>
@@ -334,29 +377,39 @@ const TrabajoPracticoDetalle: React.FC = () => {
                         {submitError && <div className="alert-error">{submitError}</div>}
 
                         {uploadState === 'idle' || uploadState === 'error' ? (
-                          <div
-                            className={`tpd-drop-zone${dragOver ? ' tpd-drop-zone--over' : ''}`}
-                            onClick={() => fileInputRef.current?.click()}
-                            onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-                            onDragLeave={() => setDragOver(false)}
-                            onDrop={handleDrop}
-                          >
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                              <polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
-                            </svg>
-                            <p className="tpd-drop-text">
-                              {entrega ? 'Arrastrá un nuevo archivo para reemplazar tu entrega' : 'Arrastrá tu archivo o hacé clic para seleccionar'}
-                            </p>
-                            <p className="tpd-drop-sub">PDF, DOC, DOCX, JPG, PNG o ZIP · Máximo 20MB</p>
+                          <>
+                            {/* El input vive FUERA del botón: un control de
+                                formulario anidado dentro de otro control es
+                                HTML inválido y rompe los lectores de pantalla. */}
                             <input
                               ref={fileInputRef}
                               type="file"
                               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip"
-                              style={{ display: 'none' }}
+                              className="tpd-file-input"
                               onChange={handleFileChange}
                             />
-                          </div>
+                            {/* Era un <div onClick>: se podía usar con el mouse
+                                y con nada más. Como <button> entra en el orden
+                                de tabulación, responde a Enter y Espacio, y
+                                anuncia qué hace. Arrastrar sigue funcionando. */}
+                            <button
+                              type="button"
+                              className={`tpd-drop-zone${dragOver ? ' tpd-drop-zone--over' : ''}`}
+                              onClick={() => fileInputRef.current?.click()}
+                              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                              onDragLeave={() => setDragOver(false)}
+                              onDrop={handleDrop}
+                            >
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
+                              </svg>
+                              <span className="tpd-drop-text">
+                                {entrega ? 'Arrastrá un nuevo archivo para reemplazar tu entrega' : 'Arrastrá tu archivo o hacé clic para seleccionar'}
+                              </span>
+                              <span className="tpd-drop-sub">PDF, DOC, DOCX, JPG, PNG o ZIP · Máximo 20MB</span>
+                            </button>
+                          </>
                         ) : uploadState === 'uploading' ? (
                           <div className="tpd-upload-status">
                             <div className="nexia-loading-spinner" />
@@ -387,27 +440,49 @@ const TrabajoPracticoDetalle: React.FC = () => {
                           </div>
                         )}
 
-                        <textarea
-                          className="tpd-comentario-input"
-                          placeholder="Comentario para tu docente (opcional)"
-                          value={comentario}
-                          onChange={(e) => setComentario(e.target.value)}
-                        />
+                        <div className="nx-field">
+                          <label className="nx-label" htmlFor="tpd-comentario">
+                            Comentario para tu docente
+                            <span className="nx-optional">Opcional</span>
+                          </label>
+                          <textarea
+                            id="tpd-comentario"
+                            className="nx-control tpd-comentario-input"
+                            placeholder="Contale qué decisiones tomaste o qué parte te costó más"
+                            value={comentario}
+                            onChange={(e) => setComentario(e.target.value)}
+                          />
+                        </div>
 
                         <button
                           className="tpd-submit-btn"
                           disabled={!puedeEntregar || !archivoUrl || submitting}
                           onClick={handleEntregar}
+                          aria-describedby={!archivoUrl ? 'tpd-submit-hint' : undefined}
                         >
                           {submitting && <span className="tpd-btn-spinner" aria-hidden="true" />}
                           {submitting ? 'Enviando…' : entrega ? 'Reemplazar entrega' : 'Entregar trabajo'}
                         </button>
+
+                        {/* Un botón gris sin explicación deja al alumno
+                            adivinando si falló algo. Se dice qué falta. */}
+                        {!archivoUrl && !submitting && (
+                          <p className="tpd-submit-hint" id="tpd-submit-hint">
+                            Subí un archivo para habilitar la entrega.
+                          </p>
+                        )}
                       </>
                     )}
                   </>
                 )}
               </div>
             </section>
+
+            {/* El compañero va al final y a lo ancho: acompaña el trabajo,
+                no se interpone entre la consigna y el botón de entregar. */}
+            <div className="tpd-coach">
+              <CompaneroCoach mensajes={mensajesCoach} rotulo={rotuloCoach} />
+            </div>
           </div>
         </main>
         <Footer />

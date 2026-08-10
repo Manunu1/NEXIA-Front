@@ -1,0 +1,190 @@
+/* ─────────────────────────────────────────────
+   COMPAÑERO — inline.
+
+   Una franja tenue, sin sombra y sin borde completo:
+   tiene que leerse como una nota al margen del
+   contenido, no como otra tarjeta más. Todo el color
+   que hay es el filo izquierdo y el tinte de fondo.
+───────────────────────────────────────────── */
+.cc {
+  --cc-acento: var(--navy-l);
+  --cc-tinte: var(--navy-ghost);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1.125rem 0.875rem 1.25rem;
+  background: var(--cc-tinte);
+  border-radius: var(--r3);
+  overflow: hidden;
+  animation: fadeIn var(--dur-md) var(--ease) both;
+}
+
+.cc::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--cc-acento);
+}
+
+.cc-avatar {
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px var(--white);
+  animation: ccEntra 0.5s var(--ease-spring) both;
+}
+
+@keyframes ccEntra {
+  0%   { transform: scale(0.86); }
+  60%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* ── Cuerpo ── */
+.cc-cuerpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.cc-rotulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--cc-acento);
+}
+
+.cc-icono {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.cc-icono svg { width: 100%; height: 100%; }
+
+.cc-texto {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--t2);
+  overflow-wrap: anywhere;
+  animation: fadeIn var(--dur-fast) var(--ease) both;
+}
+
+/* ── Acciones ── */
+.cc-acciones {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.cc-accion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--cc-acento);
+  background: var(--white);
+  border-radius: var(--r2);
+  box-shadow: var(--sh-sm);
+  white-space: nowrap;
+  transition: transform var(--dur-fast) var(--ease), gap var(--dur-fast) var(--ease);
+}
+
+.cc-accion:hover { transform: translateY(-1px); gap: 0.55rem; }
+.cc-accion svg { width: 13px; height: 13px; }
+
+.cc-otra {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.6rem;
+  font-family: var(--fb);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--t3);
+  border-radius: var(--r2);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.cc-otra:hover { color: var(--cc-acento); background: var(--white); }
+.cc-otra svg { width: 13px; height: 13px; }
+
+/* ── Variante compacta ─────────────────────────
+   Misma franja, apilada. El avatar sube al lado del
+   rótulo para que no quede una fila entera vacía a
+   su derecha.
+───────────────────────────────────────────── */
+.cc--compacto {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 0.625rem;
+  padding: 0.875rem 1rem 0.875rem 1.125rem;
+}
+
+.cc--compacto .cc-avatar { align-self: start; }
+
+.cc--compacto .cc-cuerpo { gap: 0.25rem; }
+
+.cc--compacto .cc-acciones {
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* ── Tonos — todo sale de los tokens de estado, así el tema oscuro
+   se resuelve solo y la voz del compañero es idéntica en las dos
+   presentaciones. ── */
+.cc--logro {
+  --cc-acento: var(--ok);
+  --cc-tinte: var(--ok-bg);
+}
+
+.cc--alerta {
+  --cc-acento: var(--warn);
+  --cc-tinte: var(--warn-bg);
+}
+
+.cc--animo,
+.cc--tip,
+.cc--saludo {
+  --cc-acento: var(--info);
+  --cc-tinte: var(--info-bg);
+}
+
+/* ── Responsive ────────────────────────────────
+   En mobile el texto necesita el ancho completo:
+   con el avatar y los botones en la misma fila
+   queda en tiras de tres palabras.
+───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .cc {
+    flex-wrap: wrap;
+    padding: 1rem;
+    padding-left: 1.125rem;
+  }
+
+  .cc-cuerpo {
+    flex-basis: calc(100% - 3.5rem);
+  }
+
+  .cc-acciones {
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc, .cc-avatar, .cc-texto { animation: none; }
+}

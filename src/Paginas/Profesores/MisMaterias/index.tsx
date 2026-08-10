@@ -6,8 +6,7 @@ import Footer from '../../../Componentes/footer';
 import HomeHero from '../../../Componentes/HomeHero';
 import QuickLinks from '../../../Componentes/QuickLinks';
 import type { QuickLinkItem } from '../../../Componentes/QuickLinks';
-import NexiaPromo from '../../../Componentes/NexiaPromo';
-import NexiaBuddy from '../../../Componentes/NexiaBuddy';
+import CompaneroRail from '../../../Componentes/Companero/Rail';
 import EmptyState from '../../../Componentes/EmptyState';
 import { mensajesProfesor } from '../../../utils/buddy';
 import type { typeCurso } from '../../../Types/profesores/types';
@@ -17,6 +16,17 @@ import './misCursos.css';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 
 const QUICK_LINKS: QuickLinkItem[] = [
+  {
+    to: '/nexia-ia',
+    title: 'Nexia IA',
+    description: 'Conoce el material que publicás',
+    destacado: true,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg>
+    ),
+  },
   {
     to: '/comunicados',
     title: 'Comunicados',
@@ -187,7 +197,7 @@ const MisCursos: React.FC = () => {
                 {/* Alumnos a acompañar — datos reales de TPs y notas */}
                 <section className="ar-panel" id="acompanar" aria-label="Alumnos a acompañar">
                   <div className="ar-head">
-                    <span className="ql-title">Alumnos a acompañar</span>
+                    <span className="nx-rotulo">Alumnos a acompañar</span>
                     {enRiesgo.length > 0 && <span className="ar-count">{enRiesgo.length}</span>}
                   </div>
 
@@ -278,14 +288,11 @@ const MisCursos: React.FC = () => {
               {/* ── Rail lateral ── */}
               <aside className="home-rail">
 
-                <NexiaBuddy mensajes={mensajesBuddy} />
+                <CompaneroRail mensajes={mensajesBuddy} />
 
+                {/* Nexia IA entra como acceso destacado: la tarjeta suelta
+                    que lo promocionaba duplicaba este mismo enlace. */}
                 <QuickLinks items={QUICK_LINKS} />
-
-                <NexiaPromo
-                  title="Potenciá tus clases"
-                  description="Nexia IA conoce el material que publicás y acompaña a tus alumnos con explicaciones guiadas, sin resolverles las consignas."
-                />
               </aside>
 
             </div>

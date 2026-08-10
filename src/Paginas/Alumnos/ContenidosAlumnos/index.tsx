@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Sidebar from '../../../Componentes/Sidebar';
 import ListaContenido from '../../../Componentes/profesor/listaContenido';
 import MateriaTabsAlumno from '../../../Componentes/alumnos/MateriaTabsAlumno';
 import MateriaIdentity from '../../../Componentes/MateriaIdentity';
+import CompaneroCoach from '../../../Componentes/Companero/Coach';
 import { useParams, useNavigate } from 'react-router-dom';
-import type { typeContenido } from '../../../Types/profesores/types';
+import type { typeContenido, typeTrabajoPracticoAlumno } from '../../../Types/profesores/types';
 import api from '../../../api';
+import { mensajesContenidos } from '../../../utils/buddy';
+import { marcarHito } from '../../../utils/hitos';
+import { getUsuarioSesion } from '../../../utils/session';
 import './ContenidosAlumnos.css';
 
 interface MateriaDetalle {
@@ -49,6 +53,13 @@ const ContenidosAlumnos: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<typeContenido | null>(null);
+  const [pendientes, setPendientes] = useState(0);
+
+  // Entrar a una materia es uno de los primeros pasos de la guía. No hay dato
+  // en el backend que lo registre, así que la marca queda local.
+  useEffect(() => {
+    marcarHito('materia-abierta');
+  }, []);
 
   useEffect(() => {
     const traerContenidos = async () => {
@@ -72,6 +83,38 @@ const ContenidosAlumnos: React.FC = () => {
     };
     if (profeCursoMateriaId) traerContenidos();
   }, [profeCursoMateriaId]);
+
+  /* Entregas pendientes de ESTA materia. Es secundario: si falla, el panel
+     de material funciona igual y el compañero simplemente no lo menciona. */
+  useEffect(() => {
+    const alumnoId = getUsuarioSesion()?.alumno_id;
+    if (!alumnoId || !profeCursoMateriaId) return;
+
+    api
+      .get(`/api/trabajos-practicos/alumno/${alumnoId}`)
+      .then((res) => {
+        const tps: typeTrabajoPracticoAlumno[] = res.data.data || [];
+        setPendientes(
+          tps.filter(
+            (tp) =>
+              tp.activo !== false &&
+              !tp.entrega_id &&
+              String(tp.profe_curso_materia_id) === String(profeCursoMateriaId)
+          ).length
+        );
+      })
+      .catch(() => setPendientes(0));
+  }, [profeCursoMateriaId]);
+
+  const mensajesCoach = useMemo(
+    () =>
+      mensajesContenidos({
+        materia: materia?.materia_nombre ?? 'esta materia',
+        contenidos: contenidos.length,
+        pendientes,
+      }),
+    [materia, contenidos.length, pendientes]
+  );
 
   const embedUrl   = selected?.url ? getEmbedUrl(selected.url) : '';
   const isMedia    = selected?.url ? isMediaEmbed(selected.url) : false;
@@ -144,6 +187,14 @@ const ContenidosAlumnos: React.FC = () => {
                 selectedId={selected?.contenido_id}
                 onSelect={setSelected}
               />
+            )}
+
+            {/* Al pie del material: qué hacer con lo que acabás de leer.
+                El visor queda limpio — ahí se estudia, no se lee consejos. */}
+            {!loading && (
+              <div className="iv-coach">
+                <CompaneroCoach mensajes={mensajesCoach} rotulo="Para aprovecharlo" compacto />
+              </div>
             )}
           </div>
 

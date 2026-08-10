@@ -120,8 +120,8 @@
 .bol-table tbody tr:hover .bol-nota-pill { transform: scale(1.08); }
 
 .bol-nota-pill--alta {
-  background: #E8F5E9;
-  color: #2E7D32;
+  background: var(--ok-bg);
+  color: var(--ok);
 }
 
 .bol-nota-pill--media {
@@ -130,12 +130,22 @@
 }
 
 .bol-nota-pill--baja {
-  background: #FFF1F1;
-  color: #C62828;
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
 .bol-td-comentario {
   text-align: left;
   color: var(--t3);
   max-width: 280px;
+}
+
+/* ── Compañero ───────────────────────────────── */
+.bol-coach {
+  margin-bottom: 1.5rem;
+  animation: fadeInUp var(--dur-slow) var(--ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bol-coach { animation: none; }
 }

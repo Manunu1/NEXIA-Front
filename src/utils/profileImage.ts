@@ -39,6 +39,29 @@ export function getProfileImage(usuario?: ConImagenDePerfil | null): ImagenPerfi
   return { type: 'default' };
 }
 
+/* ─────────────────────────────────────────────
+   AVATAR ANIMABLE — qué cara usa el compañero.
+
+   Regla, y es distinta a la de arriba a propósito:
+   el compañero necesita una cara que gesticule, y
+   una foto no gesticula. Entonces sólo se anima el
+   avatar generado; en cualquier otro caso —sin
+   imagen o con foto— habla Nexo.
+
+   Que Nexo aparezca no es un estado degradado: es
+   la mascota de la app haciendo de guía. Por eso
+   nunca cae en iniciales ni en la silueta genérica.
+───────────────────────────────────────────── */
+
+export type AvatarAnimable =
+  | { type: 'avatar'; config: AvatarConfig }
+  | { type: 'mascota' };
+
+export function getAvatarAnimable(usuario?: ConImagenDePerfil | null): AvatarAnimable {
+  const imagen = getProfileImage(usuario);
+  return imagen.type === 'avatar' ? imagen : { type: 'mascota' };
+}
+
 /** Iniciales para el estado sin imagen. '' si no hay nombre legible. */
 export function getIniciales(nombre?: string | null, apellido?: string | null): string {
   const n = (nombre ?? '').trim();

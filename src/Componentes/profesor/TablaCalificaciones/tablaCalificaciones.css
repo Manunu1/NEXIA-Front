@@ -95,7 +95,7 @@
 .tc-row-error {
   grid-column: 1 / -1;
   font-size: 0.72rem;
-  color: #C62828;
+  color: var(--danger);
   margin-top: -0.25rem;
 }
 

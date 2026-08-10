@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './homeHero.css';
 
 /* ─────────────────────────────────────────────
@@ -11,6 +12,12 @@ import './homeHero.css';
 export interface HeroStat {
   value: React.ReactNode;
   label: string;
+  /**
+   * Destino de la métrica. Un número que no lleva a ningún lado es
+   * decoración: si el alumno lee "3 por entregar", lo que quiere es ver
+   * cuáles son. Con `to`, la stat deja de ser un adorno y ahorra un clic.
+   */
+  to?: string;
 }
 
 interface HomeHeroProps {
@@ -57,12 +64,39 @@ const HomeHero: React.FC<HomeHeroProps> = ({ userName, tagline, stats, notice })
 
       {stats && stats.length > 0 && (
         <div className="hh-stats" role="list">
-          {stats.map((s) => (
-            <div className="hh-stat" role="listitem" key={s.label}>
-              <span className="hh-stat-value">{s.value}</span>
-              <span className="hh-stat-label">{s.label}</span>
-            </div>
-          ))}
+          {stats.map((s) => {
+            const cuerpo = (
+              <>
+                <span className="hh-stat-value">{s.value}</span>
+                <span className="hh-stat-label">{s.label}</span>
+              </>
+            );
+
+            // Un ancla de la misma página va con <a> nativo: React Router
+            // actualiza el hash pero no scrollea, y el enlace no haría nada.
+            if (s.to?.startsWith('#')) {
+              return (
+                <a href={s.to} className="hh-stat hh-stat--link" role="listitem" key={s.label}>
+                  {cuerpo}
+                </a>
+              );
+            }
+
+            return s.to ? (
+              <Link
+                to={s.to}
+                className="hh-stat hh-stat--link"
+                role="listitem"
+                key={s.label}
+              >
+                {cuerpo}
+              </Link>
+            ) : (
+              <div className="hh-stat" role="listitem" key={s.label}>
+                {cuerpo}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

@@ -80,8 +80,8 @@
 }
 
 .re-badge--corregido {
-  background: #E8F5E9;
-  color: #2E7D32;
+  background: var(--ok-bg);
+  color: var(--ok);
   border: 1px solid rgba(46,125,50,.2);
 }
 
@@ -171,7 +171,7 @@
 .re-row-error {
   grid-column: 1 / -1;
   font-size: 0.72rem;
-  color: #C62828;
+  color: var(--danger);
   margin-top: -0.25rem;
 }
 

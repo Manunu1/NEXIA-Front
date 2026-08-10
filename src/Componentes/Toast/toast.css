@@ -69,17 +69,17 @@
 .nx-toast-close svg { width: 100%; height: 100%; }
 
 /* ── Variantes ── */
-.nx-toast--success { border-left-color: #2E7D32; }
-.nx-toast--success .nx-toast-icon { color: #2E7D32; }
+.nx-toast--success { border-left-color: var(--ok); }
+.nx-toast--success .nx-toast-icon { color: var(--ok); }
 
-.nx-toast--error { border-left-color: #C62828; }
-.nx-toast--error .nx-toast-icon { color: #C62828; }
+.nx-toast--error { border-left-color: var(--danger); }
+.nx-toast--error .nx-toast-icon { color: var(--danger); }
 
 .nx-toast--info { border-left-color: var(--navy-l); }
 .nx-toast--info .nx-toast-icon { color: var(--navy-l); }
 
-html[data-theme='oscuro'] .nx-toast--success { border-left-color: #6EE7A2; }
-html[data-theme='oscuro'] .nx-toast--success .nx-toast-icon { color: #6EE7A2; }
+html[data-theme='oscuro'] .nx-toast--success { border-left-color: var(--ok); }
+html[data-theme='oscuro'] .nx-toast--success .nx-toast-icon { color: var(--ok); }
 html[data-theme='oscuro'] .nx-toast--error { border-left-color: #FF8A80; }
 html[data-theme='oscuro'] .nx-toast--error .nx-toast-icon { color: #FF8A80; }
 

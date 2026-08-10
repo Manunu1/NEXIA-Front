@@ -143,9 +143,9 @@ input.tpf-input:focus { transform: translateY(-1px); }
 }
 
 .tpf-error {
-  background: #FFF1F1;
+  background: var(--danger-bg);
   border: 1px solid rgba(198,40,40,.18);
-  color: #C62828;
+  color: var(--danger);
   border-radius: var(--r2);
   padding: 0.75rem 1rem;
   font-size: 0.82rem;
@@ -194,7 +194,7 @@ input.tpf-input:focus { transform: translateY(-1px); }
 
 .tpf-drop-zone--error {
   border-color: rgba(198,40,40,.35);
-  background: #FFF1F1;
+  background: var(--danger-bg);
 }
 
 .tpf-drop-text {
@@ -204,7 +204,7 @@ input.tpf-input:focus { transform: translateY(-1px); }
   margin: 0;
 }
 
-.tpf-drop-text--error { color: #C62828; }
+.tpf-drop-text--error { color: var(--danger); }
 
 .tpf-drop-sub {
   font-size: 0.72rem;
@@ -261,9 +261,9 @@ input.tpf-input:focus { transform: translateY(-1px); }
 }
 
 .tpf-upload-remove:hover {
-  color: #C62828;
+  color: var(--danger);
   border-color: rgba(198,40,40,.3);
-  background: #FFF1F1;
+  background: var(--danger-bg);
 }
 
 /* ── Footer ───────────────────────────────── */

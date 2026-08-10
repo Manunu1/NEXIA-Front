@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import NexiaAvatar from '../NexiaAvatar';
-import type { AvatarExpresion, AvatarSize } from '../NexiaAvatar';
-import type { ConImagenDePerfil } from '../../Types/perfil';
+import NexiaMascota from '../NexiaMascota';
+import type { AvatarExpresion, AvatarSize, ConImagenDePerfil } from '../../Types/perfil';
+import { pxAvatar } from '../../utils/avatar';
 import { getIniciales, getProfileImage } from '../../utils/profileImage';
 import './profileImage.css';
 
@@ -11,15 +12,11 @@ import './profileImage.css';
    la app decide qué imagen mostrarle a un usuario:
    sidebar, listados, mensajes y comentarios montan
    este componente, no un <img> propio.
-───────────────────────────────────────────── */
 
-const TAMANIOS: Record<AvatarSize, number> = {
-  xs: 28,
-  sm: 36,
-  md: 48,
-  lg: 96,
-  xl: 220,
-};
+   Para "quién está hablando" (compañero, guía,
+   vacíos) va <AvatarAnimado /> en su lugar: ahí la
+   foto no sirve porque no gesticula.
+───────────────────────────────────────────── */
 
 interface ProfileImageProps {
   usuario?: ConImagenDePerfil | null;
@@ -43,7 +40,7 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
   expresion,
 }) => {
   const imagen = getProfileImage(usuario);
-  const px = typeof size === 'number' ? size : TAMANIOS[size];
+  const px = pxAvatar(size);
 
   // Una foto rota (bucket limpiado, URL vencida) no puede dejar un hueco:
   // se cae al estado por defecto como si no hubiera imagen. Se guarda la URL
@@ -77,8 +74,14 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
     );
   }
 
-  // Sin imagen: iniciales si las hay, si no la marca de Nexia.
+  // Sin imagen: las iniciales identifican mejor a una persona concreta en un
+  // listado que un dibujo repetido. Cuando no hay ni nombre legible, aparece
+  // Nexo — es el rostro por defecto de la app, no una silueta anónima.
   const iniciales = getIniciales(nombre, apellido);
+
+  if (!iniciales) {
+    return <NexiaMascota size={px} frame="circle" className={className} alt={alt} />;
+  }
 
   return (
     <span
@@ -88,21 +91,9 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
       aria-label={alt}
       aria-hidden={alt ? undefined : true}
     >
-      {iniciales ? (
-        <span className="nx-profile-initials" style={{ fontSize: px * 0.38 }}>
-          {iniciales}
-        </span>
-      ) : (
-        <svg viewBox="0 0 48 48" width={px} height={px}>
-          <circle cx="24" cy="18" r="8" fill="#FFFFFF" opacity="0.9" />
-          <path
-            d="M 8 44 C 8 33 15 28 24 28 C 33 28 40 33 40 44 Z"
-            fill="#FFFFFF"
-            opacity="0.9"
-          />
-          <circle cx="37" cy="12" r="4" fill="#FF9800" />
-        </svg>
-      )}
+      <span className="nx-profile-initials" style={{ fontSize: px * 0.38 }}>
+        {iniciales}
+      </span>
     </span>
   );
 };

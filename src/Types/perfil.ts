@@ -10,6 +10,27 @@ export type HatStyle = 'nexia' | 'gorra' | 'vincha';
 
 export type Genero = 'masculino' | 'femenino' | 'otro' | 'prefiero_no_decir';
 
+/* ── Presentación del avatar ───────────────────
+   Viven acá y no en un componente porque los
+   comparten NexiaAvatar (retrato del usuario),
+   NexiaMascota (Nexo) y todo lo que los monta.
+───────────────────────────────────────────── */
+
+export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+/**
+ * Expresión de la cara. 'normal' es la de siempre y es el default en toda
+ * la app: el avatar tiene que ser reconocible como la misma persona. Las
+ * demás son puntuales — celebrar, saludar o "estar pensando".
+ */
+export type AvatarExpresion = 'normal' | 'alegre' | 'guino' | 'pensando';
+
+/**
+ * Encuadre. Los tres recortan zonas distintas del mismo lienzo 160 × 240,
+ * de modo que un retrato y la mascota son intercambiables sin tocar layout.
+ */
+export type AvatarFrame = 'circle' | 'full' | 'head';
+
 /** Configuración del avatar generado. Todos los colores en formato #RRGGBB. */
 export interface AvatarConfig {
   skin: string;

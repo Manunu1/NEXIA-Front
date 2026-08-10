@@ -1,0 +1,84 @@
+/* ─────────────────────────────────────────────
+   NEXO — encuadre, tipografía y vida propia.
+
+   Los colores de la figura viven en el SVG: Nexo
+   debe verse idéntico en claro y oscuro. Lo único
+   que sigue al tema es el fondo, y se reusan los
+   mismos tokens que el retrato del usuario para
+   que convivan sin costura en un mismo listado.
+───────────────────────────────────────────── */
+.nx-mascota {
+  --nx-avatar-bg1: #EEF1FB;
+  --nx-avatar-bg2: #E2F1EF;
+
+  display: inline-block;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--nx-avatar-bg1);
+  line-height: 0;
+}
+
+.nx-mascota--circle,
+.nx-mascota--head { border-radius: 50%; }
+.nx-mascota--full { border-radius: var(--r3); }
+
+.nx-mascota svg { display: block; }
+
+.nx-mascota-logo {
+  font-family: var(--fd);
+  user-select: none;
+}
+
+html[data-theme='oscuro'] .nx-mascota {
+  --nx-avatar-bg1: #202942;
+  --nx-avatar-bg2: #1B3038;
+}
+
+/* ── Vida propia ───────────────────────────────
+   Sólo con .nx-mascota--viva. Son dos señales muy
+   chicas y desfasadas entre sí: si Nexo se moviera
+   entero, competiría con el contenido en lugar de
+   acompañarlo.
+───────────────────────────────────────────── */
+.nx-mascota--viva .nx-mascota-antena {
+  transform-origin: 80px 40px;
+  animation: nxAntena 3.6s var(--ease) infinite;
+}
+
+.nx-mascota--viva .nx-mascota-cabeza {
+  transform-origin: 80px 132px;
+  animation: nxRespira 4.4s ease-in-out infinite;
+}
+
+@keyframes nxAntena {
+  0%, 62%, 100% { transform: rotate(0deg); }
+  70%           { transform: rotate(-7deg); }
+  80%           { transform: rotate(5deg); }
+  90%           { transform: rotate(-2deg); }
+}
+
+@keyframes nxRespira {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2.5px); }
+}
+
+/* Al parpadeo se lo dispara el mismo ritmo que a la antena, pero corrido:
+   coincidir los dos gestos hace que se lea como un glitch. */
+.nx-mascota--viva .nx-mascota-ojo {
+  transform-origin: center 88px;
+  animation: nxParpadeo 5.2s steps(1, end) infinite;
+}
+
+@keyframes nxParpadeo {
+  0%, 92%, 100% { transform: scaleY(1); }
+  94%           { transform: scaleY(0.1); }
+  96%           { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nx-mascota--viva .nx-mascota-antena,
+  .nx-mascota--viva .nx-mascota-cabeza,
+  .nx-mascota--viva .nx-mascota-ojo {
+    animation: none;
+  }
+}

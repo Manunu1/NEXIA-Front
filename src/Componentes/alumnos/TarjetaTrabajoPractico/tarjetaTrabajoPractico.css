@@ -41,8 +41,8 @@
 
 /* ── Variantes ────────────────────────────── */
 .ttp-card--vencido {
-  --ttp-accent: #DC2626;
-  --ttp-tint: #FFF1F1;
+  --ttp-accent: var(--danger);
+  --ttp-tint: var(--danger-bg);
 }
 
 .ttp-card--pendiente {
@@ -52,7 +52,7 @@
 
 .ttp-card--corregido {
   --ttp-accent: #16A34A;
-  --ttp-tint: #E8F5E9;
+  --ttp-tint: var(--ok-bg);
 }
 
 /* ── Ícono de estado ──────────────────────── */
@@ -103,7 +103,7 @@
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: #16A34A;
-  background: #E8F5E9;
+  background: var(--ok-bg);
   border: 1px solid rgba(46,125,50,.2);
   border-radius: 99px;
   padding: 0.05rem 0.55rem;
@@ -137,7 +137,7 @@
   margin: 0;
 }
 
-.ttp-card--vencido .ttp-fecha { color: #DC2626; }
+.ttp-card--vencido .ttp-fecha { color: var(--danger); }
 
 /* ── Acción ───────────────────────────────── */
 .ttp-accion {

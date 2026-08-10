@@ -1,7 +1,13 @@
 import React, { useId, useMemo } from 'react';
-import type { AvatarConfig } from '../../Types/perfil';
-import { luminancia, mezclar, normalizarAvatar, sobre } from '../../utils/avatar';
+import type {
+  AvatarConfig,
+  AvatarExpresion,
+  AvatarFrame,
+  AvatarSize,
+} from '../../Types/perfil';
+import { luminancia, mezclar, normalizarAvatar, pxAvatar, sobre } from '../../utils/avatar';
 import {
+  BOCA_PENSANDO,
   CABEZA,
   CEJAS,
   CIRCUITO,
@@ -9,6 +15,7 @@ import {
   DOMO_GORRA,
   DOMO_GORRO,
   ESCOTE,
+  MIRADA_PENSANDO,
   NARIZ,
   OJO_DER,
   OJO_FELIZ,
@@ -43,24 +50,6 @@ const NAVY_D = '#0D1654';
 const ORANGE = '#FF9800';
 const MINT = '#E0F2F1';
 
-export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-
-/**
- * Expresión de la cara. 'normal' es la de siempre y es el default en toda
- * la app: el avatar tiene que ser reconocible como la misma persona. Las
- * otras dos son puntuales, para cuando algo hay que celebrar.
- */
-export type AvatarExpresion = 'normal' | 'alegre' | 'guino';
-
-/** Diámetro en px de cada tamaño nombrado. */
-const TAMANIOS: Record<AvatarSize, number> = {
-  xs: 28,
-  sm: 36,
-  md: 48,
-  lg: 96,
-  xl: 220,
-};
-
 export interface NexiaAvatarProps {
   /** Config del avatar. Se sanea siempre: null o incompleta cae en el default. */
   config?: AvatarConfig | string | null;
@@ -72,7 +61,7 @@ export interface NexiaAvatarProps {
    * 'head' acerca la cabeza — para miniaturas donde hay que distinguir
    * peinados o accesorios a pocos píxeles.
    */
-  frame?: 'circle' | 'full' | 'head';
+  frame?: AvatarFrame;
   /** Fondo degradado detrás de la figura. */
   backdrop?: boolean;
   /** Expresión de la cara. Por defecto la neutra de siempre. */
@@ -94,8 +83,11 @@ const NexiaAvatar: React.FC<NexiaAvatarProps> = ({
   const uid = useId().replace(/:/g, '');
   const cfg: AvatarConfig = useMemo(() => normalizarAvatar(config), [config]);
 
-  const ancho = typeof size === 'number' ? size : TAMANIOS[size];
+  const ancho = pxAvatar(size);
   const alto = frame === 'full' ? Math.round(ancho * 1.5) : ancho;
+
+  const pensando = expresion === 'pensando';
+  const mirada = pensando ? MIRADA_PENSANDO : { dx: 0, dy: 0 };
 
   // Cada encuadre recorta una zona distinta del mismo lienzo 160 × 240.
   const viewBox =
@@ -264,16 +256,33 @@ const NexiaAvatar: React.FC<NexiaAvatarProps> = ({
             ) : (
               <g key={ojo.cx}>
                 <ellipse cx={ojo.cx} cy={ojo.cy} rx="9" ry="10.5" fill="#FFFFFF" />
-                <circle cx={ojo.cx} cy={ojo.cy + 0.5} r="5.4" fill={eyes} />
-                <circle cx={ojo.cx} cy={ojo.cy + 0.5} r="2.4" fill="#101828" />
-                <circle cx={ojo.cx - 1.9} cy={ojo.cy - 2.6} r="1.9" fill="#FFFFFF" />
+                {/* Sólo el iris sigue la mirada: mover también la esclerótica
+                    haría girar el ojo entero y parecería un tic. */}
+                <circle cx={ojo.cx + mirada.dx} cy={ojo.cy + 0.5 + mirada.dy} r="5.4" fill={eyes} />
+                <circle cx={ojo.cx + mirada.dx} cy={ojo.cy + 0.5 + mirada.dy} r="2.4" fill="#101828" />
+                <circle
+                  cx={ojo.cx + mirada.dx - 1.9}
+                  cy={ojo.cy + mirada.dy - 2.6}
+                  r="1.9"
+                  fill="#FFFFFF"
+                />
               </g>
             );
           })}
 
-          {expresion === 'alegre' ? (
-            <path d={SONRISA_ALEGRE} fill={mezclar(skin, -0.62)} />
-          ) : (
+          {expresion === 'alegre' && <path d={SONRISA_ALEGRE} fill={mezclar(skin, -0.62)} />}
+
+          {pensando && (
+            <path
+              d={BOCA_PENSANDO}
+              fill="none"
+              stroke={mezclar(skin, -0.55)}
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+          )}
+
+          {!pensando && expresion !== 'alegre' && (
             <path
               d={SONRISA}
               fill="none"

@@ -6,14 +6,20 @@ import Footer from '../../../Componentes/footer';
 import HomeHero from '../../../Componentes/HomeHero';
 import QuickLinks from '../../../Componentes/QuickLinks';
 import type { QuickLinkItem } from '../../../Componentes/QuickLinks';
-import NexiaPromo from '../../../Componentes/NexiaPromo';
-import NexiaBuddy from '../../../Componentes/NexiaBuddy';
+import CompaneroRail from '../../../Componentes/Companero/Rail';
+import PrimerosPasos from '../../../Componentes/Companero/PrimerosPasos';
+import type { PasoGuia } from '../../../Componentes/Companero/PrimerosPasos';
 import EmptyState from '../../../Componentes/EmptyState';
 import { mensajesAlumno } from '../../../utils/buddy';
 import type { typeTrabajoPracticoAlumno, typeBoletinNotaFinal } from '../../../Types/profesores/types';
 import api from '../../../api';
 import { getNombreUsuario, getUsuarioSesion } from '../../../utils/session';
+import { getProfileImage } from '../../../utils/profileImage';
+import { tieneHito } from '../../../utils/hitos';
+import { materiasFlojas, promediosPorBimestre } from '../../../utils/boletin';
+import type { PromedioBimestre, PromedioMateria } from '../../../utils/boletin';
 import { materiaTheme } from '../../../utils/materiaTheme';
+import { useSesionUsuario } from '../../../hooks/useSesionUsuario';
 import './misMaterias.css';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 
@@ -30,6 +36,17 @@ interface MateriaBackend {
 }
 
 const QUICK_LINKS: QuickLinkItem[] = [
+  {
+    to: '/nexia-ia',
+    title: 'Nexia IA',
+    description: 'Te guía sin darte la respuesta',
+    destacado: true,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg>
+    ),
+  },
   {
     to: '/boletin',
     title: 'Mi boletín',
@@ -66,53 +83,6 @@ const QUICK_LINKS: QuickLinkItem[] = [
   },
 ];
 
-interface PromedioBimestre {
-  orden: number;
-  nombre: string;
-  promedio: number;
-}
-
-interface MateriaFloja {
-  materia: string;
-  promedio: number;
-}
-
-/** Promedio general por bimestre a partir de las notas finales del boletín */
-function promediosPorBimestre(notas: typeBoletinNotaFinal[]): PromedioBimestre[] {
-  const porBimestre = new Map<number, { nombre: string; notas: number[] }>();
-  for (const n of notas) {
-    if (n.nota == null) continue;
-    const entry = porBimestre.get(n.orden) ?? { nombre: n.bimestre_nombre, notas: [] };
-    entry.notas.push(Number(n.nota));
-    porBimestre.set(n.orden, entry);
-  }
-  return Array.from(porBimestre.entries())
-    .map(([orden, { nombre, notas: ns }]) => ({
-      orden,
-      nombre,
-      promedio: Math.round((ns.reduce((a, b) => a + b, 0) / ns.length) * 10) / 10,
-    }))
-    .sort((a, b) => a.orden - b.orden);
-}
-
-/** Materias con promedio de notas finales por debajo de 6 */
-function materiasEnRojo(notas: typeBoletinNotaFinal[]): MateriaFloja[] {
-  const porMateria = new Map<string, number[]>();
-  for (const n of notas) {
-    if (n.nota == null) continue;
-    const arr = porMateria.get(n.materia_nombre) ?? [];
-    arr.push(Number(n.nota));
-    porMateria.set(n.materia_nombre, arr);
-  }
-  return Array.from(porMateria.entries())
-    .map(([materia, ns]) => ({
-      materia,
-      promedio: Math.round((ns.reduce((a, b) => a + b, 0) / ns.length) * 10) / 10,
-    }))
-    .filter((m) => m.promedio < 6)
-    .sort((a, b) => a.promedio - b.promedio);
-}
-
 /** Etiqueta de vencimiento legible ("Vence hoy", "Vence en 3 días", …) */
 function vencimiento(fechaLimite: string | null | undefined): { label: string; urgente: boolean } {
   if (!fechaLimite) return { label: 'Sin fecha límite', urgente: false };
@@ -142,7 +112,8 @@ const MisMaterias: React.FC = () => {
   const [corregidos, setCorregidos] = useState(0);
   const [tpTotales, setTpTotales] = useState(0);
   const [promedios, setPromedios] = useState<PromedioBimestre[]>([]);
-  const [flojas, setFlojas] = useState<MateriaFloja[]>([]);
+  const [flojas, setFlojas] = useState<PromedioMateria[]>([]);
+  const usuario = useSesionUsuario();
 
   useEffect(() => {
     const traerDatos = async () => {
@@ -183,7 +154,7 @@ const MisMaterias: React.FC = () => {
       if (boletinRes.status === 'fulfilled') {
         const notasFinales: typeBoletinNotaFinal[] = boletinRes.value.data.data?.notas_finales || [];
         setPromedios(promediosPorBimestre(notasFinales));
-        setFlojas(materiasEnRojo(notasFinales));
+        setFlojas(materiasFlojas(notasFinales));
       }
 
       setLoading(false);
@@ -192,6 +163,43 @@ const MisMaterias: React.FC = () => {
   }, []);
 
   const entregados = tpTotales - pendientes.length;
+
+  /* Guía de primeros pasos. Ningún paso se tilda a mano: dos salen de los
+     datos (¿tenés imagen de perfil? ¿ya entregaste algo?) y dos de hitos
+     locales que se marcan al entrar por primera vez a esas pantallas. */
+  const pasosGuia: PasoGuia[] = useMemo(
+    () => [
+      {
+        id: 'avatar',
+        titulo: 'Armá tu avatar',
+        detalle: 'Elegí tu cara en NEXIA. Es la que te va a acompañar en el campus y la que ven tus docentes y compañeros.',
+        to: '/configuracion',
+        hecho: getProfileImage(usuario).type !== 'default',
+      },
+      {
+        id: 'materia',
+        titulo: 'Entrá a una materia',
+        detalle: 'Adentro está todo lo de esa materia: el material que publica el docente y sus trabajos prácticos.',
+        to: materias[0] ? `/materia/${materias[0].profe_curso_materia_id || materias[0].materia_id}` : '/alumnos',
+        hecho: tieneHito('materia-abierta'),
+      },
+      {
+        id: 'entrega',
+        titulo: 'Hacé tu primera entrega',
+        detalle: 'Subís el archivo, escribís un comentario para tu docente y listo. Podés reemplazarlo hasta que lo corrija.',
+        to: pendientes[0] ? `/trabajo-practico/${pendientes[0].trabajo_practico_id}` : '/alumnos',
+        hecho: entregados > 0,
+      },
+      {
+        id: 'ia',
+        titulo: 'Probá Nexia IA',
+        detalle: 'No te da la respuesta: te explica lo que necesitás para llegar solo, y con el material de tus materias.',
+        to: '/nexia-ia',
+        hecho: tieneHito('ia-usada'),
+      },
+    ],
+    [usuario, materias, pendientes, entregados]
+  );
 
   // Lo que le dice su compañero sale de estos mismos datos, no de un pool
   // de frases: si no hay nada que celebrar, no felicita.
@@ -220,6 +228,10 @@ const MisMaterias: React.FC = () => {
       <div className="main-wrapper">
         <main className="main-content">
 
+          {/* Las tres métricas son ahora la navegación del inicio. Se quitó la
+              franja de aviso de pendientes: repetía el mismo número que la
+              stat de al lado y que el panel que está justo debajo, y era el
+              tercer lugar de la pantalla que decía lo mismo. */}
           <HomeHero
             userName={userName}
             tagline="Campus del alumno"
@@ -227,28 +239,14 @@ const MisMaterias: React.FC = () => {
               loading
                 ? undefined
                 : [
-                    { value: materias.length, label: materias.length === 1 ? 'Materia' : 'Materias' },
-                    { value: pendientes.length, label: 'Por entregar' },
-                    { value: corregidos, label: 'Corregidos' },
+                    {
+                      value: materias.length,
+                      label: materias.length === 1 ? 'Materia' : 'Materias',
+                      to: '#mis-materias',
+                    },
+                    { value: pendientes.length, label: 'Por entregar', to: '#proximas-entregas' },
+                    { value: corregidos, label: 'Corregidos', to: '/boletin' },
                   ]
-            }
-            notice={
-              !loading && pendientes.length > 0 ? (
-                <div className="hh-notice-inner">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                  </svg>
-                  Te {pendientes.length === 1 ? 'falta entregar' : 'faltan entregar'}{' '}
-                  <strong>{pendientes.length} {pendientes.length === 1 ? 'trabajo práctico' : 'trabajos prácticos'}</strong>
-                  <a href="#proximas-entregas" className="hh-notice-link">
-                    Ver entregas
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" />
-                    </svg>
-                  </a>
-                </div>
-              ) : undefined
             }
           />
 
@@ -267,9 +265,9 @@ const MisMaterias: React.FC = () => {
               <div className="home-main">
                 <div className="home-row">
                 {/* Próximas entregas — datos reales del alumno */}
-                <section className="pe-panel" id="proximas-entregas" aria-label="Próximas entregas">
+                <section className="nx-panel pe-panel" id="proximas-entregas" aria-label="Próximas entregas">
                   <div className="pe-head">
-                    <span className="ql-title">Próximas entregas</span>
+                    <span className="nx-rotulo">Próximas entregas</span>
                     {pendientes.length > 0 && (
                       <span className="pe-count">{pendientes.length}</span>
                     )}
@@ -311,8 +309,8 @@ const MisMaterias: React.FC = () => {
                 </section>
 
                 {/* Mi rendimiento — promedios reales del boletín */}
-                <section className="rp-panel" aria-label="Mi rendimiento">
-                  <span className="ql-title">Mi rendimiento</span>
+                <section className="nx-panel rp-panel" aria-label="Mi rendimiento">
+                  <span className="nx-rotulo">Mi rendimiento</span>
 
                   {promedios.length > 0 ? (
                     <div
@@ -363,21 +361,14 @@ const MisMaterias: React.FC = () => {
                     </div>
                   )}
 
-                  {flojas.slice(0, 3).map((m) => (
-                    <div className="rp-alerta" key={m.materia} role="status">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                        <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
-                      </svg>
-                      <span>
-                        Reforzá <strong>{m.materia}</strong> — promedio {m.promedio}
-                      </span>
-                    </div>
-                  ))}
+                  {/* Las materias flojas ya no se listan acá: el compañero las
+                      nombra una por una y con una salida concreta. Repetirlas
+                      en el panel las convertía en tres carteles rojos sin nada
+                      para hacer al lado. El panel se queda con el dato. */}
                 </section>
                 </div>
 
-                <div className="section-head">
+                <div className="section-head" id="mis-materias">
                   <div>
                     <h2 className="section-title">Mis materias</h2>
                     <p className="section-sub">Accedé a los contenidos y trabajos de cada materia</p>
@@ -423,14 +414,16 @@ const MisMaterias: React.FC = () => {
               {/* ── Rail lateral ── */}
               <aside className="home-rail">
 
-                <NexiaBuddy mensajes={mensajesBuddy} />
+                {/* Primero la guía: mientras exista, es lo más importante del
+                    rail. Se va sola cuando están los cuatro pasos. */}
+                <PrimerosPasos pasos={pasosGuia} nombre={userName.split(' ')[0]} />
 
+                <CompaneroRail mensajes={mensajesBuddy} />
+
+                {/* Nexia IA es el primer acceso y va destacado. La tarjeta
+                    aparte que lo promocionaba desapareció: hacía el mismo
+                    trabajo que un ítem de esta lista, con una caja más. */}
                 <QuickLinks items={QUICK_LINKS} />
-
-                <NexiaPromo
-                  title="¿Trabado con una consigna?"
-                  description="Nexia IA te guía paso a paso con el material de tus materias, sin darte la respuesta servida."
-                />
               </aside>
 
             </div>

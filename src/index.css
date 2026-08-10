@@ -30,6 +30,33 @@
   --t3: #5B6C8A;
   --t4: #98A3BC;
 
+  /* ── Estado ──────────────────────────────────
+     Semánticos, no decorativos: el verde SIEMPRE
+     significa "logrado / al día" y el rojo SIEMPRE
+     "vencido / desaprobado". Antes cada pantalla
+     repetía sus propios hex y el mismo estado se
+     veía distinto en el boletín y en una entrega.
+
+     Cada estado trae tres piezas: color de texto,
+     fondo tenue y borde. Nunca usar el color de
+     texto como fondo — no llega a 4.5:1 con blanco.
+  ─────────────────────────────────────────────── */
+  --ok:        #2E7D32;
+  --ok-bg:     #EAF6EC;
+  --ok-bd:     rgba(46,125,50,.20);
+
+  --warn:      var(--orange-d);
+  --warn-bg:   var(--orange-xs);
+  --warn-bd:   rgba(255,152,0,.22);
+
+  --danger:    #C62828;
+  --danger-bg: #FFF1F1;
+  --danger-bd: rgba(198,40,40,.18);
+
+  --info:      var(--navy-l);
+  --info-bg:   var(--navy-ghost);
+  --info-bd:   var(--navy-xs);
+
   /* Shadows */
   --sh-sm: 0 1px 4px rgba(7,17,44,.06);
   --sh-md: 0 4px 20px rgba(7,17,44,.08);
@@ -112,6 +139,24 @@ html[data-theme='oscuro'] {
 
   /* Anillo de foco un poco más visible sobre oscuro */
   --focus-ring: 0 0 0 3px rgba(92,107,192,.35);
+
+  /* Estado — el color de texto se aclara para llegar a contraste sobre
+     superficie oscura, y los fondos pasan a tintes translúcidos. */
+  --ok:        #6EE7A2;
+  --ok-bg:     rgba(46,125,50,.16);
+  --ok-bd:     rgba(110,231,162,.24);
+
+  --warn:      var(--orange-l);
+  --warn-bg:   rgba(255,152,0,.12);
+  --warn-bd:   rgba(255,152,0,.26);
+
+  --danger:    #FF8B8B;
+  --danger-bg: rgba(198,40,40,.16);
+  --danger-bd: rgba(255,139,139,.24);
+
+  --info:      #94A3E8;
+  --info-bg:   rgba(57,73,171,.16);
+  --info-bd:   rgba(148,163,232,.24);
 }
 
 /* El fondo del body sigue al token de superficie base */

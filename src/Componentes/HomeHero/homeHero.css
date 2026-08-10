@@ -208,3 +208,28 @@
   .hh-stat { flex: 1; padding: 0.875rem 0.75rem; min-width: 0; }
   .hh-notice-link { margin-left: 0; }
 }
+
+/* ── Stat navegable ────────────────────────────
+   La métrica que lleva a algún lado se comporta
+   como control: se ilumina al hover y su etiqueta
+   se aclara. La afordancia tiene que existir sin
+   agregar un botón ni un ícono más.
+───────────────────────────────────────────── */
+.hh-stat--link {
+  border-radius: var(--r2);
+  transition: background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.hh-stat--link:hover {
+  background: rgba(255,255,255,.08);
+  transform: translateY(-2px);
+}
+
+.hh-stat--link:hover .hh-stat-label { color: rgba(255,255,255,.8); }
+
+/* El separador se pinta sobre el borde izquierdo del hermano, y con el
+   fondo del hover encima quedaba tapado a medias: se mueve al pseudo. */
+.hh-stat--link:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: -2px;
+}

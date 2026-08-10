@@ -306,7 +306,7 @@ const Calendario: React.FC = () => {
             {/* ── Panel lateral ── */}
             <aside className="cal-panel">
               <div className="cal-panel-bloque">
-                <span className="ql-title">{tituloFecha(seleccionado)}</span>
+                <span className="nx-rotulo">{tituloFecha(seleccionado)}</span>
                 {eventosDelDia.length === 0 ? (
                   <p className="cal-sin-eventos">
                     Sin eventos este día.
@@ -320,7 +320,7 @@ const Calendario: React.FC = () => {
               </div>
 
               <div className="cal-panel-bloque">
-                <span className="ql-title">Próximos eventos</span>
+                <span className="nx-rotulo">Próximos eventos</span>
                 {proximos.length === 0 ? (
                   <p className="cal-sin-eventos">No hay eventos próximos en el calendario.</p>
                 ) : (
