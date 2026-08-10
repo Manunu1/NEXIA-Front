@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import RosterEntregas from '../../../Componentes/profesor/RosterEntregas';
 import type { typeEntregaRoster, typeTrabajoPractico } from '../../../Types/profesores/types';
@@ -55,43 +54,37 @@ const CorregirTrabajoPractico: React.FC = () => {
 
   if (loading) {
     return (
-      <>
-        <Sidebar />
-        <div className="main-wrapper">
-          <main className="main-content">
-            <div className="nexia-status-container">
-              <div className="nexia-loading-spinner" />
-              <p>Cargando entregas...</p>
-            </div>
-          </main>
-        </div>
-      </>
+      <div className="main-wrapper">
+        <main className="main-content">
+          <div className="nexia-status-container">
+            <div className="nexia-loading-spinner" />
+            <p>Cargando entregas...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
     );
   }
 
   if (error || !tp) {
     return (
-      <>
-        <Sidebar />
-        <div className="main-wrapper">
-          <main className="main-content">
-            <div className="alert-error">{error || 'Trabajo práctico no encontrado.'}</div>
-          </main>
-        </div>
-      </>
+      <div className="main-wrapper">
+        <main className="main-content">
+          <div className="alert-error">{error || 'Trabajo práctico no encontrado.'}</div>
+        </main>
+        <Footer />
+      </div>
     );
   }
 
   const corregidas = rows.filter((r) => r.estado === 'corregido').length;
 
   return (
-    <>
-      <Sidebar />
-      <div className="main-wrapper">
-        <main className="main-content">
-          <div className="page-header">
-            <div>
-              <button className="btn-back-page" onClick={() => navigate(`/trabajos-practicos/${tp.profe_curso_materia_id}`)}>
+    <div className="main-wrapper">
+      <main className="main-content">
+        <div className="page-header">
+          <div>
+            <button className="btn-back-page" onClick={() => navigate(-1)}>
                 ← Volver a trabajos prácticos
               </button>
               <h1 className="page-title">{tp.titulo}</h1>
@@ -119,7 +112,6 @@ const CorregirTrabajoPractico: React.FC = () => {
         </main>
         <Footer />
       </div>
-    </>
   );
 };
 

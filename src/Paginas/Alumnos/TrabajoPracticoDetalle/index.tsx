@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import CompaneroCoach from '../../../Componentes/Companero/Coach';
 import { mensajesEntrega } from '../../../utils/buddy';
@@ -161,30 +160,26 @@ const TrabajoPracticoDetalle: React.FC = () => {
 
   if (loading) {
     return (
-      <>
-        <Sidebar />
-        <div className="main-wrapper">
-          <main className="main-content">
-            <div className="nexia-status-container">
-              <div className="nexia-loading-spinner" />
-              <p>Cargando trabajo práctico...</p>
-            </div>
-          </main>
-        </div>
-      </>
+      <div className="main-wrapper">
+        <main className="main-content">
+          <div className="nexia-status-container">
+            <div className="nexia-loading-spinner" />
+            <p>Cargando trabajo práctico...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
     );
   }
 
   if (loadError || !tp) {
     return (
-      <>
-        <Sidebar />
-        <div className="main-wrapper">
-          <main className="main-content">
-            <div className="alert-error">{loadError || 'Trabajo práctico no encontrado.'}</div>
-          </main>
-        </div>
-      </>
+      <div className="main-wrapper">
+        <main className="main-content">
+          <div className="alert-error">{loadError || 'Trabajo práctico no encontrado.'}</div>
+        </main>
+        <Footer />
+      </div>
     );
   }
 
@@ -212,13 +207,11 @@ const TrabajoPracticoDetalle: React.FC = () => {
         : { label: 'Por entregar', className: 'nx-badge--info' };
 
   return (
-    <>
-      <Sidebar />
-      <div className="main-wrapper">
-        <main className="main-content">
-          <div className="page-header">
-            <div>
-              <button className="btn-back-page" onClick={() => navigate(`/materia/${tp.profe_curso_materia_id}/trabajos-practicos`)}>
+    <div className="main-wrapper">
+      <main className="main-content">
+        <div className="page-header">
+          <div>
+            <button className="btn-back-page" onClick={() => navigate(-1)}>
                 ← Volver a trabajos prácticos
               </button>
               <div className="tpd-title-row">
@@ -487,7 +480,6 @@ const TrabajoPracticoDetalle: React.FC = () => {
         </main>
         <Footer />
       </div>
-    </>
   );
 };
 

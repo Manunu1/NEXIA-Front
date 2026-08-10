@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import Sidebar from '../../Componentes/Sidebar';
 import EmptyState from '../../Componentes/EmptyState';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { getRolActual } from '../../utils/session';
@@ -183,7 +182,6 @@ const Mensajes: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="iv-page">
 
         {/* ── Header ── */}

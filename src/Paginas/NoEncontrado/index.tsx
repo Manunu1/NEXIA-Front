@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar from '../../Componentes/Sidebar';
+import Footer from '../../Componentes/footer';
 import { HOME_BY_ROL } from '../../Componentes/Sidebar/navConfig';
 import { getRolActual, haySesion } from '../../utils/session';
 import { usePageTitle } from '../../hooks/usePageTitle';
@@ -61,6 +62,7 @@ const NoEncontrado: React.FC = () => {
       <Sidebar />
       <div className="main-wrapper">
         <main className="main-content ad-center">{contenido}</main>
+        <Footer />
       </div>
     </>
   );

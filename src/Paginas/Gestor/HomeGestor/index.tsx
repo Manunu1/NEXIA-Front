@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../../../Componentes/Sidebar";
 import HomeHero from "../../../Componentes/HomeHero";
+import Footer from "../../../Componentes/footer";
 import api from '../../../api';
 import { getNombreUsuario } from '../../../utils/session';
 import "./homeGestor.css";
@@ -52,7 +52,6 @@ function HomeGestor() {
 
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
 
@@ -281,6 +280,7 @@ function HomeGestor() {
           </div>
 
         </main>
+        <Footer />
       </div>
     </>
   );

@@ -1,5 +1,5 @@
-import Sidebar from "../../../Componentes/Sidebar";
 import FormCrearProfesor from "../../../Componentes/Gestor/FormCrearProfesor";
+import Footer from "../../../Componentes/footer";
 import "./crearProfesoresGestor.css";
 import { usePageTitle } from '../../../hooks/usePageTitle';
 
@@ -7,7 +7,6 @@ function ProfesoresGestor() {
   usePageTitle('Gestión de profesores');
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
           <div className="page-header page-header--center">
@@ -58,6 +57,7 @@ function ProfesoresGestor() {
             <FormCrearProfesor />
           </div>
         </main>
+        <Footer />
       </div>
     </>
   );

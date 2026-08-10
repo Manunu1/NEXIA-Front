@@ -1,5 +1,5 @@
-import Sidebar from "../../../Componentes/Sidebar";
 import FormAsignarMateriaProfesor from "../../../Componentes/Gestor/FormAsignarMateriaProfesor";
+import Footer from "../../../Componentes/footer";
 import "./asignarMateriaProfesor.css";
 import { usePageTitle } from '../../../hooks/usePageTitle';
 
@@ -7,7 +7,6 @@ function AsignacionesGestor() {
   usePageTitle('Asignaciones');
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
           <div className="page-header page-header--center">
@@ -58,6 +57,7 @@ function AsignacionesGestor() {
             <FormAsignarMateriaProfesor />
           </div>
         </main>
+        <Footer />
       </div>
     </>
   );

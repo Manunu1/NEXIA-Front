@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Sidebar from '../../Componentes/Sidebar';
 import Footer from '../../Componentes/footer';
 import ProfileImage from '../../Componentes/ProfileImage';
 import { usePageTitle } from '../../hooks/usePageTitle';
@@ -164,7 +163,6 @@ const Configuracion: React.FC = () => {
   if (estado === 'cargando') {
     return (
       <>
-        <Sidebar />
         <div className="main-wrapper">
           <main className="main-content">
             <div className="nexia-status-container">
@@ -181,7 +179,6 @@ const Configuracion: React.FC = () => {
   if (estado === 'error') {
     return (
       <>
-        <Sidebar />
         <div className="main-wrapper">
           <main className="main-content">
             <header className="page-header">
@@ -214,7 +211,6 @@ const Configuracion: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
           <header className="page-header">

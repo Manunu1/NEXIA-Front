@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Sidebar from '../../Componentes/Sidebar';
 import Markdown from '../../Componentes/Markdown';
 import NexiaMascota from '../../Componentes/NexiaMascota';
 import CompaneroCoach from '../../Componentes/Companero/Coach';
@@ -168,7 +167,6 @@ const NexiaIA: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="nia-wrapper">
 
         {/* ── Header ── */}

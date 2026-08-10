@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import type { typeContenido, typeContenidoForm, typeTipoContenido } from '../../../Types/profesores/types';
 import './crearContenido.css';
 import api from '../../../api';
-import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
@@ -203,61 +202,54 @@ const CrearContenido: React.FC = () => {
 
   if (isEditMode && !contenidoOriginal) {
     return (
-      <>
-        <Sidebar />
-        <div className="main-wrapper">
-          <main className="main-content">
-            <div className="alert-error">
-              No se encontró la información del contenido a editar. Volvé a la lista de contenidos e intentá de nuevo desde ahí.
-            </div>
-          </main>
-        </div>
-      </>
+      <div className="main-wrapper">
+        <main className="main-content">
+          <div className="alert-error">
+            No se encontró la información del contenido a editar. Volvé a la lista de contenidos e intentá de nuevo desde ahí.
+          </div>
+        </main>
+        <Footer />
+      </div>
     );
   }
 
   if (submitStatus === 'success') {
     return (
-      <>
-        <Sidebar />
-        <div className="main-wrapper">
-          <main className="main-content">
-            <div className="cc-success-screen">
-              <div className="cc-success-icon">🎉</div>
-              <h2>{isEditMode ? '¡Contenido actualizado!' : '¡Contenido publicado!'}</h2>
-              <p>{isEditMode ? 'Los cambios ya están disponibles para tus alumnos.' : 'Tus alumnos ya pueden ver el material en la materia.'}</p>
-              <div className="cc-success-actions">
-                <button className="btn-simple" onClick={() => navigate(`/contenidos/${materiaId}`)}>
-                  Ver contenidos →
+      <div className="main-wrapper">
+        <main className="main-content">
+          <div className="cc-success-screen">
+            <div className="cc-success-icon">🎉</div>
+            <h2>{isEditMode ? '¡Contenido actualizado!' : '¡Contenido publicado!'}</h2>
+            <p>{isEditMode ? 'Los cambios ya están disponibles para tus alumnos.' : 'Tus alumnos ya pueden ver el material en la materia.'}</p>
+            <div className="cc-success-actions">
+              <button className="btn-simple" onClick={() => navigate(`/contenidos/${materiaId}`)}>
+                Ver contenidos →
+              </button>
+              {!isEditMode && (
+                <button className="btn-secondary" onClick={() => {
+                  setSubmitStatus('idle');
+                  setFormData({ profe_curso_materia_id: Number(materiaId), tipo_contenido_id: 0, titulo: '', descripcion: '', archivo_url: '' });
+                  setUrlPreview('');
+                  setUploadState('idle');
+                  setUploadedFileName('');
+                }}>
+                  Publicar otro
                 </button>
-                {!isEditMode && (
-                  <button className="btn-secondary" onClick={() => {
-                    setSubmitStatus('idle');
-                    setFormData({ profe_curso_materia_id: Number(materiaId), tipo_contenido_id: 0, titulo: '', descripcion: '', archivo_url: '' });
-                    setUrlPreview('');
-                    setUploadState('idle');
-                    setUploadedFileName('');
-                  }}>
-                    Publicar otro
-                  </button>
-                )}
-              </div>
+              )}
             </div>
-          </main>
-          <Footer />
-        </div>
-      </>
+          </div>
+        </main>
+        <Footer />
+      </div>
     );
   }
 
   return (
-    <>
-      <Sidebar />
-      <div className="main-wrapper">
-        <main className="main-content">
-          <div className="page-header">
+    <div className="main-wrapper">
+      <main className="main-content">
+        <div className="page-header">
             <div>
-              <button className="btn-back-page" onClick={() => navigate(`/contenidos/${materiaId}`)}>
+              <button className="btn-back-page" onClick={() => navigate(-1)}>
                 ← Volver a contenidos
               </button>
               <h1 className="page-title">{isEditMode ? '✎ Editar contenido' : '📤 Publicar contenido'}</h1>
@@ -520,7 +512,6 @@ const CrearContenido: React.FC = () => {
         </main>
         <Footer />
       </div>
-    </>
   );
 };
 

@@ -17,9 +17,11 @@ type Props = {
   onPublicar?: (tp: typeTrabajoPractico) => void;
   /** Id del TP que se está publicando (para el spinner del botón) */
   publicandoId?: number | null;
+  /** Pide confirmación para eliminar un TP desde la lista */
+  onEliminar?: (tp: typeTrabajoPractico) => void;
 };
 
-const ListaTrabajosPracticos: React.FC<Props> = ({ trabajos, onPublicar, publicandoId }) => {
+const ListaTrabajosPracticos: React.FC<Props> = ({ trabajos, onPublicar, publicandoId, onEliminar }) => {
   return (
     <div className="ltp-grid">
       {trabajos.map((tp) => (
@@ -56,6 +58,21 @@ const ListaTrabajosPracticos: React.FC<Props> = ({ trabajos, onPublicar, publica
                 <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
               </svg>
             </Link>
+            {onEliminar && (
+              <button
+                type="button"
+                className="ltp-delete-btn"
+                onClick={() => onEliminar(tp)}
+                disabled={!!tp.cantidad_entregas}
+                aria-label="Eliminar trabajo práctico"
+                title={tp.cantidad_entregas ? 'No se puede eliminar: ya tiene entregas de alumnos' : 'Eliminar trabajo práctico'}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                </svg>
+              </button>
+            )}
           </div>
 
           <Link to={`/trabajo-practico/${tp.trabajo_practico_id}/entregas`} className="ltp-card-body">

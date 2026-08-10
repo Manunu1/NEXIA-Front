@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import Sidebar from '../../../Componentes/Sidebar';
 import ListaContenido from '../../../Componentes/profesor/listaContenido';
 import MateriaTabsAlumno from '../../../Componentes/alumnos/MateriaTabsAlumno';
 import MateriaIdentity from '../../../Componentes/MateriaIdentity';
@@ -122,7 +121,6 @@ const ContenidosAlumnos: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="iv-page">
 
         {/* ── Header ── */}

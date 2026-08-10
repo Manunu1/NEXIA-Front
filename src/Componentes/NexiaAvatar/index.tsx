@@ -227,9 +227,9 @@ const NexiaAvatar: React.FC<NexiaAvatarProps> = ({
 
         {/* ── Cara ── */}
         <g>
-          {/* Rubor — muy sutil, sólo aporta calidez */}
-          <ellipse cx="50" cy="102" rx="9" ry="6" fill={mezclar('#E8735A', 0.2)} opacity="0.22" />
-          <ellipse cx="110" cy="102" rx="9" ry="6" fill={mezclar('#E8735A', 0.2)} opacity="0.22" />
+          {/* Rubor — apenas insinuado: da calidez sin caer en tono infantil */}
+          <ellipse cx="50" cy="103" rx="7.5" ry="4.5" fill={mezclar('#E8735A', 0.2)} opacity="0.13" />
+          <ellipse cx="110" cy="103" rx="7.5" ry="4.5" fill={mezclar('#E8735A', 0.2)} opacity="0.13" />
 
           <path
             d={NARIZ}
@@ -255,16 +255,19 @@ const NexiaAvatar: React.FC<NexiaAvatarProps> = ({
               />
             ) : (
               <g key={ojo.cx}>
-                <ellipse cx={ojo.cx} cy={ojo.cy} rx="9" ry="10.5" fill="#FFFFFF" />
+                {/* Blanco más chico y más redondo: el ojo grande y ovalado
+                    es lo que hacía leer la cara como "sorprendida"/infantil. */}
+                <ellipse cx={ojo.cx} cy={ojo.cy} rx="7.4" ry="7.8" fill="#FFFFFF" />
                 {/* Sólo el iris sigue la mirada: mover también la esclerótica
                     haría girar el ojo entero y parecería un tic. */}
                 <circle cx={ojo.cx + mirada.dx} cy={ojo.cy + 0.5 + mirada.dy} r="5.4" fill={eyes} />
-                <circle cx={ojo.cx + mirada.dx} cy={ojo.cy + 0.5 + mirada.dy} r="2.4" fill="#101828" />
+                <circle cx={ojo.cx + mirada.dx} cy={ojo.cy + 0.5 + mirada.dy} r="2.6" fill="#101828" />
                 <circle
-                  cx={ojo.cx + mirada.dx - 1.9}
-                  cy={ojo.cy + mirada.dy - 2.6}
-                  r="1.9"
+                  cx={ojo.cx + mirada.dx - 1.5}
+                  cy={ojo.cy + mirada.dy - 2}
+                  r="1.15"
                   fill="#FFFFFF"
+                  opacity="0.85"
                 />
               </g>
             );
@@ -293,7 +296,7 @@ const NexiaAvatar: React.FC<NexiaAvatarProps> = ({
           )}
 
           {/* Cejas — el rapado no las pinta al ras, así que van siempre */}
-          <g fill="none" stroke={peloSombra} strokeWidth="4" strokeLinecap="round">
+          <g fill="none" stroke={peloSombra} strokeWidth="3.2" strokeLinecap="round">
             <path d={CEJAS.izq} />
             <path d={CEJAS.der} />
           </g>

@@ -30,3 +30,7 @@
 }
 
 .tpp-aviso-borradores strong { color: var(--orange-d); }
+
+.tpp-error-eliminar {
+  margin: 1rem 1.5rem 0;
+}

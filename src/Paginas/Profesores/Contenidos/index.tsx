@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../../../Componentes/Sidebar';
 import ListaContenido from '../../../Componentes/profesor/listaContenido';
 import MateriaTabs from '../../../Componentes/profesor/MateriaTabs';
 import MateriaIdentity from '../../../Componentes/MateriaIdentity';
+import ConfirmDialog from '../../../Componentes/ConfirmDialog';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import type { typeContenido } from '../../../Types/profesores/types';
 import api from '../../../api';
@@ -45,6 +45,8 @@ const Contenidos: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<typeContenido | null>(null);
+  const [aEliminar, setAEliminar] = useState<typeContenido | null>(null);
+  const [eliminando, setEliminando] = useState(false);
 
   useEffect(() => {
     const traerContenidos = async () => {
@@ -73,9 +75,23 @@ const Contenidos: React.FC = () => {
   const hasUrl   = !!selected?.url;
   const isMedia  = selected?.url ? isMediaEmbed(selected.url) : false;
 
+  const confirmarEliminar = async () => {
+    if (!aEliminar) return;
+    setEliminando(true);
+    try {
+      await api.delete(`/api/contenidos/${aEliminar.contenido_id}`);
+      setContenidos((prev) => prev.filter((c) => c.contenido_id !== aEliminar.contenido_id));
+      setSelected((prev) => (prev?.contenido_id === aEliminar.contenido_id ? null : prev));
+      setAEliminar(null);
+    } catch (err) {
+      console.error('Error al eliminar el contenido:', err);
+    } finally {
+      setEliminando(false);
+    }
+  };
+
   return (
     <>
-      <Sidebar />
       <div className="iv-page">
         <header className="iv-header">
           <button className="iv-back-btn" onClick={() => navigate(-1)}>
@@ -115,6 +131,20 @@ const Contenidos: React.FC = () => {
                 </svg>
                 Editar
               </Link>
+            )}
+            {selected && (
+              <button
+                type="button"
+                className="iv-delete-btn"
+                onClick={() => setAEliminar(selected)}
+                aria-label="Eliminar contenido"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                </svg>
+                Eliminar
+              </button>
             )}
             {selected?.url && (
               <a href={selected.url} target="_blank" rel="noopener noreferrer" className="iv-open-btn">
@@ -218,6 +248,19 @@ const Contenidos: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <ConfirmDialog
+        open={!!aEliminar}
+        title="¿Eliminar este contenido?"
+        message={
+          <>Vas a eliminar <strong>{aEliminar?.titulo}</strong>. Esta acción no se puede deshacer y tus alumnos dejarán de verlo.</>
+        }
+        confirmLabel="Eliminar"
+        danger
+        busy={eliminando}
+        onConfirm={confirmarEliminar}
+        onCancel={() => setAEliminar(null)}
+      />
     </>
   );
 };

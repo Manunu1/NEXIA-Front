@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import TrabajoPracticoForm from '../../../Componentes/profesor/TrabajoPracticoForm';
 import type { TrabajoPracticoFormValues } from '../../../Componentes/profesor/TrabajoPracticoForm';
@@ -42,7 +41,6 @@ const CrearTrabajoPractico: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
           <div className="page-header page-header--center">

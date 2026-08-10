@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import CompaneroCoach from '../../../Componentes/Companero/Coach';
 import type { typeBoletin } from '../../../Types/profesores/types';
@@ -96,7 +95,6 @@ const Boletin: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
           <div className="page-header">

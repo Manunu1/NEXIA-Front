@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Sidebar from "../../Componentes/Sidebar";
 import Footer from "../../Componentes/footer";
 import ConfirmDialog from "../../Componentes/ConfirmDialog";
 import EditarComunicadoModal from "../../Componentes/Gestor/EditarComunicadoModal";
@@ -141,7 +140,6 @@ function Comunicados() {
 
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import TrabajoPracticoForm from '../../../Componentes/profesor/TrabajoPracticoForm';
 import type { TrabajoPracticoFormValues } from '../../../Componentes/profesor/TrabajoPracticoForm';
@@ -45,7 +44,7 @@ const EditarTrabajoPractico: React.FC = () => {
         archivo_url: values.archivo_url || undefined,
         fecha_limite: values.fecha_limite || null,
       });
-      navigate(`/trabajos-practicos/${tp?.profe_curso_materia_id}`);
+      navigate(`/trabajos-practicos/${tp?.profe_curso_materia_id}`, { replace: true });
     } catch (err: unknown) {
       const ex = err as { response?: { data?: { message?: string } } };
       setSubmitError(ex.response?.data?.message || 'Error al guardar los cambios.');
@@ -70,43 +69,37 @@ const EditarTrabajoPractico: React.FC = () => {
 
   if (loading) {
     return (
-      <>
-        <Sidebar />
-        <div className="main-wrapper">
-          <main className="main-content">
-            <div className="nexia-status-container">
-              <div className="nexia-loading-spinner" />
-              <p>Cargando trabajo práctico...</p>
-            </div>
-          </main>
-        </div>
-      </>
+      <div className="main-wrapper">
+        <main className="main-content">
+          <div className="nexia-status-container">
+            <div className="nexia-loading-spinner" />
+            <p>Cargando trabajo práctico...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
     );
   }
 
   if (loadError || !tp) {
     return (
-      <>
-        <Sidebar />
-        <div className="main-wrapper">
-          <main className="main-content">
-            <div className="alert-error">{loadError || 'Trabajo práctico no encontrado.'}</div>
-          </main>
-        </div>
-      </>
+      <div className="main-wrapper">
+        <main className="main-content">
+          <div className="alert-error">{loadError || 'Trabajo práctico no encontrado.'}</div>
+        </main>
+        <Footer />
+      </div>
     );
   }
 
   return (
-    <>
-      <Sidebar />
-      <div className="main-wrapper">
-        <main className="main-content">
-          <div className="page-header page-header--center">
-            <div>
-              <button className="btn-back-page" onClick={() => navigate(`/trabajos-practicos/${tp.profe_curso_materia_id}`)}>
-                ← Volver a trabajos prácticos
-              </button>
+    <div className="main-wrapper">
+      <main className="main-content">
+        <div className="page-header page-header--center">
+          <div>
+            <button className="btn-back-page" onClick={() => navigate(-1)}>
+              ← Volver a trabajos prácticos
+            </button>
               <h1 className="page-title">Editar trabajo práctico</h1>
               <p className="page-subtitle">Los cambios se guardan tanto en borrador como publicado</p>
             </div>
@@ -136,7 +129,6 @@ const EditarTrabajoPractico: React.FC = () => {
         </main>
         <Footer />
       </div>
-    </>
   );
 };
 

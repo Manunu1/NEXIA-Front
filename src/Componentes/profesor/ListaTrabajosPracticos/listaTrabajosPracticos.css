@@ -96,6 +96,27 @@
   color: var(--navy);
 }
 
+.ltp-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--t4);
+  border-radius: var(--r1);
+  transition: all 0.15s ease;
+}
+
+.ltp-delete-btn:hover:not(:disabled) {
+  background: rgba(220,38,38,.08);
+  color: var(--danger);
+}
+
+.ltp-delete-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .ltp-card-body {
   display: flex;
   flex-direction: column;

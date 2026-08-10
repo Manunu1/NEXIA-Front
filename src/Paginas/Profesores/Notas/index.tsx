@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import MateriaTabs from '../../../Componentes/profesor/MateriaTabs';
 import TablaCalificaciones from '../../../Componentes/profesor/TablaCalificaciones';
@@ -68,12 +67,11 @@ const Notas: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
           <div className="page-header">
             <div>
-              <button className="btn-back-page" onClick={() => navigate('/profesor')}>
+              <button className="btn-back-page" onClick={() => navigate(-1)}>
                 ← Volver a mis cursos
               </button>
               <h1 className="page-title">Notas finales</h1>

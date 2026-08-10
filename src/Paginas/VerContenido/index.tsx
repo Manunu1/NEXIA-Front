@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../api';
 import type { typeContenido } from '../../Types/profesores/types';
-import Sidebar from '../../Componentes/Sidebar';
 import './verContenido.css';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -111,8 +110,6 @@ const VerContenido: React.FC = () => {
 
   return (
     <div className="vc-page">
-      <Sidebar />
-
       <div className="vc-wrapper">
 
         {/* ── Top bar ── */}

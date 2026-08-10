@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import Sidebar from '../../../Componentes/Sidebar';
 import MateriaTabs from '../../../Componentes/profesor/MateriaTabs';
 import MateriaIdentity from '../../../Componentes/MateriaIdentity';
 import ListaTrabajosPracticos from '../../../Componentes/profesor/ListaTrabajosPracticos';
+import ConfirmDialog from '../../../Componentes/ConfirmDialog';
 import type { typeTrabajoPractico } from '../../../Types/profesores/types';
 import api from '../../../api';
 import './trabajosPracticos.css';
@@ -16,6 +16,9 @@ const TrabajosPracticos: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [publicandoId, setPublicandoId] = useState<number | null>(null);
+  const [aEliminar, setAEliminar] = useState<typeTrabajoPractico | null>(null);
+  const [eliminando, setEliminando] = useState(false);
+  const [errorEliminar, setErrorEliminar] = useState<string | null>(null);
 
   const publicar = async (tp: typeTrabajoPractico) => {
     setPublicandoId(tp.trabajo_practico_id);
@@ -32,6 +35,23 @@ const TrabajosPracticos: React.FC = () => {
       setError(ex.response?.data?.message || 'No se pudo publicar el trabajo práctico.');
     } finally {
       setPublicandoId(null);
+    }
+  };
+
+  const confirmarEliminar = async () => {
+    if (!aEliminar) return;
+    setEliminando(true);
+    setErrorEliminar(null);
+    try {
+      await api.delete(`/api/trabajos-practicos/${aEliminar.trabajo_practico_id}`);
+      setTrabajos((prev) => prev.filter((t) => t.trabajo_practico_id !== aEliminar.trabajo_practico_id));
+      setAEliminar(null);
+    } catch (err: unknown) {
+      const ex = err as { response?: { data?: { message?: string } } };
+      setErrorEliminar(ex.response?.data?.message || 'No se pudo eliminar el trabajo práctico.');
+      setAEliminar(null);
+    } finally {
+      setEliminando(false);
     }
   };
 
@@ -57,7 +77,6 @@ const TrabajosPracticos: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="iv-page">
         <header className="iv-header">
           <button className="iv-back-btn" onClick={() => navigate(-1)}>
@@ -108,6 +127,9 @@ const TrabajosPracticos: React.FC = () => {
           </div>
         ) : (
           <>
+            {errorEliminar && (
+              <div className="iv-error tpp-error-eliminar">{errorEliminar}</div>
+            )}
             {borradores > 0 && (
               <div className="tpp-aviso-borradores" role="status">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -124,10 +146,24 @@ const TrabajosPracticos: React.FC = () => {
               trabajos={trabajos}
               onPublicar={publicar}
               publicandoId={publicandoId}
+              onEliminar={setAEliminar}
             />
           </>
         )}
       </div>
+
+      <ConfirmDialog
+        open={!!aEliminar}
+        title="¿Eliminar este trabajo práctico?"
+        message={
+          <>Vas a eliminar <strong>{aEliminar?.titulo}</strong>. Esta acción no se puede deshacer.</>
+        }
+        confirmLabel="Eliminar"
+        danger
+        busy={eliminando}
+        onConfirm={confirmarEliminar}
+        onCancel={() => setAEliminar(null)}
+      />
     </>
   );
 };

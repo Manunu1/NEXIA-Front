@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import MateriaTabsAlumno from '../../../Componentes/alumnos/MateriaTabsAlumno';
 import MateriaIdentity from '../../../Componentes/MateriaIdentity';
@@ -78,7 +77,6 @@ const TrabajosPracticosAlumno: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
           <div className="page-header">

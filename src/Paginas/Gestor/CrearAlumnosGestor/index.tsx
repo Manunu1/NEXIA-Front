@@ -1,5 +1,5 @@
-import Sidebar from "../../../Componentes/Sidebar";
 import FormCrearAlumno from "../../../Componentes/Gestor/FormCrearAlumno";
+import Footer from "../../../Componentes/footer";
 import "./CrearAlumnosGestor.css";
 import { usePageTitle } from '../../../hooks/usePageTitle';
 
@@ -7,7 +7,6 @@ function AlumnosGestor() {
   usePageTitle('Gestión de alumnos');
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
           <div className="page-header page-header--center">
@@ -59,6 +58,7 @@ function AlumnosGestor() {
             <FormCrearAlumno />
           </div>
         </main>
+        <Footer />
       </div>
     </>
   );

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Materia from '../../../Componentes/profesor/Materia';
-import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import HomeHero from '../../../Componentes/HomeHero';
 import QuickLinks from '../../../Componentes/QuickLinks';
@@ -145,7 +144,6 @@ const MisCursos: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
 

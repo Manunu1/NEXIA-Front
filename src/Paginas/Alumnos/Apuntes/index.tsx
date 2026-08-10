@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import Sidebar from '../../../Componentes/Sidebar';
 import Footer from '../../../Componentes/footer';
 import Modal from '../../../Componentes/Modal';
 import ConfirmDialog from '../../../Componentes/ConfirmDialog';
@@ -147,7 +146,6 @@ const Apuntes: React.FC = () => {
 
   return (
     <>
-      <Sidebar />
       <div className="main-wrapper">
         <main className="main-content">
 

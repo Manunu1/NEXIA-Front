@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Sidebar from '../../Componentes/Sidebar';
+import Footer from '../../Componentes/footer';
 import { HOME_BY_ROL } from '../../Componentes/Sidebar/navConfig';
 import { getRolActual } from '../../utils/session';
 import './accesoDenegado.css';
@@ -24,11 +24,9 @@ const AccesoDenegado: React.FC = () => {
   const rol = getRolActual();
 
   return (
-    <>
-      <Sidebar />
-      <div className="main-wrapper">
-        <main className="main-content ad-center">
-          <div className="ad-panel" role="alert">
+    <div className="main-wrapper">
+      <main className="main-content ad-center">
+        <div className="ad-panel" role="alert">
             <div className="ad-orb" aria-hidden="true" />
 
             <div className="ad-icon" aria-hidden="true">
@@ -59,10 +57,10 @@ const AccesoDenegado: React.FC = () => {
                 ← Volver atrás
               </button>
             </div>
-          </div>
-        </main>
-      </div>
-    </>
+        </div>
+      </main>
+      <Footer />
+    </div>
   );
 };
 
