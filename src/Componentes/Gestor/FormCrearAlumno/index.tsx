@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Select from "react-select";
+import NexiaSelect from "../../Select";
 import "./formAlumno.css";
 import api from '../../../api';
 
@@ -128,28 +128,24 @@ export default function FormCrearAlumno() {
           <input id="a-password" name="password" type="password" placeholder="Mínimo 8 caracteres" value={form.password} onChange={handleChange} required />
         </div>
 
-        <div className="form-field">
-          <label>Institución</label>
-          <Select
-            options={instituciones}
-            value={selectedInstitucion}
-            onChange={(value) => { setSelectedInstitucion(value); setSelectedCurso(null); setCursos([]); if (error) setError(""); }}
-            placeholder="Seleccionar institución..."
-            noOptionsMessage={() => "Sin resultados"}
-          />
-        </div>
+        <NexiaSelect<Option>
+          label="Institución"
+          options={instituciones}
+          value={selectedInstitucion}
+          onChange={(value) => { setSelectedInstitucion(value); setSelectedCurso(null); setCursos([]); if (error) setError(""); }}
+          placeholder="Seleccionar institución…"
+        />
 
-        <div className="form-field">
-          <label>Curso</label>
-          <Select
-            options={cursos}
-            value={selectedCurso}
-            onChange={(value) => { setSelectedCurso(value); if (error) setError(""); }}
-            placeholder="Seleccionar curso..."
-            isDisabled={!selectedInstitucion}
-            noOptionsMessage={() => "No hay cursos disponibles"}
-          />
-        </div>
+        <NexiaSelect<Option>
+          label="Curso"
+          options={cursos}
+          value={selectedCurso}
+          onChange={(value) => { setSelectedCurso(value); if (error) setError(""); }}
+          placeholder="Seleccionar curso…"
+          isDisabled={!selectedInstitucion}
+          noOptionsMessage={() => "No hay cursos disponibles"}
+          hint={selectedInstitucion && cursos.length === 0 ? "Esta institución todavía no tiene cursos. Creá uno desde Cursos." : undefined}
+        />
 
       </div>
 

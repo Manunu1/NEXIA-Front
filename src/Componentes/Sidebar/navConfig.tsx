@@ -132,6 +132,15 @@ const IconAlumnos = (
   </svg>
 );
 
+/* Libro abierto: el curso como agrupación, distinto del ícono de docente
+   (IconCursos) que ya se usa para Profesores. */
+const IconAula = (
+  <svg viewBox="0 0 24 24" {...stroke}>
+    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+  </svg>
+);
+
 const IconAsignaciones = (
   <svg viewBox="0 0 24 24" {...stroke}>
     <line x1="8" y1="6" x2="21" y2="6" />
@@ -201,8 +210,12 @@ export const NAV_BY_ROL: Record<Rol, NavSection[]> = {
   gestor: [
     {
       label: 'Gestión',
+      /* Cursos va primero de las tres altas: es la que habilita a las otras
+         dos. Sin un curso creado no se puede dar de alta un alumno ni
+         asignarle una materia a un docente. */
       items: [
         { to: '/gestor', label: 'Panel principal', icon: IconPanel, match: ['/gestor'] },
+        { to: '/gestor/cursos', label: 'Cursos', icon: IconAula, match: ['/gestor/cursos'] },
         { to: '/gestor/alumnos', label: 'Alumnos', icon: IconAlumnos, match: ['/gestor/alumnos'] },
         { to: '/gestor/profesores', label: 'Profesores', icon: IconCursos, match: ['/gestor/profesores'] },
         { to: '/gestor/asignaciones', label: 'Asignaciones', icon: IconAsignaciones, match: ['/gestor/asignaciones'] },

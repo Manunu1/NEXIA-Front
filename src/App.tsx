@@ -10,6 +10,7 @@ import HomeGestor from "./Paginas/Gestor/HomeGestor";
 import ProfesoresGestor from "./Paginas/Gestor/CrearProfesoresGestor";
 import AsignacionesGestor from "./Paginas/Gestor/AsignarMateriaProfesor";
 import AlumnosGestor from "./Paginas/Gestor/CrearAlumnosGestor";
+import CursosGestor from "./Paginas/Gestor/CursosGestor";
 import Contenidos from "./Paginas/Profesores/Contenidos";
 import CrearContenido from "./Paginas/Profesores/CrearContenido";
 import MisMaterias from "./Paginas/Alumnos/MisMaterias";
@@ -103,6 +104,7 @@ function App() {
           {/* Gestor */}
           <Route path="/gestor" element={guard(<HomeGestor />, ["gestor"])} />
           <Route path="/gestor/profesores" element={guard(<ProfesoresGestor />, ["gestor"])} />
+          <Route path="/gestor/cursos" element={guard(<CursosGestor />, ["gestor"])} />
           <Route path="/gestor/asignaciones" element={guard(<AsignacionesGestor />, ["gestor"])} />
           <Route path="/gestor/alumnos" element={guard(<AlumnosGestor />, ["gestor"])} />
         </Route>

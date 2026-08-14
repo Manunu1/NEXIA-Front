@@ -1,0 +1,172 @@
+/* ─────────────────────────────────────────────
+   CURSO — modal de alta / edición
+───────────────────────────────────────────── */
+.cfm {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.cfm-header {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--s1);
+  flex-shrink: 0;
+}
+
+.cfm-header-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r2);
+  background: var(--navy-ghost);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cfm-header-icon svg { width: 20px; height: 20px; }
+
+.cfm-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.cfm-title {
+  font-family: var(--fd);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.2px;
+}
+
+.cfm-sub {
+  font-size: 0.75rem;
+  color: var(--t4);
+  line-height: 1.45;
+}
+
+.cfm-body {
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Año y división van juntos: son las dos mitades de un mismo nombre y
+   separarlos en dos filas rompía la lectura de "3° B". */
+.cfm-row {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 0.875rem;
+  align-items: start;
+}
+
+.cfm-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.875rem;
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-bd);
+  border-radius: var(--r2);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--danger);
+}
+
+.cfm-error svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.cfm-preview {
+  margin: 0;
+  padding: 0.65rem 0.875rem;
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  border-radius: var(--r2);
+  font-size: 0.8rem;
+  color: var(--t3);
+}
+
+.cfm-preview strong {
+  font-family: var(--fd);
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* ── Acciones ─────────────────────────────── */
+.cfm-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.75rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--s1);
+  flex-shrink: 0;
+}
+
+.cfm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--r2);
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--fb);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s var(--ease);
+}
+
+.cfm-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.cfm-btn--ghost {
+  background: var(--white);
+  color: var(--t3);
+  border: 1.5px solid var(--border);
+}
+
+.cfm-btn--ghost:hover:not(:disabled) {
+  background: var(--s2);
+  color: var(--t1);
+  border-color: var(--navy-xs);
+}
+
+.cfm-btn--primary {
+  background: var(--navy);
+  color: var(--white);
+  box-shadow: var(--sh-nv);
+}
+
+.cfm-btn--primary:hover:not(:disabled) {
+  background: var(--navy-d);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-glow-navy);
+}
+
+.cfm-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.35);
+  border-top-color: var(--white);
+  animation: spinDual 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@media (max-width: 540px) {
+  .cfm-header { padding: 1.25rem; }
+  .cfm-body   { padding: 1.25rem; }
+  .cfm-footer { padding: 0.875rem 1.25rem 1.25rem; }
+  .cfm-row    { grid-template-columns: 1fr; }
+  .cfm-btn    { flex: 1; }
+}

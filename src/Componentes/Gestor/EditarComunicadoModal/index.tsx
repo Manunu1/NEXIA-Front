@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../../Modal';
 import api from '../../../api';
+import { mensajeDeError } from '../../../utils/apiError';
 import './editarComunicadoModal.css';
 
 /* ─────────────────────────────────────────────
@@ -60,9 +61,8 @@ const EditarComunicadoModal: React.FC<EditarComunicadoModalProps> = ({
       onSaved(cambios);
       setSaved(true);
       setTimeout(onClose, 1200);
-    } catch (err: unknown) {
-      const ex = err as { response?: { data?: { message?: string } }; message?: string };
-      setError(ex?.response?.data?.message || ex?.message || 'Error al guardar los cambios');
+    } catch (err) {
+      setError(mensajeDeError(err, 'Error al guardar los cambios'));
     } finally {
       setSaving(false);
     }

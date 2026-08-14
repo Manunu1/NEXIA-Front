@@ -4,7 +4,8 @@ import ConfirmDialog from "../../Componentes/ConfirmDialog";
 import EditarComunicadoModal from "../../Componentes/Gestor/EditarComunicadoModal";
 import type { ComunicadoCambios } from "../../Componentes/Gestor/EditarComunicadoModal";
 import api from "../../api";
-import { getUsuarioSesion } from "../../utils/session";
+import { getRolActual, getUsuarioSesion } from "../../utils/session";
+import { mensajeDeError } from "../../utils/apiError";
 import "./comunicados.css";
 import { usePageTitle } from '../../hooks/usePageTitle';
 
@@ -34,8 +35,13 @@ function Comunicados() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Datos de sesión (estables durante toda la página)
-  const [rol] = useState(() => (localStorage.getItem('rol') || '').toUpperCase());
+  /* Datos de sesión (estables durante toda la página).
+
+     El rol sale de getRolActual() y no de leer 'rol' a mano: esa clave puede
+     no estar (sesión vieja, o guardada por otro camino), y en ese caso el
+     gestor se quedaba sin los botones de editar y eliminar sin ningún aviso.
+     getRolActual() cae de vuelta a los ids del usuario. */
+  const [rol] = useState<ReturnType<typeof getRolActual>>(() => getRolActual());
   const [{ institucionId, institucionNombre, userName }] = useState(() => {
     const usuario = getUsuarioSesion();
     return {
@@ -65,8 +71,8 @@ function Comunicados() {
       try {
         const res = await api.get(`/api/comunicados/${institucionId}`);
         setComunicados(res.data.data || []);
-      } catch {
-        setError("Error al cargar los comunicados. Verificá tu conexión.");
+      } catch (err) {
+        setError(mensajeDeError(err, "Error al cargar los comunicados. Verificá tu conexión."));
       } finally {
         setLoading(false);
       }
@@ -104,15 +110,14 @@ function Comunicados() {
       setForm({ titulo: "", contenido: "", imagen_url: "" });
       setSubmitSuccess(true);
       setTimeout(() => { setSubmitSuccess(false); setShowForm(false); }, 2500);
-    } catch (err: unknown) {
-      const ex = err as { response?: { data?: { message?: string } }; message?: string };
-      setSubmitError(ex?.response?.data?.message || ex?.message || 'Error al publicar el comunicado');
+    } catch (err) {
+      setSubmitError(mensajeDeError(err, 'Error al publicar el comunicado'));
     } finally {
       setSubmitting(false);
     }
   };
 
-  const isGestor = rol === 'GESTOR';
+  const isGestor = rol === 'gestor';
 
   const guardarEdicion = (cambios: ComunicadoCambios) => {
     if (!editTarget) return;
@@ -129,9 +134,8 @@ function Comunicados() {
       await api.delete(`/api/comunicados/${deleteTarget.id}`);
       setComunicados(prev => prev.filter(c => c.id !== deleteTarget.id));
       setDeleteTarget(null);
-    } catch (err: unknown) {
-      const ex = err as { response?: { data?: { message?: string } } };
-      setActionError(ex?.response?.data?.message || 'Error al eliminar el comunicado. Intentá nuevamente.');
+    } catch (err) {
+      setActionError(mensajeDeError(err, 'Error al eliminar el comunicado. Intentá nuevamente.'));
       setDeleteTarget(null);
     } finally {
       setDeleting(false);

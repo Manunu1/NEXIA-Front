@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Select from "react-select";
+import NexiaSelect from "../../Select";
 import "./formProfesor.css";
 import api from '../../../api';
 
@@ -118,16 +118,13 @@ export default function FormCrearProfesor() {
           <input id="password" name="password" type="password" placeholder="Mínimo 8 caracteres" value={form.password} onChange={handleChange} required />
         </div>
 
-        <div className="form-field">
-          <label>Institución</label>
-          <Select
-            options={instituciones}
-            value={selectedInstitucion}
-            onChange={(option) => { setSelectedInstitucion(option); if (error) setError(""); }}
-            placeholder="Seleccionar institución..."
-            noOptionsMessage={() => "Sin resultados"}
-          />
-        </div>
+        <NexiaSelect<Option>
+          label="Institución"
+          options={instituciones}
+          value={selectedInstitucion}
+          onChange={(option) => { setSelectedInstitucion(option); if (error) setError(""); }}
+          placeholder="Seleccionar institución…"
+        />
 
       </div>
 

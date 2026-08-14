@@ -117,76 +117,11 @@
   transform: translateY(-1px);
 }
 
-/* ── React-Select overrides ───────────────── */
-.gestor-form-card [class*="-control"] {
-  background: var(--navy-ghost) !important;
-  border: 1.5px solid var(--border) !important;
-  border-radius: var(--r2) !important;
-  padding: 0.05rem 0.15rem !important;
-  box-shadow: none !important;
-  transition: border-color 0.2s var(--ease), box-shadow 0.2s, background 0.2s !important;
-  min-height: unset !important;
-}
-
-.gestor-form-card [class*="-control"]:focus-within {
-  border-color: var(--focus-border) !important;
-  box-shadow: var(--focus-ring) !important;
-  background: var(--ctrl-bg-focus) !important;
-}
-
-.gestor-form-card [class*="-placeholder"] {
-  color: var(--t4) !important;
-  font-size: 0.875rem !important;
-}
-
-.gestor-form-card [class*="-singleValue"] {
-  color: var(--t2) !important;
-  font-size: 0.9rem !important;
-  font-weight: 500;
-}
-
-.gestor-form-card [class*="-indicatorSeparator"] { display: none !important; }
-
-.gestor-form-card [class*="-indicatorContainer"] {
-  color: var(--t4) !important;
-  padding: 4px 8px !important;
-}
-
-.gestor-form-card [class*="-menu"] {
-  background: var(--white) !important;
-  border-radius: var(--r3) !important;
-  box-shadow: var(--sh-lg) !important;
-  border: 1px solid var(--border) !important;
-  z-index: 30 !important;
-  overflow: hidden;
-}
-
-.gestor-form-card [class*="-menu-list"] { padding: 0.375rem !important; }
-
-.gestor-form-card [class*="-option"] {
-  border-radius: var(--r1) !important;
-  padding: 0.6rem 0.875rem !important;
-  font-size: 0.875rem !important;
-  cursor: pointer !important;
-  transition: background 0.15s ease, color 0.15s ease !important;
-  color: var(--t2) !important;
-}
-
-.gestor-form-card [class*="-option"]:hover {
-  background: var(--navy-ghost) !important;
-  color: var(--navy) !important;
-}
-
-.gestor-form-card [class*="-option"][class*="-isSelected"] {
-  background: var(--navy) !important;
-  color: var(--white) !important;
-  font-weight: 600 !important;
-}
-
-.gestor-form-card [class*="-option"][class*="-isFocused"]:not([class*="-isSelected"]) {
-  background: var(--navy-ghost) !important;
-  color: var(--navy) !important;
-}
+/* Los combos ya no se estilan acá: viven en Componentes/Select, que usa
+   classNamePrefix estable y portea el menú al body. Los overrides que
+   había apuntaban a las clases de emotion ([class*="-option"]) y, además
+   de necesitar !important en cada línea, el menú quedaba recortado por
+   el overflow hidden de .gestor-form-card. */
 
 /* ── Submit button ────────────────────────── */
 .gestor-form-footer {

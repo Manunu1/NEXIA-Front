@@ -115,7 +115,9 @@ const LandingPage: React.FC = () => {
     return () => document.removeEventListener('click', handleSmoothScroll);
   }, []);
   return (
-    <>
+    /* .lp acota todo el CSS de la landing. Sin este contenedor, clases
+       genéricas como .footer, .btn o .nav se filtran a la app logueada. */
+    <div className="lp">
       {/* ════════════════ NAVBAR ════════════════ */}
       <nav className={`nav ${isScrolled ? 'scrolled' : ''}`} id="nav">
         <div className="nav-inner">
@@ -146,10 +148,11 @@ const LandingPage: React.FC = () => {
           </div>
 
           <button
-            className="hamburger"
+            className={`hamburger${isMobileMenuOpen ? ' hamburger--open' : ''}`}
             id="hamburger"
-            aria-label="Menú"
+            aria-label={isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={isMobileMenuOpen}
+            aria-controls="mobNav"
             onClick={toggleMobileMenu}
           >
             <span></span><span></span><span></span>
@@ -157,9 +160,12 @@ const LandingPage: React.FC = () => {
         </div>
       </nav>
 
-      {/* Menú Móvil - Depende del CSS original para mostrarse u ocultarse, podrías agregar una clase dinámica aquí como className={`mob-nav ${isMobileMenuOpen ? 'open' : ''}`} */}
+      {/* El panel se monta sólo cuando está abierto, pero la hoja lo oculta
+          con `.mob-nav { display: none }` y sólo lo muestra con `.open`.
+          Sin esa clase el menú se montaba invisible: en mobile el
+          hamburguesa no abría nada. */}
       {isMobileMenuOpen && (
-        <div className="mob-nav" id="mobNav">
+        <div className="mob-nav open" id="mobNav">
           <a href="#features" onClick={closeMob}>Funcionalidades</a>
           <a href="#how" onClick={closeMob}>Cómo funciona</a>
           <a href="#planes" onClick={closeMob}>Planes</a>
@@ -626,7 +632,7 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 };
 

@@ -96,19 +96,30 @@ export interface typeCalificacionRoster {
   observaciones: string | null;
 }
 
+/**
+ * Nota tal como llega del backend.
+ *
+ * La columna es NUMERIC en Postgres y el driver pg la serializa como string
+ * ("8.00") para no perder precisión. Declararla `number` hacía que TypeScript
+ * aprobara `a + b` sobre dos strings, que concatena en vez de sumar — así se
+ * rompía el promedio del boletín. El tipo unión obliga a pasar por
+ * `aNota()` / `promediar()` de utils/boletin.
+ */
+export type NotaCruda = number | string | null;
+
 export interface typeBoletinNotaFinal {
   materia_nombre: string;
   bimestre_id: number;
   bimestre_nombre: string;
   orden: number;
-  nota: number | null;
+  nota: NotaCruda;
   observaciones?: string | null;
 }
 
 export interface typeBoletinNotaTP {
   materia_nombre: string;
   titulo: string;
-  nota: number | null;
+  nota: NotaCruda;
   fecha_correccion: string | null;
   comentario_correccion?: string | null;
 }

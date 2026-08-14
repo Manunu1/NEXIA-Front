@@ -1,0 +1,177 @@
+/* ─────────────────────────────────────────────
+   CURSOS — listado del gestor
+───────────────────────────────────────────── */
+
+/* Acción primaria de la pantalla. Naranja porque es el único CTA de la
+   vista; si hubiera dos, dejaría de destacar ninguno. */
+.cg-nuevo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1.25rem;
+  border-radius: var(--r2);
+  font-family: var(--fb);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--navy-d);
+  background: var(--orange);
+  box-shadow: 0 4px 16px rgba(255,152,0,.28);
+  transition: all 0.2s var(--ease);
+  white-space: nowrap;
+}
+
+.cg-nuevo:hover {
+  background: var(--orange-l);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-glow-orange);
+}
+
+.cg-nuevo:active { transform: scale(0.99); }
+
+.cg-nuevo svg { width: 15px; height: 15px; }
+
+/* ── Grilla ───────────────────────────────── */
+/* auto-fill con minmax responde al ancho real disponible (que ya viene
+   descontado el sidebar), en lugar de a breakpoints de viewport que
+   quedarían desfasados. */
+.cg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.cg-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 1.25rem;
+  box-shadow: var(--sh-sm);
+  transition: box-shadow var(--dur-md) var(--ease), border-color var(--dur-md) var(--ease), transform var(--dur-md) var(--ease);
+}
+
+.cg-card:hover {
+  box-shadow: var(--sh-md);
+  border-color: var(--navy-xs);
+  transform: translateY(-2px);
+}
+
+.cg-card-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.cg-nombre {
+  font-family: var(--fd);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -0.6px;
+  line-height: 1;
+}
+
+.cg-especialidad {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--navy);
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  border-radius: var(--r5);
+  padding: 0.15rem 0.6rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Métricas ─────────────────────────────── */
+.cg-datos {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0.875rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.cg-dato {
+  display: flex;
+  flex-direction: column-reverse; /* el número arriba, la etiqueta abajo */
+  gap: 0.1rem;
+}
+
+.cg-dato dt {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.cg-dato dd {
+  margin: 0;
+  font-family: var(--fd);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--t2);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+/* ── Acciones ─────────────────────────────── */
+.cg-acciones {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.cg-accion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  flex: 1;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--r1);
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: var(--fb);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--t3);
+  transition: all 0.18s var(--ease);
+}
+
+.cg-accion svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+.cg-accion:hover:not(:disabled) {
+  background: var(--navy-ghost);
+  border-color: var(--navy-xs);
+  color: var(--navy);
+}
+
+.cg-accion--danger:hover:not(:disabled) {
+  background: var(--danger-bg);
+  border-color: var(--danger-bd);
+  color: var(--danger);
+}
+
+/* El curso con alumnos o materias no se puede borrar. Queda visible pero
+   apagado, con el motivo en el title, para que la restricción se entienda. */
+.cg-accion:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 540px) {
+  .cg-grid { grid-template-columns: 1fr; }
+  .cg-nuevo { width: 100%; justify-content: center; }
+}

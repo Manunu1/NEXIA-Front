@@ -1,0 +1,273 @@
+/* ─────────────────────────────────────────────
+   NEXIA SELECT — hoja única del combo.
+
+   Se apoya en `unstyled` de react-select, que quita
+   los colores propios de la librería pero CONSERVA
+   los estilos de layout (display, grid-area, flex,
+   min-height, max-height…). Eso importa por dos
+   motivos:
+
+   1. Hay que respetar su maquetación. El
+      value-container es grid en selección simple
+      para superponer placeholder, valor e input en
+      la misma celda. Forzar flex ahí saca el valor
+      elegido de debajo del cursor.
+
+   2. Hay que ganarle en especificidad. Emotion
+      inyecta sus <style> en el head en tiempo de
+      ejecución, después del bundle CSS: con igual
+      especificidad gana la librería. Por eso los
+      selectores van anidados (.nx-sel-field .x, y
+      .nx-sel__menu-portal .x para lo que vive en
+      el portal), y no con !important.
+───────────────────────────────────────────── */
+
+.nx-sel-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.nx-sel-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--t3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Control ──────────────────────────────── */
+.nx-sel-field .nx-sel__control {
+  /* 44px de alto: objetivo táctil cómodo. react-select trae 38px y, al
+     empatar en especificidad, ganaría el suyo. */
+  min-height: 44px;
+  padding: 0.2rem 0.5rem 0.2rem 0.9rem;
+  font-family: var(--fb);
+  font-size: 0.9rem;
+  color: var(--t2);
+  background: var(--ctrl-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  cursor: pointer;
+  transition:
+    border-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease),
+    background 0.2s var(--ease);
+}
+
+.nx-sel-field .nx-sel__control:hover {
+  border-color: var(--navy-xs);
+}
+
+.nx-sel-field .nx-sel__control--is-focused {
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+  background: var(--ctrl-bg-focus);
+}
+
+.nx-sel-field .nx-sel__control--menu-is-open .nx-sel__dropdown-indicator {
+  transform: rotate(180deg);
+}
+
+.nx-sel-field .nx-sel__control--is-disabled {
+  background: var(--s2);
+  border-color: var(--border);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.nx-sel-field .nx-sel__control--is-disabled:hover {
+  border-color: var(--border);
+}
+
+.nx-sel-field--invalid .nx-sel__control {
+  border-color: var(--danger);
+}
+
+.nx-sel-field--invalid .nx-sel__control--is-focused {
+  box-shadow: 0 0 0 3px var(--danger-bd);
+}
+
+/* ── Contenido del control ────────────────── */
+/* Sin `display`: lo decide react-select (grid en simple, flex en múltiple). */
+.nx-sel-field .nx-sel__value-container {
+  gap: 0.3rem;      /* sólo tiene efecto en modo múltiple, entre chips */
+  padding: 0.35rem 0;
+  min-width: 0;
+}
+
+.nx-sel-field .nx-sel__placeholder {
+  color: var(--t4);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nx-sel-field .nx-sel__single-value {
+  color: var(--t2);
+  font-weight: 500;
+}
+
+.nx-sel-field .nx-sel__input-container {
+  color: var(--t2);
+}
+
+/* Chips de selección múltiple */
+.nx-sel-field .nx-sel__multi-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--navy-xs);
+  color: var(--navy);
+  border-radius: var(--r1);
+  padding: 0.15rem 0.2rem 0.15rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.nx-sel-field .nx-sel__multi-value__remove {
+  display: flex;
+  align-items: center;
+  border-radius: var(--r1);
+  padding: 0.1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nx-sel-field .nx-sel__multi-value__remove:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* ── Indicadores ──────────────────────────── */
+/* La barrita vertical entre la X y el chevron sólo agrega ruido. */
+.nx-sel-field .nx-sel__indicator-separator {
+  display: none;
+}
+
+.nx-sel-field .nx-sel__dropdown-indicator,
+.nx-sel-field .nx-sel__clear-indicator,
+.nx-sel-field .nx-sel__loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border-radius: var(--r1);
+  color: var(--t4);
+  transition: color 0.15s ease, background 0.15s ease, transform 0.2s var(--ease);
+}
+
+.nx-sel-field .nx-sel__dropdown-indicator svg,
+.nx-sel-field .nx-sel__clear-indicator svg {
+  width: 17px;
+  height: 17px;
+}
+
+.nx-sel-field .nx-sel__dropdown-indicator:hover,
+.nx-sel-field .nx-sel__clear-indicator:hover {
+  color: var(--navy);
+  background: var(--navy-xs);
+}
+
+/* ── Menú ─────────────────────────────────────
+   Vive en un portal en <body>, fuera de
+   .nx-sel-field. El propio portal aporta el
+   ancestro para la especificidad.
+───────────────────────────────────────────── */
+.nx-sel__menu-portal .nx-sel__menu {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-lg);
+  overflow: hidden;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  animation: nxSelMenuIn 0.16s var(--ease) both;
+}
+
+@keyframes nxSelMenuIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nx-sel__menu-portal .nx-sel__menu-list {
+  padding: 0.375rem;
+  overscroll-behavior: contain;
+}
+
+.nx-sel__menu-portal .nx-sel__option {
+  padding: 0.6rem 0.875rem;
+  border-radius: var(--r1);
+  font-size: 0.875rem;
+  color: var(--t2);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+/* is-focused cubre tanto el hover del mouse como la navegación por
+   teclado — react-select los unifica en ese estado. Los overrides
+   anteriores apuntaban a las clases de emotion, que no llevan el
+   estado, así que la opción enfocada no se veía. */
+.nx-sel__menu-portal .nx-sel__option--is-focused {
+  background: var(--navy-ghost);
+  color: var(--navy);
+}
+
+.nx-sel__menu-portal .nx-sel__option--is-selected {
+  background: var(--navy);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.nx-sel__menu-portal .nx-sel__option--is-selected.nx-sel__option--is-focused {
+  background: var(--navy-m);
+  color: var(--white);
+}
+
+.nx-sel__menu-portal .nx-sel__option--is-disabled {
+  color: var(--t4);
+  cursor: not-allowed;
+}
+
+.nx-sel__menu-portal .nx-sel__group-heading {
+  padding: 0.5rem 0.875rem 0.3rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.nx-sel__menu-portal .nx-sel__menu-notice {
+  padding: 1rem 0.875rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--t4);
+}
+
+/* ── Ayuda / error ────────────────────────── */
+.nx-sel-hint {
+  font-size: 0.75rem;
+  color: var(--t4);
+  margin: 0;
+}
+
+.nx-sel-field--invalid .nx-sel-hint {
+  color: var(--danger);
+  font-weight: 500;
+}
+
+/* ── Mobile ───────────────────────────────── */
+@media (max-width: 540px) {
+  /* 16px evita el zoom automático de iOS al enfocar el buscador. */
+  .nx-sel-field .nx-sel__control,
+  .nx-sel-field .nx-sel__input-container {
+    font-size: 16px;
+  }
+  .nx-sel-field .nx-sel__placeholder,
+  .nx-sel__menu-portal .nx-sel__option {
+    font-size: 0.925rem;
+  }
+}

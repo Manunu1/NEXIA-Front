@@ -104,6 +104,23 @@
   font-weight: 400;
 }
 
+/* Fila de cierre: se separa del cuerpo con una línea más marcada para que
+   se lea como un total y no como una materia más de la lista. */
+.bol-tr-general td {
+  background: var(--s1);
+  border-top: 2px solid var(--border);
+  border-bottom: none;
+  font-weight: 700;
+}
+
+.bol-tr-general .bol-td-materia {
+  font-family: var(--fd);
+  color: var(--t1);
+  white-space: nowrap;
+}
+
+.bol-tr-general .bol-td-promedio { background: var(--navy-xs); }
+
 .bol-nota-pill {
   display: inline-flex;
   align-items: center;

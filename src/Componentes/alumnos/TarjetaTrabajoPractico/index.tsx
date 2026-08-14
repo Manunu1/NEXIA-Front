@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import type { typeTrabajoPracticoAlumno } from '../../../Types/profesores/types';
+import { aNota, formatearNota } from '../../../utils/boletin';
 import './tarjetaTrabajoPractico.css';
 
 function formatFecha(iso?: string | null): string {
@@ -77,8 +78,8 @@ const TarjetaTrabajoPractico: React.FC<Props> = ({ trabajo }) => {
       <div className="ttp-body">
         <div className="ttp-top">
           <span className="ttp-badge">{estado.label}</span>
-          {estado.variant === 'corregido' && trabajo.nota != null && (
-            <span className="ttp-nota">{trabajo.nota}</span>
+          {estado.variant === 'corregido' && aNota(trabajo.nota) !== null && (
+            <span className="ttp-nota">{formatearNota(aNota(trabajo.nota))}</span>
           )}
         </div>
 

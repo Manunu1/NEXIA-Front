@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Select from "react-select";
+import NexiaSelect from "../../Select";
 import "./formAsignarMateriaProfesor.css";
 import api from '../../../api';
 
@@ -97,41 +97,34 @@ const FormAsignarMateriaProfesor = () => {
 
       <div className="gestor-form-body stagger-in">
 
-        <div className="form-field">
-          <label>Profesor</label>
-          <Select
-            options={profesores}
-            value={profesorSeleccionado}
-            onChange={(opt) => { setProfesorSeleccionado(opt); clearError(); }}
-            placeholder="Buscar profesor..."
-            isClearable
-            noOptionsMessage={() => "Sin resultados"}
-          />
-        </div>
+        <NexiaSelect<Option>
+          label="Profesor"
+          options={profesores}
+          value={profesorSeleccionado}
+          onChange={(opt) => { setProfesorSeleccionado(opt); clearError(); }}
+          placeholder="Buscar profesor…"
+          isClearable
+          hint={profesores.length === 0 ? "Todavía no hay profesores cargados en la institución." : undefined}
+        />
 
-        <div className="form-field">
-          <label>Curso</label>
-          <Select
-            options={cursos}
-            value={cursoSeleccionado}
-            onChange={(opt) => { setCursoSeleccionado(opt); clearError(); }}
-            placeholder="Seleccionar curso..."
-            isClearable
-            noOptionsMessage={() => "Sin resultados"}
-          />
-        </div>
+        <NexiaSelect<Option>
+          label="Curso"
+          options={cursos}
+          value={cursoSeleccionado}
+          onChange={(opt) => { setCursoSeleccionado(opt); clearError(); }}
+          placeholder="Seleccionar curso…"
+          isClearable
+          hint={cursos.length === 0 ? "Todavía no hay cursos creados en la institución." : undefined}
+        />
 
-        <div className="form-field">
-          <label>Materia</label>
-          <Select
-            options={materias}
-            value={materiaSeleccionada}
-            onChange={(opt) => { setMateriaSeleccionada(opt); clearError(); }}
-            placeholder="Seleccionar materia..."
-            isClearable
-            noOptionsMessage={() => "Sin resultados"}
-          />
-        </div>
+        <NexiaSelect<Option>
+          label="Materia"
+          options={materias}
+          value={materiaSeleccionada}
+          onChange={(opt) => { setMateriaSeleccionada(opt); clearError(); }}
+          placeholder="Seleccionar materia…"
+          isClearable
+        />
 
       </div>
 

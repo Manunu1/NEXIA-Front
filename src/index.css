@@ -343,6 +343,34 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 input.nx-control:focus,
 select.nx-control:focus { transform: translateY(-1px); }
 
+/* Los <select> nativos dibujan el chevron del sistema operativo, que cambia
+   de forma y de color en cada navegador y no se parecía en nada al del
+   combo con búsqueda (Componentes/Select). Se reemplaza por el mismo
+   chevron, en el mismo token de color, para que todos los desplegables de
+   la plataforma se lean como un único control. */
+select.nx-control {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.4rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6C8A' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 15px 15px;
+}
+
+/* En oscuro el trazo del chevron tiene que aclararse para no desaparecer. */
+html[data-theme='oscuro'] select.nx-control {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239BA6C2' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+}
+
+/* El menú desplegado sí lo dibuja el sistema: al menos se le pide que use
+   la superficie correcta para que no aparezca en blanco sobre tema oscuro. */
+select.nx-control option {
+  background: var(--white);
+  color: var(--t2);
+}
+
 textarea.nx-control {
   resize: vertical;
   min-height: 96px;

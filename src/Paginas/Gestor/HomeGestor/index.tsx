@@ -128,7 +128,9 @@ function HomeGestor() {
                 <span className="g-kpi-value">{loading ? '—' : cursos}</span>
                 <span className="g-kpi-label">Cursos</span>
               </div>
-              <button className="g-kpi-cta" onClick={() => navigate('/gestor/asignaciones')}>
+              {/* La tarjeta dice "Cursos": llevaba a Asignaciones, que es otra
+                  cosa. Ahora va al listado de cursos. */}
+              <button className="g-kpi-cta" onClick={() => navigate('/gestor/cursos')} aria-label="Ver cursos">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
                 </svg>
@@ -220,6 +222,27 @@ function HomeGestor() {
           <div className="g-actions-section">
             <h2 className="g-section-title">Acciones rápidas</h2>
             <div className="g-actions-grid">
+
+              {/* Primera de la lista a propósito: es el paso que habilita a
+                  los otros dos. Sin curso no se puede crear un alumno ni
+                  asignar una materia. */}
+              <button className="g-action-card" onClick={() => navigate('/gestor/cursos')}>
+                <div className="g-action-icon g-action-icon--indigo">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                  </svg>
+                </div>
+                <div className="g-action-body">
+                  <span className="g-action-title">Nuevo curso</span>
+                  <span className="g-action-desc">Crear un año y división</span>
+                </div>
+                <span className="g-action-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </span>
+              </button>
 
               <button className="g-action-card" onClick={() => navigate('/gestor/alumnos')}>
                 <div className="g-action-icon g-action-icon--navy">

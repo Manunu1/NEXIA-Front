@@ -15,7 +15,7 @@ import api from '../../../api';
 import { getNombreUsuario, getUsuarioSesion } from '../../../utils/session';
 import { getProfileImage } from '../../../utils/profileImage';
 import { tieneHito } from '../../../utils/hitos';
-import { materiasFlojas, promediosPorBimestre } from '../../../utils/boletin';
+import { formatearNota, materiasFlojas, promediosPorBimestre } from '../../../utils/boletin';
 import type { PromedioBimestre, PromedioMateria } from '../../../utils/boletin';
 import { materiaTheme } from '../../../utils/materiaTheme';
 import { useSesionUsuario } from '../../../hooks/useSesionUsuario';
@@ -314,15 +314,15 @@ const MisMaterias: React.FC = () => {
                     <div
                       className="rp-chart"
                       role="img"
-                      aria-label={`Promedio general por bimestre: ${promedios.map(p => `${p.nombre}: ${p.promedio}`).join(', ')}`}
+                      aria-label={`Promedio general por bimestre: ${promedios.map(p => `${p.nombre}: ${formatearNota(p.promedio)}`).join(', ')}`}
                     >
                       {promedios.map((p) => (
                         <div
                           className="rp-col"
                           key={p.orden}
-                          title={`${p.nombre}: promedio ${p.promedio}`}
+                          title={`${p.nombre}: promedio ${formatearNota(p.promedio)}`}
                         >
-                          <span className="rp-valor">{p.promedio}</span>
+                          <span className="rp-valor">{formatearNota(p.promedio)}</span>
                           <div className="rp-track">
                             <div
                               className="rp-fill"

@@ -4,7 +4,15 @@ import CompaneroCoach from '../../../Componentes/Companero/Coach';
 import type { typeBoletin } from '../../../Types/profesores/types';
 import api from '../../../api';
 import { mensajesBoletin } from '../../../utils/buddy';
-import { materiasFlojas, materiasFuertes, promediosPorBimestre } from '../../../utils/boletin';
+import {
+  aNota,
+  formatearNota,
+  materiasFlojas,
+  materiasFuertes,
+  promediar,
+  promedioGeneral,
+  promediosPorBimestre,
+} from '../../../utils/boletin';
 import './boletin.css';
 import EmptyState from '../../../Componentes/EmptyState';
 
@@ -21,9 +29,21 @@ function notaTier(nota: number): 'alta' | 'media' | 'baja' {
   return 'baja';
 }
 
-const NotaPill: React.FC<{ nota: number }> = ({ nota }) => (
-  <span className={`bol-nota-pill bol-nota-pill--${notaTier(nota)}`}>{nota}</span>
-);
+/**
+ * Muestra una nota. Acepta el valor crudo del backend (que puede ser string)
+ * y se encarga de convertirlo: así ninguna pantalla puede imprimir "8.00"
+ * crudo ni pintar el color del tier comparando texto contra número.
+ */
+const NotaPill: React.FC<{ nota: unknown }> = ({ nota }) => {
+  const n = aNota(nota);
+  if (n === null) return <span className="bol-sin-nota">—</span>;
+
+  return (
+    <span className={`bol-nota-pill bol-nota-pill--${notaTier(n)}`}>
+      {formatearNota(n)}
+    </span>
+  );
+};
 
 function getAlumnoId(): string | null {
   try {
@@ -58,7 +78,7 @@ const Boletin: React.FC = () => {
     traer();
   }, []);
 
-  const { materias, bimestres, notaPorCelda } = useMemo(() => {
+  const { materias, bimestres, notaPorCelda, general } = useMemo(() => {
     const notasFinales = boletin?.notas_finales || [];
     const materiasSet = new Set<string>((boletin?.materias || []).map((m) => m.materia_nombre));
     const bimestresMap = new Map<number, { bimestre_id: number; nombre: string; orden: number }>();
@@ -69,13 +89,15 @@ const Boletin: React.FC = () => {
       if (!bimestresMap.has(n.bimestre_id)) {
         bimestresMap.set(n.bimestre_id, { bimestre_id: n.bimestre_id, nombre: n.bimestre_nombre, orden: n.orden });
       }
-      celda.set(`${n.materia_nombre}__${n.bimestre_id}`, n.nota);
+      // Se normaliza acá, una sola vez: de la celda para abajo todo es número.
+      celda.set(`${n.materia_nombre}__${n.bimestre_id}`, aNota(n.nota));
     });
 
     return {
       materias: Array.from(materiasSet).sort((a, b) => a.localeCompare(b)),
       bimestres: Array.from(bimestresMap.values()).sort((a, b) => a.orden - b.orden),
       notaPorCelda: celda,
+      general: promedioGeneral(notasFinales),
     };
   }, [boletin]);
 
@@ -141,30 +163,48 @@ const Boletin: React.FC = () => {
                       </thead>
                       <tbody>
                         {materias.map((materia) => {
-                          const notasMateria = bimestres
-                            .map((b) => notaPorCelda.get(`${materia}__${b.bimestre_id}`))
-                            .filter((n): n is number => n != null);
-                          const promedio = notasMateria.length
-                            ? Math.round((notasMateria.reduce((a, b) => a + b, 0) / notasMateria.length) * 100) / 100
-                            : null;
+                          const promedio = promediar(
+                            bimestres.map((b) => notaPorCelda.get(`${materia}__${b.bimestre_id}`))
+                          );
                           return (
                             <tr key={materia}>
                               <td className="bol-td-materia">{materia}</td>
-                              {bimestres.map((b) => {
-                                const nota = notaPorCelda.get(`${materia}__${b.bimestre_id}`);
-                                return (
-                                  <td key={b.bimestre_id} className="bol-td-nota">
-                                    {nota != null ? <NotaPill nota={nota} /> : <span className="bol-sin-nota">—</span>}
-                                  </td>
-                                );
-                              })}
+                              {bimestres.map((b) => (
+                                <td key={b.bimestre_id} className="bol-td-nota">
+                                  <NotaPill nota={notaPorCelda.get(`${materia}__${b.bimestre_id}`)} />
+                                </td>
+                              ))}
                               <td className="bol-td-nota bol-td-promedio">
-                                {promedio != null ? <NotaPill nota={promedio} /> : <span className="bol-sin-nota">—</span>}
+                                <NotaPill nota={promedio} />
                               </td>
                             </tr>
                           );
                         })}
                       </tbody>
+
+                      {/* El promedio general cierra la tabla: es el dato que el
+                          alumno viene a buscar y antes no estaba en ningún lado.
+                          Se calcula promediando los promedios por materia — ver
+                          promedioGeneral() en utils/boletin. */}
+                      {general !== null && (
+                        <tfoot>
+                          <tr className="bol-tr-general">
+                            <td className="bol-td-materia">Promedio general</td>
+                            {bimestres.map((b) => (
+                              <td key={b.bimestre_id} className="bol-td-nota">
+                                <NotaPill
+                                  nota={promediar(
+                                    materias.map((m) => notaPorCelda.get(`${m}__${b.bimestre_id}`))
+                                  )}
+                                />
+                              </td>
+                            ))}
+                            <td className="bol-td-nota bol-td-promedio">
+                              <NotaPill nota={general} />
+                            </td>
+                          </tr>
+                        </tfoot>
+                      )}
                     </table>
                   </div>
                 )}
@@ -195,7 +235,7 @@ const Boletin: React.FC = () => {
                           <tr key={i}>
                             <td>{tp.materia_nombre}</td>
                             <td className="bol-td-materia">{tp.titulo}</td>
-                            <td className="bol-td-nota">{tp.nota != null && <NotaPill nota={tp.nota} />}</td>
+                            <td className="bol-td-nota"><NotaPill nota={tp.nota} /></td>
                             <td>{formatFecha(tp.fecha_correccion)}</td>
                             <td className="bol-td-comentario">{tp.comentario_correccion || '—'}</td>
                           </tr>
