@@ -1,0 +1,206 @@
+/* ─────────────────────────────────────────────
+   ZONA DE ESTUDIO — hub
+───────────────────────────────────────────── */
+
+/* ── Métricas ─────────────────────────────── */
+.ze-metricas {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.ze-metrica {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 1rem 1.15rem;
+  background: var(--white);
+  text-align: left;
+}
+
+.ze-metrica--accion {
+  cursor: pointer;
+  font-family: var(--fb);
+  transition: background 0.18s var(--ease);
+}
+
+.ze-metrica--accion:hover { background: var(--s1); }
+
+/* Cuando hay tarjetas venciendo, la métrica deja de ser un dato y pasa a
+   ser una acción: se marca en naranja porque hay algo que hacer hoy. */
+.ze-metrica--urgente .ze-metrica-valor { color: var(--orange-d); }
+.ze-metrica--urgente { box-shadow: inset 0 -3px 0 var(--orange); }
+
+.ze-metrica-valor {
+  font-family: var(--fd);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -1px;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.ze-metrica-fuego {
+  color: var(--orange);
+  margin-left: 2px;
+}
+
+.ze-metrica-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Gráfico de barras de los últimos 14 días — ocupa toda la fila inferior. */
+.ze-grafico {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 56px;
+  padding: 0.875rem 1.15rem 0.35rem;
+  background: var(--white);
+}
+
+.ze-grafico-col {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+}
+
+.ze-grafico-barra {
+  width: 100%;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(180deg, var(--navy-l), var(--navy));
+  transition: height 0.5s var(--ease);
+}
+
+.ze-grafico-barra--vacia { background: var(--s2); }
+
+.ze-grafico-pie {
+  grid-column: 1 / -1;
+  padding: 0 1.15rem 0.75rem;
+  background: var(--white);
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* ── Sesión ───────────────────────────────── */
+/* El temporizador queda a ancho fijo y los objetivos toman el resto: el
+   reloj no gana nada con más espacio, y la lista sí. */
+.ze-sesion {
+  display: grid;
+  grid-template-columns: minmax(320px, 400px) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  margin-bottom: 1.75rem;
+}
+
+/* ── Herramientas ─────────────────────────── */
+.ze-herramientas {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ze-tabs {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  background: var(--s2);
+  border-radius: var(--r3);
+  overflow-x: auto;
+  /* La barra de scroll horizontal en mobile arruinaría el borde redondeado. */
+  scrollbar-width: none;
+}
+
+.ze-tabs::-webkit-scrollbar { display: none; }
+
+.ze-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--r2);
+  font-family: var(--fb);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--t3);
+  white-space: nowrap;
+  transition: all 0.18s var(--ease);
+}
+
+.ze-tab-icono {
+  display: flex;
+  align-items: center;
+}
+
+.ze-tab-icono svg { width: 15px; height: 15px; }
+
+.ze-tab:hover { color: var(--navy); }
+
+.ze-tab--activo {
+  background: var(--white);
+  color: var(--navy);
+  font-weight: 700;
+  box-shadow: var(--sh-sm);
+}
+
+.ze-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 99px;
+  background: var(--orange);
+  color: var(--navy-d);
+  font-size: 0.66rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.ze-panel {
+  animation: fadeInUp var(--dur-md) var(--ease) both;
+  min-height: 320px;
+}
+
+/* ── Responsive ───────────────────────────── */
+@media (max-width: 1080px) {
+  /* Los objetivos pasan debajo del reloj: en dos columnas angostas, la
+     lista queda con líneas de tres palabras. */
+  .ze-sesion { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .ze-metricas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ze-metrica { padding: 0.875rem 1rem; }
+  .ze-metrica-valor { font-size: 1.35rem; }
+}
+
+@media (max-width: 480px) {
+  .ze-tab { padding: 0.55rem 0.8rem; font-size: 0.8rem; }
+  /* El texto de la pestaña se mantiene: sólo con íconos no se entiende
+     qué es cada herramienta. Se achica el ícono en su lugar. */
+  .ze-tab-icono svg { width: 13px; height: 13px; }
+  .ze-grafico { height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ze-panel { animation: none; }
+  .ze-grafico-barra { transition: none; }
+}

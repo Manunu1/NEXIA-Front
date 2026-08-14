@@ -1,0 +1,358 @@
+/* ─────────────────────────────────────────────
+   SESIÓN DE REPASO
+───────────────────────────────────────────── */
+.rep {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.rep-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.rep-top-info {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.rep-titulo {
+  font-family: var(--fd);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.2px;
+}
+
+.rep-contador {
+  font-size: 0.78rem;
+  color: var(--t4);
+  font-variant-numeric: tabular-nums;
+}
+
+.rep-cerrar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r2);
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--t4);
+  flex-shrink: 0;
+  transition: all 0.18s var(--ease);
+}
+
+.rep-cerrar svg { width: 15px; height: 15px; }
+
+.rep-cerrar:hover {
+  background: var(--s1);
+  color: var(--t1);
+  transform: rotate(90deg);
+}
+
+.rep-barra {
+  height: 3px;
+  background: var(--s2);
+  flex-shrink: 0;
+}
+
+.rep-barra-avance {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy-l), var(--orange));
+  transition: width 0.35s var(--ease);
+}
+
+.rep-cuerpo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 1.75rem 1.75rem;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.rep-mazo {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--navy);
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  border-radius: var(--r5);
+  padding: 0.2rem 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Tarjeta ──────────────────────────────── */
+.rep-tarjeta {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  overflow: hidden;
+}
+
+.rep-cara {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 2rem 1.5rem;
+  background: var(--white);
+  min-height: 132px;
+  justify-content: center;
+  text-align: center;
+}
+
+.rep-cara--reverso {
+  background: var(--s1);
+  animation: fadeInUp var(--dur-md) var(--ease) both;
+}
+
+.rep-cara-rotulo {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.rep-cara-texto {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: var(--t1);
+  word-break: break-word;
+  max-width: 52ch;
+}
+
+.rep-cara--reverso .rep-cara-texto {
+  font-size: 1.05rem;
+  color: var(--t2);
+}
+
+/* ── Acciones ─────────────────────────────── */
+.rep-acciones {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rep-consigna {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--t4);
+  text-align: center;
+  max-width: 46ch;
+  line-height: 1.55;
+}
+
+.rep-revelar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.75rem;
+  border-radius: var(--r2);
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--fb);
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition: all 0.2s var(--ease);
+}
+
+.rep-revelar:hover {
+  background: var(--navy-d);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-glow-navy);
+}
+
+.rep-kbd {
+  font-family: var(--fb);
+  font-size: 0.66rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--r1);
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.2);
+  color: inherit;
+}
+
+/* ── Calificación ─────────────────────────── */
+.rep-calificar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.rep-cal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.7rem 0.5rem 1.3rem;
+  border-radius: var(--r2);
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  font-family: var(--fb);
+  transition: all 0.18s var(--ease);
+}
+
+.rep-cal:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.rep-cal-etiqueta {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--t2);
+}
+
+.rep-cal-ayuda {
+  font-size: 0.68rem;
+  color: var(--t4);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.rep-kbd--chico {
+  position: absolute;
+  bottom: 0.35rem;
+  background: var(--s2);
+  border-color: var(--border);
+  color: var(--t4);
+}
+
+/* Cada opción toma el color de su significado: rojo para lo que no salió,
+   verde para lo que sí. El color hace de guía antes de leer la etiqueta. */
+.rep-cal--otravez:hover:not(:disabled) {
+  border-color: var(--danger);
+  background: var(--danger-bg);
+}
+.rep-cal--otravez:hover:not(:disabled) .rep-cal-etiqueta { color: var(--danger); }
+
+.rep-cal--dificil:hover:not(:disabled) {
+  border-color: var(--orange);
+  background: var(--orange-xs);
+}
+.rep-cal--dificil:hover:not(:disabled) .rep-cal-etiqueta { color: var(--orange-d); }
+
+.rep-cal--bien:hover:not(:disabled) {
+  border-color: var(--navy-l);
+  background: var(--navy-ghost);
+}
+.rep-cal--bien:hover:not(:disabled) .rep-cal-etiqueta { color: var(--navy); }
+
+.rep-cal--facil:hover:not(:disabled) {
+  border-color: var(--ok);
+  background: var(--ok-bg);
+}
+.rep-cal--facil:hover:not(:disabled) .rep-cal-etiqueta { color: var(--ok); }
+
+.rep-ultimo {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--t4);
+  animation: fadeIn var(--dur-md) var(--ease) both;
+}
+
+/* ── Pantalla final ───────────────────────── */
+.rep-final {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.rep-final-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  color: var(--navy);
+  margin-bottom: 0.25rem;
+}
+
+.rep-final-icono--ok {
+  background: var(--ok-bg);
+  border-color: var(--ok-bd);
+  color: var(--ok);
+}
+
+.rep-final-icono svg { width: 26px; height: 26px; }
+
+.rep-final-titulo {
+  font-family: var(--fd);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.rep-final-texto {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--t3);
+  line-height: 1.65;
+  max-width: 46ch;
+}
+
+.rep-final-texto strong {
+  font-family: var(--fd);
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.rep-btn-final {
+  margin-top: 0.5rem;
+  padding: 0.7rem 1.75rem;
+  border-radius: var(--r2);
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--fb);
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: all 0.2s var(--ease);
+}
+
+.rep-btn-final:hover {
+  background: var(--navy-d);
+  transform: translateY(-1px);
+}
+
+/* ── Mobile ───────────────────────────────── */
+@media (max-width: 620px) {
+  .rep-top    { padding: 1rem 1.25rem; }
+  .rep-cuerpo { padding: 1.25rem 1.25rem 1.5rem; }
+  .rep-cara   { padding: 1.5rem 1rem; min-height: 108px; }
+  .rep-cara-texto { font-size: 1.02rem; }
+
+  /* Cuatro columnas de calificación no entran: pasan a dos filas de dos,
+     que siguen siendo objetivos táctiles cómodos. */
+  .rep-calificar { grid-template-columns: repeat(2, 1fr); }
+
+  /* Los atajos de teclado no aplican en teléfono. */
+  .rep-kbd { display: none; }
+}

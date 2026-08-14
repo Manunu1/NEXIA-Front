@@ -1,0 +1,487 @@
+/* ─────────────────────────────────────────────
+   MAZOS DE TARJETAS
+───────────────────────────────────────────── */
+.mz {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.mz-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mz-titulo {
+  font-family: var(--fd);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.3px;
+  margin: 0 0 0.2rem;
+}
+
+.mz-sub {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--t3);
+  line-height: 1.55;
+  max-width: 54ch;
+}
+
+.mz-top-acciones {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.mz-repasar-todo,
+.mz-nuevo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--r2);
+  font-family: var(--fb);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: all 0.2s var(--ease);
+}
+
+.mz-repasar-todo svg,
+.mz-nuevo svg { width: 14px; height: 14px; }
+
+/* Repasar es la acción del día; crear un mazo es ocasional. Por eso el
+   naranja va acá y el mazo nuevo queda como secundario. */
+.mz-repasar-todo {
+  background: var(--orange);
+  color: var(--navy-d);
+  box-shadow: 0 4px 16px rgba(255,152,0,.28);
+}
+
+.mz-repasar-todo:hover {
+  background: var(--orange-l);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-glow-orange);
+}
+
+.mz-nuevo {
+  background: var(--white);
+  color: var(--navy);
+  border: 1.5px solid var(--border);
+}
+
+.mz-nuevo:hover {
+  border-color: var(--navy-xs);
+  background: var(--navy-ghost);
+}
+
+/* ── Grilla de mazos ──────────────────────── */
+.mz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mz-card {
+  --mz-color: var(--navy);
+  --mz-suave: var(--navy-ghost);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 1.15rem;
+  box-shadow: var(--sh-sm);
+  /* La franja superior es la única marca de color: identifica el mazo sin
+     teñir toda la tarjeta. */
+  border-top: 3px solid var(--mz-color);
+  transition: box-shadow var(--dur-md) var(--ease), transform var(--dur-md) var(--ease);
+}
+
+.mz-card:hover {
+  box-shadow: var(--sh-md);
+  transform: translateY(-2px);
+}
+
+.mz-card--naranja { --mz-color: var(--orange); --mz-suave: var(--orange-xs); }
+.mz-card--verde   { --mz-color: var(--ok);     --mz-suave: var(--ok-bg); }
+.mz-card--violeta { --mz-color: #6A1B9A;       --mz-suave: #F3E8FA; }
+
+.mz-card-abrir {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+  padding: 0;
+  min-width: 0;
+}
+
+.mz-card-nombre {
+  font-family: var(--fd);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.2px;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.mz-card-desc {
+  font-size: 0.78rem;
+  color: var(--t4);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mz-card-datos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.mz-pendientes {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--navy-d);
+  background: var(--orange);
+  border-radius: var(--r5);
+  padding: 0.2rem 0.6rem;
+}
+
+.mz-aldia {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ok);
+  background: var(--ok-bg);
+  border: 1px solid var(--ok-bd);
+  border-radius: var(--r5);
+  padding: 0.15rem 0.6rem;
+}
+
+.mz-total {
+  font-size: 0.74rem;
+  color: var(--t4);
+}
+
+.mz-card-acciones {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: auto;
+}
+
+.mz-accion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--r1);
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: var(--fb);
+  font-size: 0.77rem;
+  font-weight: 600;
+  color: var(--t3);
+  transition: all 0.18s var(--ease);
+}
+
+.mz-accion:hover:not(:disabled) {
+  background: var(--navy-ghost);
+  border-color: var(--navy-xs);
+  color: var(--navy);
+}
+
+.mz-accion:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.mz-accion--principal {
+  flex: 1;
+  background: var(--mz-suave);
+  border-color: transparent;
+  color: var(--mz-color);
+  font-weight: 700;
+}
+
+.mz-accion--icono {
+  width: 30px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.mz-accion--icono svg { width: 13px; height: 13px; }
+
+.mz-accion--danger:hover:not(:disabled) {
+  background: var(--danger-bg);
+  border-color: var(--danger-bd);
+  color: var(--danger);
+}
+
+/* ── Formulario de mazo ───────────────────── */
+.mz-form { display: flex; flex-direction: column; min-height: 0; }
+
+.mz-form-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--s1);
+}
+
+.mz-form-titulo {
+  font-family: var(--fd);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--t1);
+}
+
+.mz-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.25rem 1.5rem;
+  overflow-y: auto;
+}
+
+.mz-colores { display: flex; gap: 0.5rem; }
+
+.mz-color {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  box-shadow: 0 0 0 1px var(--border);
+  transition: transform 0.18s var(--ease-spring), box-shadow 0.18s var(--ease);
+}
+
+.mz-color--navy    { background: var(--navy); }
+.mz-color--naranja { background: var(--orange); }
+.mz-color--verde   { background: var(--ok); }
+.mz-color--violeta { background: #6A1B9A; }
+
+.mz-color--activo {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--navy);
+}
+
+.mz-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding: 1rem 1.5rem 1.25rem;
+  border-top: 1px solid var(--border);
+  background: var(--s1);
+}
+
+.mz-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--r2);
+  font-family: var(--fb);
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: all 0.2s var(--ease);
+}
+
+.mz-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.mz-btn--ghost {
+  background: var(--white);
+  color: var(--t3);
+  border: 1.5px solid var(--border);
+}
+
+.mz-btn--ghost:hover:not(:disabled) { background: var(--s2); color: var(--t1); }
+
+.mz-btn--primary {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.mz-btn--primary:hover:not(:disabled) {
+  background: var(--navy-d);
+  transform: translateY(-1px);
+}
+
+/* ── Detalle del mazo ─────────────────────── */
+.mzd { display: flex; flex-direction: column; min-height: 0; }
+
+.mzd-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.mzd-titulo {
+  display: block;
+  font-family: var(--fd);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.2px;
+}
+
+.mzd-sub {
+  font-size: 0.76rem;
+  color: var(--t4);
+}
+
+.mzd-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.25rem 1.75rem 1.75rem;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.mzd-alta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+}
+
+.mzd-alta-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.mzd-textarea {
+  resize: vertical;
+  min-height: 60px;
+  line-height: 1.55;
+  font-family: var(--fb);
+}
+
+.mzd-agregar { align-self: flex-start; }
+
+.mzd-vacio {
+  margin: 0;
+  padding: 1.25rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--t4);
+  background: var(--s1);
+  border: 1px dashed var(--border);
+  border-radius: var(--r2);
+  line-height: 1.6;
+}
+
+.mzd-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mzd-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  transition: border-color 0.18s var(--ease);
+}
+
+.mzd-item:hover { border-color: var(--navy-xs); }
+
+.mzd-item-caras {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.mzd-item-frente {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--t1);
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.mzd-item-reverso {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--t3);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.mzd-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.mzd-estado {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--t4);
+  background: var(--s2);
+  border-radius: var(--r5);
+  padding: 0.15rem 0.55rem;
+  white-space: nowrap;
+}
+
+.mzd-estado--nueva {
+  color: var(--navy);
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+}
+
+.mzd-item-edicion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.mzd-item-edicion-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* ── Mobile ───────────────────────────────── */
+@media (max-width: 620px) {
+  .mz-grid { grid-template-columns: 1fr; }
+  .mz-top-acciones { width: 100%; }
+  .mz-repasar-todo, .mz-nuevo { flex: 1; justify-content: center; }
+  .mzd-top  { padding: 1rem 1.25rem; }
+  .mzd-body { padding: 1.25rem; }
+  .mzd-alta-campos { grid-template-columns: 1fr; }
+  .mzd-agregar { align-self: stretch; }
+
+  /* La tarjeta pasa a vertical: el texto necesita el ancho completo. */
+  .mzd-item { flex-direction: column; gap: 0.6rem; }
+  .mzd-item-meta { align-self: flex-end; }
+}

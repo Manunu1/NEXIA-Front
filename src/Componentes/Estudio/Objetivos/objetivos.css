@@ -1,0 +1,307 @@
+/* ─────────────────────────────────────────────
+   OBJETIVOS DE LA SESIÓN
+───────────────────────────────────────────── */
+.obj {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r4);
+  padding: 1.5rem;
+  box-shadow: var(--sh-sm);
+}
+
+.obj-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.obj-titulo {
+  font-family: var(--fd);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.2px;
+  margin: 0;
+}
+
+.obj-resumen {
+  font-size: 0.75rem;
+  color: var(--t4);
+}
+
+/* ── Alta ─────────────────────────────────── */
+.obj-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.obj-input {
+  width: 100%;
+  font-family: var(--fb);
+  font-size: 0.9rem;
+  color: var(--t2);
+  background: var(--ctrl-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  padding: 0.7rem 0.9rem;
+  outline: none;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+.obj-input::placeholder { color: var(--t4); }
+
+.obj-input:focus {
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+  background: var(--ctrl-bg-focus);
+}
+
+.obj-form-fin {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.obj-est {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.5rem;
+  background: var(--s1);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+}
+
+.obj-est-label {
+  display: flex;
+  align-items: center;
+  color: var(--t4);
+}
+
+.obj-est-label svg { width: 15px; height: 15px; }
+
+.obj-est-input {
+  width: 42px;
+  font-family: var(--fd);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--t1);
+  background: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+.obj-agregar {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border-radius: var(--r2);
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--fb);
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: all 0.2s var(--ease);
+}
+
+.obj-agregar:hover:not(:disabled) {
+  background: var(--navy-d);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-glow-navy);
+}
+
+.obj-agregar:disabled {
+  background: var(--border);
+  color: var(--t4);
+  cursor: not-allowed;
+}
+
+/* ── Lista ────────────────────────────────── */
+.obj-vacio {
+  margin: 0;
+  padding: 1rem;
+  background: var(--s1);
+  border: 1px dashed var(--border);
+  border-radius: var(--r2);
+  font-size: 0.82rem;
+  color: var(--t4);
+  line-height: 1.6;
+}
+
+.obj-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.obj-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--r2);
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.obj-item:hover { background: var(--s1); }
+
+/* El objetivo vinculado al Pomodoro se marca con una barra naranja: es el
+   único elemento de la lista que está recibiendo los ciclos. */
+.obj-item--activo {
+  background: var(--orange-xs);
+  border-color: var(--warn-bd);
+  box-shadow: inset 3px 0 0 var(--orange);
+}
+
+.obj-check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.obj-check input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--ok);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.obj-texto {
+  font-size: 0.875rem;
+  color: var(--t2);
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.obj-progreso {
+  font-family: var(--fd);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--t3);
+  font-variant-numeric: tabular-nums;
+  background: var(--s2);
+  border-radius: var(--r5);
+  padding: 0.15rem 0.5rem;
+  flex-shrink: 0;
+}
+
+.obj-progreso-sep {
+  color: var(--t4);
+  font-weight: 500;
+  margin: 0 1px;
+}
+
+.obj-borrar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--r1);
+  color: var(--t4);
+  flex-shrink: 0;
+  /* Aparece al pasar por encima para no llenar la lista de íconos de
+     borrar, pero sigue siendo alcanzable por teclado. */
+  opacity: 0;
+  transition: all 0.15s var(--ease);
+}
+
+.obj-borrar svg { width: 13px; height: 13px; }
+
+.obj-item:hover .obj-borrar,
+.obj-borrar:focus-visible { opacity: 1; }
+
+.obj-borrar:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* ── Completados ──────────────────────────── */
+.obj-hechos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--border);
+}
+
+.obj-hechos-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.obj-hechos-titulo {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.obj-limpiar {
+  font-family: var(--fb);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--t4);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--r1);
+  transition: all 0.15s ease;
+}
+
+.obj-limpiar:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.obj-item--hecho .obj-texto {
+  text-decoration: line-through;
+  color: var(--t4);
+}
+
+.obj-pie {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--t4);
+}
+
+.obj-pie strong {
+  font-family: var(--fd);
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.obj-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 560px) {
+  .obj { padding: 1.25rem 1rem; }
+  /* Sin hover en táctil, el botón de borrar tiene que estar siempre visible. */
+  .obj-borrar { opacity: 1; }
+}
+
+@media (hover: none) {
+  .obj-borrar { opacity: 1; }
+}

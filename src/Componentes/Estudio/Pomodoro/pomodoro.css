@@ -1,0 +1,477 @@
+/* ─────────────────────────────────────────────
+   POMODORO
+
+   El color cambia con la fase y es la única señal
+   que hace falta: azul mientras se estudia, verde
+   en el descanso. El naranja se reserva para la
+   acción, no para el estado.
+───────────────────────────────────────────── */
+.pom {
+  --pom-color: var(--navy);
+  --pom-suave: var(--navy-ghost);
+  --pom-borde: var(--navy-xs);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r4);
+  padding: 1.5rem;
+  box-shadow: var(--sh-sm);
+  transition: box-shadow var(--dur-md) var(--ease);
+}
+
+.pom--descanso,
+.pom--descanso-largo {
+  --pom-color: var(--ok);
+  --pom-suave: var(--ok-bg);
+  --pom-borde: var(--ok-bd);
+}
+
+/* ── Encabezado ───────────────────────────── */
+.pom-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+}
+
+.pom-fase {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--pom-color);
+  background: var(--pom-suave);
+  border: 1px solid var(--pom-borde);
+  border-radius: var(--r5);
+  padding: 0.25rem 0.7rem;
+}
+
+.pom-fase-punto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.pom--enfoque .pom-fase-punto { animation: pulseGlowNavy 2.4s ease infinite; }
+
+.pom-ajustes-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r2);
+  color: var(--t4);
+  transition: all 0.18s var(--ease);
+}
+
+.pom-ajustes-btn svg { width: 17px; height: 17px; }
+
+.pom-ajustes-btn:hover {
+  background: var(--s2);
+  color: var(--navy);
+}
+
+/* ── Reloj ────────────────────────────────── */
+.pom-reloj {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  flex-shrink: 0;
+}
+
+.pom-anillo {
+  width: 100%;
+  height: 100%;
+  /* Se rota para que el trazo arranque arriba y no a las 3 en punto. */
+  transform: rotate(-90deg);
+}
+
+.pom-anillo-pista {
+  fill: none;
+  stroke: var(--s2);
+  stroke-width: 10;
+}
+
+.pom-anillo-avance {
+  fill: none;
+  stroke: var(--pom-color);
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.3s linear, stroke 0.4s var(--ease);
+}
+
+.pom-centro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.pom-tiempo {
+  font-family: var(--fd);
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -2px;
+  /* tabular-nums evita que el ancho salte al cambiar de dígito. */
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* Sólo para lectores de pantalla */
+.pom-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pom-ciclos {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.pom-ciclo {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.3s var(--ease), transform 0.3s var(--ease-spring);
+}
+
+.pom-ciclo--hecho { background: var(--pom-color); }
+
+.pom-ciclo--actual {
+  background: var(--orange);
+  transform: scale(1.35);
+}
+
+.pom-anuncio {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--t4);
+}
+
+/* ── Controles ────────────────────────────── */
+.pom-controles {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pom-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--r2);
+  font-family: var(--fb);
+  font-weight: 700;
+  transition: all 0.2s var(--ease);
+}
+
+.pom-btn--principal {
+  min-width: 148px;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.95rem;
+  color: var(--navy-d);
+  background: var(--orange);
+  box-shadow: 0 4px 16px rgba(255,152,0,.28);
+}
+
+.pom-btn--principal svg { width: 15px; height: 15px; }
+
+.pom-btn--principal:hover {
+  background: var(--orange-l);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-glow-orange);
+}
+
+.pom-btn--principal:active { transform: scale(0.98); }
+
+.pom-btn--fantasma {
+  width: 42px;
+  height: 42px;
+  color: var(--t3);
+  background: var(--s1);
+  border: 1px solid var(--border);
+}
+
+.pom-btn--fantasma svg { width: 16px; height: 16px; }
+
+.pom-btn--fantasma:hover {
+  background: var(--s2);
+  color: var(--navy);
+  border-color: var(--navy-xs);
+}
+
+/* ── Foco de la sesión ────────────────────── */
+.pom-foco {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.pom-foco-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--t3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pom-foco-input {
+  width: 100%;
+  font-family: var(--fb);
+  font-size: 0.9rem;
+  color: var(--t2);
+  background: var(--ctrl-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  padding: 0.7rem 0.9rem;
+  outline: none;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+.pom-foco-input::placeholder { color: var(--t4); }
+
+.pom-foco-input:focus {
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+  background: var(--ctrl-bg-focus);
+}
+
+.pom-vincular {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.pom-vincular-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pom-vincular-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.pom-chip {
+  max-width: 190px;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--r5);
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: var(--fb);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--t3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.18s var(--ease);
+}
+
+.pom-chip:hover {
+  border-color: var(--navy-xs);
+  color: var(--navy);
+}
+
+.pom-chip--activo {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--white);
+}
+
+/* ── Ajustes ──────────────────────────────── */
+.pom-ajustes {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1rem;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  animation: fadeInUp var(--dur-md) var(--ease) both;
+}
+
+.pom-ajustes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.pom-ajuste {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pom-ajuste-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--t3);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.pom-ajuste-unidad {
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: var(--t4);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.pom-ajuste-input {
+  width: 100%;
+  font-family: var(--fd);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--t1);
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  padding: 0.5rem 0.6rem;
+  outline: none;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.pom-ajuste-input:focus {
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+}
+
+.pom-ajustes-switches {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.pom-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  color: var(--t2);
+  cursor: pointer;
+}
+
+.pom-switch input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--navy);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.pom-ajustes-nota {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--t4);
+  line-height: 1.5;
+}
+
+/* ── Cierre de sesión ─────────────────────── */
+.pom-sesion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: var(--pom-suave);
+  border: 1px solid var(--pom-borde);
+  border-radius: var(--r2);
+}
+
+.pom-sesion-datos {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--t3);
+  min-width: 0;
+}
+
+.pom-sesion-dato strong {
+  font-family: var(--fd);
+  color: var(--t1);
+  font-weight: 700;
+}
+
+.pom-sesion-sep { color: var(--t4); }
+
+.pom-sesion-objetivo {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+.pom-terminar {
+  padding: 0.5rem 1rem;
+  border-radius: var(--r2);
+  border: 1.5px solid var(--pom-color);
+  background: var(--white);
+  font-family: var(--fb);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--pom-color);
+  white-space: nowrap;
+  transition: all 0.18s var(--ease);
+}
+
+.pom-terminar:hover {
+  background: var(--pom-color);
+  color: var(--white);
+}
+
+/* ── Mobile ───────────────────────────────── */
+@media (max-width: 560px) {
+  .pom { padding: 1.25rem 1rem; }
+  .pom-reloj { width: 190px; height: 190px; }
+  .pom-tiempo { font-size: 2.6rem; }
+  .pom-btn--principal { min-width: 130px; }
+  .pom-sesion { flex-direction: column; align-items: stretch; }
+  .pom-terminar { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pom-anillo-avance { transition: none; }
+  .pom--enfoque .pom-fase-punto { animation: none; }
+}

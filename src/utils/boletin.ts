@@ -33,6 +33,7 @@ const DECIMALES = 2;
 export interface PromedioBimestre {
   orden: number;
   nombre: string;
+  anio: number;
   promedio: number;
 }
 
@@ -71,22 +72,39 @@ export function formatearNota(nota: number | null): string {
   return String(Number(nota.toFixed(DECIMALES)));
 }
 
-/** Promedio general por bimestre, ordenado cronológicamente. */
+/**
+ * Promedio general por bimestre, ordenado cronológicamente.
+ *
+ * Se agrupa por bimestre_id y no por `orden`: el orden se repite todos los
+ * años (siempre hay un 1er bimestre), así que agrupar por él fusionaba el
+ * primer bimestre de cada ciclo lectivo en una sola columna y promediaba
+ * juntas notas de años distintos.
+ */
 export function promediosPorBimestre(notas: typeBoletinNotaFinal[]): PromedioBimestre[] {
-  const porBimestre = new Map<number, { nombre: string; notas: number[] }>();
+  const porBimestre = new Map<number, { nombre: string; orden: number; anio: number; notas: number[] }>();
 
   for (const n of notas) {
     const nota = aNota(n.nota);
     if (nota === null) continue;
 
-    const entry = porBimestre.get(n.orden) ?? { nombre: n.bimestre_nombre, notas: [] };
+    const entry = porBimestre.get(n.bimestre_id) ?? {
+      nombre: n.bimestre_nombre,
+      orden: n.orden,
+      anio: n.anio ?? 0,
+      notas: [],
+    };
     entry.notas.push(nota);
-    porBimestre.set(n.orden, entry);
+    porBimestre.set(n.bimestre_id, entry);
   }
 
-  return Array.from(porBimestre.entries())
-    .map(([orden, { nombre, notas: ns }]) => ({ orden, nombre, promedio: promediar(ns) as number }))
-    .sort((a, b) => a.orden - b.orden);
+  return Array.from(porBimestre.values())
+    .map(({ nombre, orden, anio, notas: ns }) => ({
+      orden,
+      nombre,
+      anio,
+      promedio: promediar(ns) as number,
+    }))
+    .sort((a, b) => a.anio - b.anio || a.orden - b.orden);
 }
 
 /** Promedio de cada materia a lo largo de todos los bimestres. */

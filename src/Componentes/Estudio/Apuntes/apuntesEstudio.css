@@ -1,0 +1,433 @@
+/* ─────────────────────────────────────────────
+   APUNTES — dentro de la zona de estudio
+───────────────────────────────────────────── */
+.ape {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ape-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ape-titulo {
+  font-family: var(--fd);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.3px;
+  margin: 0 0 0.2rem;
+}
+
+.ape-sub {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--t3);
+  line-height: 1.55;
+  max-width: 56ch;
+}
+
+/* Los tres métodos se ofrecen como puntos de entrada: elegir el método
+   ANTES de escribir es lo que hace que la plantilla sirva de algo. */
+.ape-plantillas {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.ape-plantilla-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--r2);
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  font-family: var(--fb);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--t2);
+  white-space: nowrap;
+  transition: all 0.18s var(--ease);
+}
+
+.ape-plantilla-btn:hover {
+  border-color: var(--navy-l);
+  background: var(--navy-ghost);
+  color: var(--navy);
+  transform: translateY(-1px);
+}
+
+.ape-plantilla-mas {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--t4);
+  line-height: 1;
+}
+
+.ape-plantilla-btn:hover .ape-plantilla-mas { color: var(--orange); }
+
+/* ── Filtros ──────────────────────────────── */
+.ape-filtros {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ape-buscar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.ape-buscar svg {
+  position: absolute;
+  left: 0.75rem;
+  width: 15px;
+  height: 15px;
+  color: var(--t4);
+  pointer-events: none;
+}
+
+.ape-buscar input {
+  width: 100%;
+  font-family: var(--fb);
+  font-size: 0.875rem;
+  color: var(--t2);
+  background: var(--ctrl-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  padding: 0.6rem 0.9rem 0.6rem 2.2rem;
+  outline: none;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+.ape-buscar input::placeholder { color: var(--t4); }
+
+.ape-buscar input:focus {
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+  background: var(--ctrl-bg-focus);
+}
+
+.ape-tipos {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.2rem;
+  background: var(--s2);
+  border-radius: var(--r2);
+}
+
+.ape-tipo {
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--r1);
+  font-family: var(--fb);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--t3);
+  transition: all 0.15s var(--ease);
+}
+
+.ape-tipo:hover { color: var(--navy); }
+
+.ape-tipo--activo {
+  background: var(--white);
+  color: var(--navy);
+  box-shadow: var(--sh-sm);
+}
+
+/* ── Grilla ───────────────────────────────── */
+.ape-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.875rem;
+}
+
+.ape-sk { height: 148px; border-radius: var(--r3); }
+
+.ape-card {
+  --ape-fondo: var(--white);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--ape-fondo);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 1.1rem;
+  box-shadow: var(--sh-sm);
+  cursor: pointer;
+  transition: box-shadow var(--dur-md) var(--ease), transform var(--dur-md) var(--ease);
+}
+
+.ape-card:hover {
+  box-shadow: var(--sh-md);
+  transform: translateY(-2px);
+}
+
+.ape-card--arena { --ape-fondo: #FDF8EE; }
+.ape-card--cielo { --ape-fondo: #EEF4FD; }
+.ape-card--menta { --ape-fondo: #EDF8F1; }
+
+.ape-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.ape-card-titulo {
+  font-family: var(--fd);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--t1);
+  line-height: 1.35;
+  margin: 0;
+  word-break: break-word;
+}
+
+.ape-card-acciones {
+  display: flex;
+  gap: 0.2rem;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.ape-card:hover .ape-card-acciones,
+.ape-card-acciones:focus-within { opacity: 1; }
+
+.ape-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--r1);
+  color: var(--t4);
+  transition: all 0.15s ease;
+}
+
+.ape-icono svg { width: 13px; height: 13px; }
+
+.ape-icono:hover { background: rgba(7,17,44,.06); color: var(--navy); }
+
+.ape-icono--danger:hover { background: var(--danger-bg); color: var(--danger); }
+
+.ape-etiqueta {
+  align-self: flex-start;
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-radius: var(--r5);
+  padding: 0.12rem 0.55rem;
+}
+
+.ape-etiqueta--cornell {
+  color: var(--navy);
+  background: var(--navy-xs);
+}
+
+.ape-etiqueta--feynman {
+  color: var(--orange-d);
+  background: var(--orange-xs);
+}
+
+.ape-card-texto {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--t3);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Las lagunas de un Feynman son la parte accionable del apunte: se
+   destacan en vez de esconderse en el detalle. */
+.ape-card-lagunas {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--orange-d);
+  background: var(--orange-xs);
+  border-left: 2px solid var(--orange);
+  border-radius: 0 var(--r1) var(--r1) 0;
+  padding: 0.4rem 0.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ape-card-lagunas span {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  letter-spacing: 0.6px;
+  display: block;
+}
+
+.ape-card-claves {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--navy);
+  font-weight: 600;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ape-card-fecha {
+  margin-top: auto;
+  font-size: 0.7rem;
+  color: var(--t4);
+}
+
+/* ── Editor ───────────────────────────────── */
+.ape-editor {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ape-editor-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ape-editor-titulo {
+  font-family: var(--fd);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.2px;
+}
+
+.ape-editor-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem 1.75rem;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.ape-metodo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.ape-metodo-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: var(--r2);
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  text-align: left;
+  transition: all 0.18s var(--ease);
+}
+
+.ape-metodo-btn:hover:not(:disabled) {
+  border-color: var(--navy-xs);
+  background: var(--navy-ghost);
+}
+
+.ape-metodo-btn--activo {
+  border-color: var(--navy);
+  background: var(--navy-ghost);
+  box-shadow: var(--focus-ring);
+}
+
+.ape-metodo-nombre {
+  font-family: var(--fd);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--t1);
+}
+
+.ape-metodo-desc {
+  font-size: 0.7rem;
+  color: var(--t4);
+  line-height: 1.4;
+}
+
+.ape-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.65;
+  font-family: var(--fb);
+}
+
+.ape-colores { display: flex; gap: 0.5rem; }
+
+.ape-color {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  transition: transform 0.18s var(--ease-spring), box-shadow 0.18s var(--ease);
+}
+
+.ape-color--blanco { background: #FFFFFF; }
+.ape-color--arena  { background: #FDF8EE; }
+.ape-color--cielo  { background: #EEF4FD; }
+.ape-color--menta  { background: #EDF8F1; }
+
+.ape-color--activo {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--navy);
+}
+
+.ape-editor-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding: 1rem 1.75rem 1.25rem;
+  border-top: 1px solid var(--border);
+  background: var(--s1);
+  flex-shrink: 0;
+}
+
+/* ── Mobile ───────────────────────────────── */
+@media (max-width: 620px) {
+  .ape-grid { grid-template-columns: 1fr; }
+  .ape-plantillas { width: 100%; }
+  .ape-plantilla-btn { flex: 1; justify-content: center; }
+  .ape-filtros { flex-direction: column; align-items: stretch; }
+  .ape-tipos { overflow-x: auto; }
+  .ape-metodo { grid-template-columns: 1fr; }
+  .ape-editor-top  { padding: 1rem 1.25rem; }
+  .ape-editor-body { padding: 1.25rem; }
+  .ape-editor-footer { padding: 0.875rem 1.25rem 1.25rem; }
+  .ape-card-acciones { opacity: 1; }
+}
+
+@media (hover: none) {
+  .ape-card-acciones { opacity: 1; }
+}

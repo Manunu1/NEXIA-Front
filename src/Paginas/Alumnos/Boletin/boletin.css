@@ -1,9 +1,122 @@
+/* ─────────────────────────────────────────────
+   MI BOLETÍN
+───────────────────────────────────────────── */
+
+.bol-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Selector de ciclo lectivo ────────────── */
+.bol-anios {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--s2);
+  border-radius: var(--r2);
+}
+
+.bol-anio {
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--r1);
+  font-family: var(--fd);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--t3);
+  font-variant-numeric: tabular-nums;
+  transition: all 0.15s var(--ease);
+}
+
+.bol-anio:hover { color: var(--navy); }
+
+.bol-anio--activo {
+  background: var(--white);
+  color: var(--navy);
+  box-shadow: var(--sh-sm);
+}
+
+/* ── Resumen ──────────────────────────────────
+   Antes la pantalla abría directo con la tabla y
+   el dato que el alumno viene a buscar —cómo le
+   está yendo— había que deducirlo leyendo 12 filas.
+─────────────────────────────────────────────── */
+.bol-resumen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--sh-sm);
+  margin-bottom: 1.25rem;
+}
+
+.bol-resumen-general {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.bol-resumen-rotulo {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.bol-resumen-detalle {
+  font-size: 0.78rem;
+  color: var(--t4);
+}
+
+.bol-resumen-datos {
+  display: flex;
+  gap: 1.75rem;
+}
+
+.bol-resumen-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.bol-resumen-valor {
+  font-family: var(--fd);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -0.6px;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.bol-resumen-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Sólo se tiñe si hay algo que atender: un cero en rojo alarmaría sin motivo. */
+.bol-resumen-dato--riesgo .bol-resumen-valor { color: var(--danger); }
+.bol-resumen-dato--riesgo .bol-resumen-label { color: var(--danger); }
+
+/* ── Secciones ────────────────────────────── */
 .bol-section {
   margin-bottom: 2.5rem;
   animation: fadeInUp var(--dur-slow) var(--ease) both;
 }
-
-.bol-section:nth-of-type(2) { animation-delay: 0.08s; }
 
 .bol-section-title {
   font-family: var(--fd);
@@ -26,6 +139,7 @@
   flex-shrink: 0;
 }
 
+/* ── Tabla ────────────────────────────────── */
 .bol-table-wrap {
   background: var(--white);
   border: 1px solid var(--border);
@@ -44,8 +158,6 @@
 }
 
 .bol-table thead th {
-  position: sticky;
-  top: 0;
   background: var(--s1);
   color: var(--t4);
   font-size: 0.68rem;
@@ -58,46 +170,47 @@
   white-space: nowrap;
 }
 
-.bol-th-materia {
-  text-align: left !important;
-}
+.bol-th-promedio { color: var(--navy); }
 
-.bol-table tbody td {
+.bol-table tbody td,
+.bol-table tbody th {
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
   text-align: center;
   color: var(--t2);
+  font-weight: 400;
 }
 
-.bol-table tbody tr:last-child td {
-  border-bottom: none;
-}
+.bol-table tbody tr:last-child td,
+.bol-table tbody tr:last-child th { border-bottom: none; }
 
-.bol-table tbody tr {
-  transition: background 0.15s ease;
-}
+.bol-table tbody tr { transition: background 0.15s ease; }
+.bol-table tbody tr:hover { background: var(--s1); }
 
-.bol-table tbody tr:hover {
-  background: var(--s1);
-}
-
+/* La columna de materia queda fija al hacer scroll horizontal. Sin esto,
+   en el teléfono se corre la tabla y se pierde de vista de qué materia es
+   la fila que se está leyendo — que era el problema real del boletín en
+   mobile, no el ancho. */
+.bol-th-materia,
 .bol-td-materia {
-  text-align: left;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  text-align: left !important;
+  background: var(--white);
   font-weight: 700;
   color: var(--t1);
+  /* Sombra al borde derecho: marca que hay contenido corrido debajo. */
+  box-shadow: 1px 0 0 var(--border);
 }
 
-.bol-td-nota {
-  font-variant-numeric: tabular-nums;
-}
+.bol-table thead .bol-th-materia { background: var(--s1); }
+.bol-table tbody tr:hover .bol-td-materia { background: var(--s1); }
 
-.bol-td-promedio {
-  background: var(--navy-ghost);
-}
+.bol-td-nota { font-variant-numeric: tabular-nums; }
 
-.bol-table tbody tr:hover .bol-td-promedio {
-  background: var(--navy-xs);
-}
+.bol-td-promedio { background: var(--navy-ghost); }
+.bol-table tbody tr:hover .bol-td-promedio { background: var(--navy-xs); }
 
 .bol-sin-nota {
   color: var(--t4);
@@ -105,22 +218,34 @@
 }
 
 /* Fila de cierre: se separa del cuerpo con una línea más marcada para que
-   se lea como un total y no como una materia más de la lista. */
-.bol-tr-general td {
+   se lea como un total y no como una materia más. */
+.bol-tr-general td,
+.bol-tr-general th {
   background: var(--s1);
   border-top: 2px solid var(--border);
   border-bottom: none;
   font-weight: 700;
+  padding: 0.75rem 1rem;
+  text-align: center;
 }
 
 .bol-tr-general .bol-td-materia {
   font-family: var(--fd);
   color: var(--t1);
   white-space: nowrap;
+  text-align: left !important;
+  background: var(--s1);
 }
 
 .bol-tr-general .bol-td-promedio { background: var(--navy-xs); }
 
+.bol-leyenda {
+  margin: 0.6rem 0 0;
+  font-size: 0.74rem;
+  color: var(--t4);
+}
+
+/* ── Pastilla de nota ─────────────────────── */
 .bol-nota-pill {
   display: inline-flex;
   align-items: center;
@@ -136,33 +261,149 @@
 
 .bol-table tbody tr:hover .bol-nota-pill { transform: scale(1.08); }
 
-.bol-nota-pill--alta {
-  background: var(--ok-bg);
-  color: var(--ok);
+.bol-nota-pill--alta  { background: var(--ok-bg);     color: var(--ok); }
+.bol-nota-pill--media { background: var(--orange-xs); color: var(--orange-d); }
+.bol-nota-pill--baja  { background: var(--danger-bg); color: var(--danger); }
+
+.bol-nota-pill--grande {
+  font-size: 1.5rem;
+  min-width: 58px;
+  padding: 5px 16px;
+  letter-spacing: -0.5px;
 }
 
-.bol-nota-pill--media {
-  background: var(--orange-xs);
-  color: var(--orange-d);
+/* ── Trabajos prácticos ───────────────────── */
+.bol-tps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.bol-nota-pill--baja {
-  background: var(--danger-bg);
-  color: var(--danger);
+.bol-tp {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 1rem 1.15rem;
+  box-shadow: var(--sh-sm);
+  transition: border-color var(--dur-md) var(--ease), box-shadow var(--dur-md) var(--ease);
 }
 
-.bol-td-comentario {
-  text-align: left;
+.bol-tp:hover {
+  border-color: var(--navy-xs);
+  box-shadow: var(--sh-md);
+}
+
+.bol-tp-nota {
+  flex-shrink: 0;
+  padding-top: 0.1rem;
+}
+
+.bol-tp-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.bol-tp-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.bol-tp-titulo {
+  margin: 0;
+  font-family: var(--fd);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--t1);
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.bol-tp-materia {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--navy);
+  background: var(--navy-ghost);
+  border: 1px solid var(--navy-xs);
+  border-radius: var(--r5);
+  padding: 0.12rem 0.6rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.bol-tp-comentario {
+  margin: 0;
+  font-size: 0.83rem;
   color: var(--t3);
-  max-width: 280px;
+  line-height: 1.6;
+  /* El comentario del docente es la devolución: se muestra completo, no
+     recortado. Es lo que explica la nota. */
+  word-break: break-word;
 }
 
-/* ── Compañero ───────────────────────────────── */
+.bol-tp-fecha {
+  font-size: 0.72rem;
+  color: var(--t4);
+}
+
+/* ── Compañero ────────────────────────────── */
 .bol-coach {
   margin-bottom: 1.5rem;
   animation: fadeInUp var(--dur-slow) var(--ease) both;
 }
 
+/* ── Mobile ───────────────────────────────── */
+@media (max-width: 640px) {
+  .bol-resumen {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.15rem;
+  }
+
+  .bol-resumen-datos {
+    width: 100%;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .bol-nota-pill--grande { font-size: 1.35rem; }
+
+  .bol-table thead th,
+  .bol-table tbody td,
+  .bol-table tbody th { padding: 0.65rem 0.7rem; }
+
+  /* La columna fija no puede comerse la pantalla: se acota para que quede
+     lugar visible a las notas. */
+  .bol-th-materia,
+  .bol-td-materia {
+    max-width: 116px;
+    min-width: 116px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bol-tp { flex-direction: row; padding: 0.875rem 1rem; }
+  .bol-tp-top { flex-direction: column; gap: 0.2rem; }
+  .bol-tp-materia { align-self: flex-start; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .bol-coach { animation: none; }
+  .bol-coach,
+  .bol-section { animation: none; }
+  .bol-table tbody tr:hover .bol-nota-pill { transform: none; }
 }

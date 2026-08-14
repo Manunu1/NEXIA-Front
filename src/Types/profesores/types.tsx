@@ -112,6 +112,12 @@ export interface typeBoletinNotaFinal {
   bimestre_id: number;
   bimestre_nombre: string;
   orden: number;
+  /**
+   * Ciclo lectivo del bimestre. El backend ya lo devolvía pero faltaba en el
+   * tipo, y sin él agrupar por `orden` mezcla el 1er bimestre de 2025 con el
+   * de 2026 en una misma columna.
+   */
+  anio?: number;
   nota: NotaCruda;
   observaciones?: string | null;
 }

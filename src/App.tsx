@@ -1,7 +1,7 @@
 import "./App.css";
 
 import type { JSX } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 
 import Login from "./Paginas/Login";
@@ -29,7 +29,7 @@ import Notas from "./Paginas/Profesores/Notas";
 import TrabajosPracticosAlumno from "./Paginas/Alumnos/TrabajosPracticos";
 import TrabajoPracticoDetalle from "./Paginas/Alumnos/TrabajoPracticoDetalle";
 import Boletin from "./Paginas/Alumnos/Boletin";
-import Apuntes from "./Paginas/Alumnos/Apuntes";
+import ZonaEstudio from "./Paginas/Alumnos/ZonaEstudio";
 import Mensajes from "./Paginas/Mensajes";
 import Calendario from "./Paginas/Calendario";
 import NoEncontrado from "./Paginas/NoEncontrado";
@@ -78,7 +78,10 @@ function App() {
           <Route path="/materia/:profeCursoMateriaId/trabajos-practicos" element={guard(<TrabajosPracticosAlumno />, ["alumno"])} />
           <Route path="/trabajo-practico/:id" element={guard(<TrabajoPracticoDetalle />, ["alumno"])} />
           <Route path="/boletin" element={guard(<Boletin />, ["alumno"])} />
-          <Route path="/apuntes" element={guard(<Apuntes />, ["alumno"])} />
+          <Route path="/zona-estudio" element={guard(<ZonaEstudio />, ["alumno"])} />
+          {/* Los apuntes ahora viven dentro de la zona de estudio. La ruta
+              vieja se conserva y redirige para no romper enlaces guardados. */}
+          <Route path="/apuntes" element={<Navigate to="/zona-estudio?panel=apuntes" replace />} />
 
           {/* Profesor */}
           <Route path="/profesor" element={guard(<MisCursos />, ["profesor"])} />

@@ -65,10 +65,13 @@ const IconBoletin = (
   </svg>
 );
 
-const IconApuntes = (
+/* Reloj: el Pomodoro es la puerta de entrada a la zona, y el temporizador
+   es lo que la distingue del resto de las secciones académicas. */
+const IconEstudio = (
   <svg viewBox="0 0 24 24" {...stroke}>
-    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+    <circle cx="12" cy="13" r="8" />
+    <path d="M12 9v4l2.5 2" />
+    <path d="M9 2h6" />
   </svg>
 );
 
@@ -176,7 +179,10 @@ export const NAV_BY_ROL: Record<Rol, NavSection[]> = {
           match: ['/alumnos', '/materia/*', '/trabajo-practico/*', '/verContenido/*'],
         },
         { to: '/boletin', label: 'Mi boletín', icon: IconBoletin, match: ['/boletin'] },
-        { to: '/apuntes', label: 'Apuntes', icon: IconApuntes, match: ['/apuntes'] },
+        /* Apuntes ya no es una entrada propia: vive dentro de la zona de
+           estudio, junto al Pomodoro, las tarjetas y los mapas. Tener las dos
+           habría dejado la misma pantalla colgando de dos lugares. */
+        { to: '/zona-estudio', label: 'Zona de estudio', icon: IconEstudio, match: ['/zona-estudio', '/apuntes'] },
       ],
     },
     { label: 'General', items: ITEMS_GENERALES },

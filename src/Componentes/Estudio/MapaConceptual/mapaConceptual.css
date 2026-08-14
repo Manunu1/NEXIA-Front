@@ -1,0 +1,390 @@
+/* ─────────────────────────────────────────────
+   MAPA CONCEPTUAL — canvas
+───────────────────────────────────────────── */
+.mc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  background: var(--white);
+  overflow: hidden;
+}
+
+/* ── Barra de herramientas ────────────────── */
+.mc-barra {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.875rem;
+  background: var(--s1);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.mc-herr {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--r2);
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: var(--fb);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--t2);
+  white-space: nowrap;
+  transition: all 0.18s var(--ease);
+}
+
+.mc-herr svg { width: 14px; height: 14px; }
+
+.mc-herr:hover {
+  border-color: var(--navy-xs);
+  background: var(--navy-ghost);
+  color: var(--navy);
+}
+
+.mc-barra-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+
+.mc-ayuda {
+  font-size: 0.74rem;
+  color: var(--t4);
+  flex: 1;
+  min-width: 140px;
+}
+
+.mc-conteo {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--t4);
+  white-space: nowrap;
+}
+
+/* ── Lienzo ───────────────────────────────── */
+.mc-lienzo {
+  position: relative;
+  height: 520px;
+  overflow: auto;
+  /* La cuadrícula da referencia espacial al arrastrar; sin ella el nodo
+     parece flotar en el vacío y cuesta juzgar la alineación. */
+  background-color: var(--s1);
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  /* Sin esto, arrastrar un nodo en el teléfono scrollea la página. */
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+
+.mc-lienzo--conectando { cursor: crosshair; }
+
+.mc-plano { position: relative; }
+
+.mc-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* ── Conexiones ───────────────────────────── */
+.mc-conexion line {
+  stroke: var(--t4);
+  stroke-width: 2;
+  opacity: 0.45;
+  transition: stroke 0.2s ease, opacity 0.2s ease;
+}
+
+.mc-conexion text {
+  fill: var(--t3);
+  font-family: var(--fb);
+  font-size: 11px;
+  font-weight: 600;
+  paint-order: stroke;
+  /* Contorno blanco: la etiqueta cruza la línea y sin esto queda ilegible. */
+  stroke: var(--white);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.mc-conexion--activa line {
+  stroke: var(--navy);
+  opacity: 1;
+  stroke-width: 2.5;
+}
+
+/* ── Nodos ────────────────────────────────── */
+.mc-nodo {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--r2);
+  background: var(--white);
+  border: 1.5px solid var(--navy-xs);
+  box-shadow: var(--sh-sm);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transition: box-shadow 0.18s var(--ease), border-color 0.18s var(--ease), transform 0.18s var(--ease);
+}
+
+.mc-nodo:active { cursor: grabbing; }
+
+.mc-nodo:hover {
+  box-shadow: var(--sh-md);
+  border-color: var(--navy-l);
+}
+
+/* El concepto central se distingue por peso y color, no por tamaño: si
+   fuera más grande, un mapa con varios centrales se desbalancearía. */
+.mc-nodo--principal {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-m) 100%);
+  border-color: var(--navy);
+  color: var(--white);
+  box-shadow: var(--sh-nv);
+}
+
+.mc-nodo--activo {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255,152,0,.18), var(--sh-md);
+}
+
+.mc-nodo--origen {
+  border-color: var(--orange);
+  border-style: dashed;
+  animation: pulseGlow 1.6s ease infinite;
+}
+
+.mc-nodo:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+}
+
+.mc-nodo-texto {
+  font-family: var(--fb);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  color: inherit;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.mc-nodo--principal .mc-nodo-texto {
+  font-family: var(--fd);
+  font-weight: 700;
+}
+
+.mc-nodo-input {
+  width: 100%;
+  font-family: var(--fb);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--t1);
+  background: var(--white);
+  border: none;
+  border-radius: var(--r1);
+  outline: 2px solid var(--orange);
+  resize: none;
+  padding: 0.2rem;
+  min-height: 40px;
+}
+
+/* ── Panel del nodo ───────────────────────── */
+.mc-panel {
+  position: absolute;
+  right: 0.875rem;
+  bottom: 0.875rem;
+  width: 268px;
+  max-height: calc(100% - 5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-lg);
+  overflow-y: auto;
+  animation: fadeInUp var(--dur-md) var(--ease) both;
+  z-index: 5;
+}
+
+.mc-panel-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.mc-panel-titulo {
+  font-family: var(--fd);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--t1);
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.mc-panel-cerrar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r1);
+  color: var(--t4);
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.mc-panel-cerrar svg { width: 13px; height: 13px; }
+.mc-panel-cerrar:hover { background: var(--s2); color: var(--t1); }
+
+.mc-panel-acciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+
+.mc-panel-btn {
+  padding: 0.45rem 0.5rem;
+  border-radius: var(--r1);
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: var(--fb);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--t3);
+  transition: all 0.15s var(--ease);
+}
+
+.mc-panel-btn:hover {
+  background: var(--navy-ghost);
+  border-color: var(--navy-xs);
+  color: var(--navy);
+}
+
+.mc-panel-btn--activo {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--navy-d);
+}
+
+.mc-panel-btn--danger:hover {
+  background: var(--danger-bg);
+  border-color: var(--danger-bd);
+  color: var(--danger);
+}
+
+.mc-panel-conexiones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.mc-panel-rotulo {
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mc-panel-conexiones ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mc-panel-conexiones li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem;
+  background: var(--s1);
+  border-radius: var(--r1);
+}
+
+.mc-panel-etiqueta {
+  grid-column: 1 / -1;
+  width: 100%;
+  font-family: var(--fb);
+  font-size: 0.74rem;
+  color: var(--t2);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r1);
+  padding: 0.3rem 0.4rem;
+  outline: none;
+}
+
+.mc-panel-etiqueta:focus {
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+}
+
+.mc-panel-otro {
+  font-size: 0.7rem;
+  color: var(--t4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mc-panel-quitar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--r1);
+  color: var(--t4);
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.mc-panel-quitar svg { width: 11px; height: 11px; }
+
+.mc-panel-quitar:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* ── Mobile ───────────────────────────────── */
+@media (max-width: 620px) {
+  .mc-lienzo { height: 400px; }
+  .mc-ayuda { display: none; }
+
+  /* El panel flotante taparía medio lienzo: pasa a ocupar el ancho
+     completo, anclado abajo. */
+  .mc-panel {
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    width: auto;
+    max-height: 58%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-nodo--origen { animation: none; }
+}
