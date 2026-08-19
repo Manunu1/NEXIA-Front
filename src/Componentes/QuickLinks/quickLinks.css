@@ -54,7 +54,7 @@
 
 .ql-item:hover .ql-icon {
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
 }
 
 .ql-body {
@@ -119,7 +119,7 @@
 
 .ql-item--destacado:hover .ql-icon {
   background: var(--orange-d);
-  color: var(--white);
+  color: var(--on-brand);
 }
 
 .ql-item--destacado:hover .ql-arrow { color: var(--orange-d); }

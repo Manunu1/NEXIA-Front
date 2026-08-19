@@ -65,7 +65,7 @@
   height: 36px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--navy), var(--navy-l));
-  color: var(--white);
+  color: var(--on-brand);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -195,7 +195,7 @@
   border: none;
   border-radius: var(--r3);
   border-bottom-right-radius: 4px;
-  color: var(--white);
+  color: var(--on-brand);
   box-shadow: 0 4px 16px rgba(26,35,126,.18);
 }
 

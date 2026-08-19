@@ -63,7 +63,7 @@
   display: inline-flex;
   align-items: center;
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   padding: 3px 10px;
   border-radius: 99px;
   font-size: 0.7rem;

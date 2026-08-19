@@ -180,7 +180,7 @@
   font-size: 2rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: #16A34A;
+  color: var(--ok);
   line-height: 1.1;
 }
 
@@ -271,13 +271,13 @@
 
 .tpd-estado-banner--exito {
   background: var(--ok-bg);
-  border: 1px solid rgba(46,125,50,.22);
+  border: 1px solid var(--ok-bd);
   color: var(--t2);
   animation: scaleIn var(--dur-md) var(--ease-spring) both;
 }
 
 .tpd-estado-banner--exito svg,
-.tpd-estado-banner--exito strong { color: #16A34A; }
+.tpd-estado-banner--exito strong { color: var(--ok); }
 
 /* Publicado por (consigna) */
 .tpd-publicado-por {

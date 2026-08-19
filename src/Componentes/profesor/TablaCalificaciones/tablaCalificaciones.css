@@ -82,7 +82,7 @@
 
 .tc-guardar-btn:hover:not(:disabled) {
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   transform: translateY(-1px);
   box-shadow: var(--sh-glow-navy);
 }

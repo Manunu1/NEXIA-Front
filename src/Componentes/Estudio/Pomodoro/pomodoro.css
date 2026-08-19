@@ -306,7 +306,7 @@
 .pom-chip--activo {
   background: var(--navy);
   border-color: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
 }
 
 /* ── Ajustes ──────────────────────────────── */
@@ -458,7 +458,7 @@
 
 .pom-terminar:hover {
   background: var(--pom-color);
-  color: var(--white);
+  color: var(--on-brand);
 }
 
 /* ── Mobile ───────────────────────────────── */

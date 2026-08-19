@@ -212,7 +212,7 @@ const ContenidosAlumnos: React.FC = () => {
                   allowFullScreen
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   className="iv-iframe"
-                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"
+                  /*sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation" */
                 />
               </div>
             ) : hasUrl ? (

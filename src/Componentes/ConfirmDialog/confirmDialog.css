@@ -25,8 +25,8 @@
 .confirm-icon svg { width: 24px; height: 24px; }
 
 .confirm-icon--danger {
-  background: #FFF1F1;
-  color: #DC2626;
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
 .confirm-title {
@@ -85,7 +85,7 @@
 
 .confirm-btn--primary {
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   box-shadow: var(--sh-nv);
 }
 
@@ -97,7 +97,7 @@
 
 .confirm-btn--danger {
   background: #DC2626;
-  color: var(--white);
+  color: var(--on-brand);
   box-shadow: 0 8px 24px rgba(220,38,38,.25);
 }
 
@@ -112,7 +112,7 @@
   height: 14px;
   border-radius: 50%;
   border: 2px solid rgba(255,255,255,.35);
-  border-top-color: var(--white);
+  border-top-color: var(--on-brand);
   animation: spinDual 0.7s linear infinite;
   flex-shrink: 0;
 }

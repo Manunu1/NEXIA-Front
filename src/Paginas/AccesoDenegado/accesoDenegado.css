@@ -49,8 +49,8 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: #FFF1F1;
-  color: #DC2626;
+  background: var(--danger-bg);
+  color: var(--danger);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,7 +70,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.6px;
-  color: #DC2626;
+  color: var(--danger);
 }
 
 .ad-title {
@@ -118,7 +118,7 @@
 
 .ad-btn--primary {
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   box-shadow: var(--sh-nv);
 }
 

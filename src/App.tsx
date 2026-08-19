@@ -26,6 +26,8 @@ import CrearTrabajoPractico from "./Paginas/Profesores/CrearTrabajoPractico";
 import EditarTrabajoPractico from "./Paginas/Profesores/EditarTrabajoPractico";
 import CorregirTrabajoPractico from "./Paginas/Profesores/CorregirTrabajoPractico";
 import Notas from "./Paginas/Profesores/Notas";
+import Asistencia from "./Paginas/Profesores/Asistencia";
+import TomarAsistencia from "./Paginas/Profesores/TomarAsistencia";
 import TrabajosPracticosAlumno from "./Paginas/Alumnos/TrabajosPracticos";
 import TrabajoPracticoDetalle from "./Paginas/Alumnos/TrabajoPracticoDetalle";
 import Boletin from "./Paginas/Alumnos/Boletin";
@@ -93,6 +95,8 @@ function App() {
           <Route path="/trabajo-practico/:id/editar" element={guard(<EditarTrabajoPractico />, ["profesor"])} />
           <Route path="/trabajo-practico/:id/entregas" element={guard(<CorregirTrabajoPractico />, ["profesor"])} />
           <Route path="/notas/:profeCursoMateriaId" element={guard(<Notas />, ["profesor"])} />
+          <Route path="/asistencia/:profeCursoMateriaId" element={guard(<Asistencia />, ["profesor"])} />
+          <Route path="/clase/:claseId" element={guard(<TomarAsistencia />, ["profesor"])} />
 
           {/* Alumno + Profesor */}
           <Route path="/verContenido/:contenidoId" element={guard(<VerContenido />, ["alumno", "profesor"])} />

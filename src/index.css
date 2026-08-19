@@ -24,6 +24,13 @@
   --s2:     #F2F3FB;
   --border: #E2E5F0;
 
+  /* Blanco fijo — para texto/íconos sobre un fondo de marca (navy, orange,
+     danger sólido, degradés entre esos) que NO cambia entre temas. Distinto
+     de --white, que es "superficie elevada" y sí se remapea en oscuro: si un
+     botón navy usara var(--white) para su texto, en oscuro ese texto pasaría
+     a ser casi negro sobre el mismo navy. --on-brand siempre es blanco. */
+  --on-brand: #FFFFFF;
+
   /* Text */
   --t1: #07112C;
   --t2: #1E2C4A;

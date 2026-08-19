@@ -22,7 +22,7 @@
 .contenido-card:hover .contenido-icon {
   transform: rotate(-6deg) scale(1.08);
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
 }
 
 .contenido-icon {

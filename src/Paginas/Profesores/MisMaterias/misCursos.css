@@ -43,7 +43,7 @@
   font-family: var(--fd);
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--white);
+  color: var(--on-brand);
   background: var(--danger);
   border-radius: 99px;
   min-width: 22px;
@@ -136,7 +136,7 @@
   height: 32px;
   border-radius: var(--r2);
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   display: inline-flex;
   align-items: center;
   justify-content: center;

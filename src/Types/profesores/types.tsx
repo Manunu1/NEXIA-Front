@@ -141,3 +141,65 @@ export interface typeBoletin {
   notas_finales: typeBoletinNotaFinal[];
   notas_trabajos_practicos: typeBoletinNotaTP[];
 }
+
+// ── Asistencia ───────────────────────────────────────────────
+
+export type EstadoAsistencia = 'presente' | 'ausente' | 'tardanza' | 'justificado';
+
+// Fila del historial de clases (GET /api/clases/profe-curso-materia/:id).
+// Los conteos vienen de un COUNT() de Postgres, que el driver serializa
+// como string — mismo caso que NotaCruda, así que se castean al usarlos.
+export interface typeClaseHistorial {
+  clase_id: number;
+  fecha: string;
+  tema: string | null;
+  observaciones: string | null;
+  lista_cerrada: boolean;
+  presentes: NotaCruda;
+  ausentes: NotaCruda;
+  tardanzas: NotaCruda;
+  justificados: NotaCruda;
+}
+
+// Detalle de una clase puntual (GET /api/clases/:id y GET /api/clases/:id/asistencias)
+export interface typeClaseDetalle {
+  clase_id: number;
+  fecha: string;
+  tema: string | null;
+  observaciones: string | null;
+  lista_cerrada: boolean;
+  fecha_creacion: string;
+  profe_curso_materia_id: number;
+  profesor_id: number;
+  profesor_nombre: string;
+  profesor_apellido: string;
+  materia_id: number;
+  materia_nombre: string;
+  curso_id: number;
+  anio: number;
+  division: string;
+}
+
+// Clase tal como la devuelve el get-or-create (POST /api/clases) — fila
+// cruda de la tabla `clase`, sin los JOIN de materia/profesor.
+export interface typeClaseCreada {
+  id: number;
+  profe_curso_materia_id: number;
+  fecha: string;
+  tema: string | null;
+  observaciones: string | null;
+  lista_cerrada: boolean;
+  fecha_creacion: string;
+}
+
+// Fila de la grilla de asistencia de una clase (GET /api/clases/:id/asistencias)
+export interface typeAsistenciaRoster {
+  alumno_id: number;
+  alumno_nombre: string;
+  alumno_apellido: string;
+  asistencia_id: number | null;
+  estado: EstadoAsistencia;
+  observaciones: string | null;
+  fecha_registro: string | null;
+  fecha_modificacion: string | null;
+}

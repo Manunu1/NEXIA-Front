@@ -149,7 +149,7 @@
 .mc-nodo--principal {
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-m) 100%);
   border-color: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   box-shadow: var(--sh-nv);
 }
 

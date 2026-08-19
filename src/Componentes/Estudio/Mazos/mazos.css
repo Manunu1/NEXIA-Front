@@ -306,7 +306,7 @@
 
 .mz-btn--primary {
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
 }
 
 .mz-btn--primary:hover:not(:disabled) {

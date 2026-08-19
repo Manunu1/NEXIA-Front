@@ -153,7 +153,7 @@
 
 .cal-celda--activa .cal-celda-num {
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   font-weight: 700;
 }
 
@@ -171,9 +171,9 @@
 }
 
 .cal-dot--evento  { background: var(--navy-l); }
-.cal-dot--examen  { background: #C62828; }
+.cal-dot--examen  { background: var(--danger); }
 .cal-dot--entrega { background: var(--orange); }
-.cal-dot--feriado { background: #2E7D32; }
+.cal-dot--feriado { background: var(--ok); }
 
 .cal-sk { height: 340px; }
 
@@ -246,9 +246,9 @@
   background: var(--s1);
 }
 
-.cal-evento--examen  { --cal-accent: #C62828; }
+.cal-evento--examen  { --cal-accent: var(--danger); }
 .cal-evento--entrega { --cal-accent: var(--orange); }
-.cal-evento--feriado { --cal-accent: #2E7D32; }
+.cal-evento--feriado { --cal-accent: var(--ok); }
 
 .cal-evento-info {
   display: flex;
@@ -307,9 +307,9 @@
 .cal-evento-borrar svg { width: 100%; height: 100%; }
 
 .cal-evento-borrar:hover {
-  color: #DC2626;
-  background: #FFF1F1;
-  border-color: rgba(220,38,38,.25);
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-color: var(--danger-bd);
 }
 
 /* ── Selector de tipo (modal) ─────────────── */
@@ -331,9 +331,9 @@
   transition: all 0.18s var(--ease);
 }
 
-.cal-tipo-chip--examen  { --cal-accent: #C62828; }
+.cal-tipo-chip--examen  { --cal-accent: var(--danger); }
 .cal-tipo-chip--entrega { --cal-accent: var(--orange-d); }
-.cal-tipo-chip--feriado { --cal-accent: #2E7D32; }
+.cal-tipo-chip--feriado { --cal-accent: var(--ok); }
 
 .cal-tipo-chip:hover:not(:disabled) { border-color: var(--cal-accent); color: var(--cal-accent); }
 

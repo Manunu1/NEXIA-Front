@@ -30,7 +30,7 @@
   justify-content: flex-end;
   gap: 0.5rem;
   overflow: hidden;
-  color: var(--white);
+  color: var(--on-brand);
 }
 
 /* Inicial gigante como sello de la materia */
@@ -70,7 +70,7 @@
   background: rgba(255,255,255,.16);
   border: 1px solid rgba(255,255,255,.25);
   backdrop-filter: blur(4px);
-  color: var(--white);
+  color: var(--on-brand);
   font-size: 0.68rem;
   font-weight: 700;
   padding: 0.2rem 0.7rem;
@@ -82,7 +82,7 @@
 .cm-title {
   position: relative;
   font-family: var(--fd);
-  color: var(--white);
+  color: var(--on-brand);
   font-size: 1.2rem;
   font-weight: 700;
   margin: 0;

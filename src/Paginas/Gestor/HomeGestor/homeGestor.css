@@ -119,7 +119,7 @@
 .g-kpi-cta:hover {
   background: var(--navy);
   border-color: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
 }
 
 /* ── Charts row ───────────────────────────── */
@@ -388,9 +388,9 @@
 .g-action-icon--orange { background: var(--orange-xs);  color: var(--orange-d); }
 .g-action-icon--indigo { background: rgba(57,73,171,.09); color: var(--navy-l); }
 
-.g-action-card:hover .g-action-icon--navy   { background: var(--navy);   color: var(--white); }
-.g-action-card:hover .g-action-icon--orange { background: var(--orange); color: var(--white); }
-.g-action-card:hover .g-action-icon--indigo { background: var(--navy-l); color: var(--white); }
+.g-action-card:hover .g-action-icon--navy   { background: var(--navy);   color: var(--on-brand); }
+.g-action-card:hover .g-action-icon--orange { background: var(--orange); color: var(--on-brand); }
+.g-action-card:hover .g-action-icon--indigo { background: var(--navy-l); color: var(--on-brand); }
 
 .g-action-body {
   flex: 1;

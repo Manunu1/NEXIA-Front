@@ -205,6 +205,8 @@ export const NAV_BY_ROL: Record<Rol, NavSection[]> = {
             '/crear-trabajo-practico/*',
             '/trabajo-practico/*',
             '/notas/*',
+            '/asistencia/*',
+            '/clase/*',
             '/verContenido/*',
           ],
         },

@@ -42,7 +42,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
+  color: var(--on-brand);
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(26,35,126,.25);
 }
@@ -84,12 +84,12 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.3rem 0.75rem;
-  background: rgba(34,197,94,.07);
-  border: 1px solid rgba(34,197,94,.15);
+  background: var(--ok-bg);
+  border: 1px solid var(--ok-bd);
   border-radius: 99px;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #16A34A;
+  color: var(--ok);
   white-space: nowrap;
 }
 
@@ -327,7 +327,7 @@
 /* User bubble — navy */
 .nia-msg--user .nia-bubble {
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-m) 100%);
-  color: var(--white);
+  color: var(--on-brand);
   border-bottom-right-radius: 4px;
   box-shadow: 0 4px 16px rgba(26,35,126,.18);
 }
@@ -335,11 +335,11 @@
 /* AI bubble — white, más ancha para contenido enriquecido */
 .nia-msg--ai .nia-bubble {
   max-width: 82%;
-  background: linear-gradient(180deg, var(--white) 0%, #FCFCFE 100%);
+  background: var(--white);
   color: var(--t1);
   border: 1px solid var(--border);
   border-bottom-left-radius: 4px;
-  box-shadow: 0 2px 10px rgba(26,35,126,.06), 0 1px 3px rgba(7,17,44,.04);
+  box-shadow: var(--sh-sm);
 }
 
 /* Acento sutil de marca en el borde izquierdo de la respuesta */
@@ -379,8 +379,8 @@
 
 /* Error bubble */
 .nia-bubble--error {
-  background: #FFF1F1 !important;
-  border-color: rgba(198,40,40,.2) !important;
+  background: var(--danger-bg) !important;
+  border-color: var(--danger-bd) !important;
   color: var(--danger) !important;
 }
 
@@ -394,14 +394,14 @@
   font-weight: 700;
   color: var(--danger);
   background: var(--white);
-  border: 1px solid rgba(198,40,40,.25);
+  border: 1px solid var(--danger-bd);
   border-radius: var(--r2);
   transition: all 0.15s ease;
 }
 
 .nia-retry-btn:hover:not(:disabled) {
-  background: #FFF1F1;
-  border-color: rgba(198,40,40,.4);
+  background: var(--danger-bg);
+  border-color: var(--danger);
 }
 
 .nia-retry-btn:disabled {
@@ -467,17 +467,17 @@
 
 .nia-copy-btn--copied {
   opacity: 1;
-  color: #16A34A;
+  color: var(--ok);
 }
 
 .nia-copy-btn--copied:hover {
-  background: rgba(34,197,94,.08);
-  color: #16A34A;
+  background: var(--ok-bg);
+  color: var(--ok);
 }
 
 /* ── Typing indicator ────────────────────────── */
 .nia-bubble--typing {
-  background: linear-gradient(180deg, var(--white) 0%, #FCFCFE 100%) !important;
+  background: var(--white) !important;
   border: 1px solid var(--border) !important;
   padding: 1rem 1.25rem !important;
   display: flex !important;
@@ -486,7 +486,7 @@
   align-items: center !important;
   width: fit-content;
   min-width: 72px;
-  box-shadow: 0 2px 10px rgba(26,35,126,.06) !important;
+  box-shadow: var(--sh-sm) !important;
 }
 
 .nia-bubble--typing span {

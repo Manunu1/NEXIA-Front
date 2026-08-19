@@ -69,6 +69,6 @@
 
 .iv-delete-btn:hover {
   background: var(--danger);
-  color: var(--white);
+  color: var(--on-brand);
   border-color: var(--danger);
 }

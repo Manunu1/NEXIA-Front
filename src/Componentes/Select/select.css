@@ -217,13 +217,13 @@
 
 .nx-sel__menu-portal .nx-sel__option--is-selected {
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   font-weight: 600;
 }
 
 .nx-sel__menu-portal .nx-sel__option--is-selected.nx-sel__option--is-focused {
   background: var(--navy-m);
-  color: var(--white);
+  color: var(--on-brand);
 }
 
 .nx-sel__menu-portal .nx-sel__option--is-disabled {

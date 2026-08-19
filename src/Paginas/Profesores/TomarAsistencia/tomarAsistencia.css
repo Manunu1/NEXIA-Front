@@ -1,0 +1,117 @@
+.ta-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ta-tema-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 480px;
+}
+
+.ta-tema-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--t4);
+}
+
+.ta-tema-input {
+  font-family: var(--fb);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--t1);
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  padding: 0.6rem 0.9rem;
+}
+
+.ta-tema-input:focus {
+  outline: none;
+  border-color: var(--focus-border);
+  box-shadow: var(--focus-ring);
+}
+
+.ta-tema-input:disabled {
+  background: var(--s1);
+  color: var(--t4);
+}
+
+.ta-cerrada-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: var(--s2);
+  color: var(--t4);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.ta-guardar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  background: var(--orange);
+  color: var(--navy-d);
+  border-radius: var(--r2);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: all 0.2s var(--ease);
+  box-shadow: 0 2px 8px rgba(255,152,0,.24);
+}
+
+.ta-guardar-btn:hover:not(:disabled) {
+  background: var(--orange-l);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255,152,0,.38);
+}
+
+.ta-guardar-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.ta-cerrar-btn {
+  padding: 0.45rem 0.875rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--t3);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.ta-cerrar-btn:hover:not(:disabled) {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-color: var(--danger-bd);
+}
+
+.ta-cerrar-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.iv-page .ta-empty {
+  flex: 1;
+  padding: 4rem 1rem;
+}
+
+.iv-page .iv-loading {
+  flex: 1;
+}

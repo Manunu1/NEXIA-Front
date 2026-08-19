@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './materiaTabs.css';
 
-type Tab = 'contenidos' | 'trabajos-practicos' | 'notas';
+type Tab = 'contenidos' | 'trabajos-practicos' | 'asistencia' | 'notas';
 
 interface Props {
   profeCursoMateriaId: string | number;
@@ -13,6 +13,7 @@ const MateriaTabs: React.FC<Props> = ({ profeCursoMateriaId, active }) => {
   const tabs: { key: Tab; label: string; to: string }[] = [
     { key: 'contenidos', label: 'Contenidos', to: `/contenidos/${profeCursoMateriaId}` },
     { key: 'trabajos-practicos', label: 'Trabajos prácticos', to: `/trabajos-practicos/${profeCursoMateriaId}` },
+    { key: 'asistencia', label: 'Asistencia', to: `/asistencia/${profeCursoMateriaId}` },
     { key: 'notas', label: 'Notas', to: `/notas/${profeCursoMateriaId}` },
   ];
 

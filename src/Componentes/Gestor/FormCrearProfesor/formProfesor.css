@@ -223,7 +223,7 @@
   height: 52px;
   border-radius: var(--r3);
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-m) 100%);
-  color: var(--white);
+  color: var(--on-brand);
   display: flex;
   align-items: center;
   justify-content: center;

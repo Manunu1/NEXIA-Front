@@ -95,7 +95,7 @@
 }
 
 .cc-url-hint--ok {
-  color: #2e7d32;
+  color: var(--ok);
   font-weight: 600;
 }
 
@@ -106,9 +106,9 @@
   margin-top: 0.75rem;
   padding: 0.7rem 0.9rem;
   background: var(--orange-xs);
-  border: 1px solid rgba(255,152,0,.22);
+  border: 1px solid var(--warn-bd);
   border-radius: var(--r2);
-  color: #8a5a00;
+  color: var(--warn);
   font-size: 0.8rem;
   line-height: 1.5;
 }
@@ -403,8 +403,8 @@
 }
 
 .cc-drop-zone--error {
-  border-color: #ef5350;
-  background: #fff5f5;
+  border-color: var(--danger);
+  background: var(--danger-bg);
 }
 
 .cc-drop-icon {
@@ -419,7 +419,7 @@
   margin: 0;
 }
 
-.cc-drop-text--error { color: #c62828; }
+.cc-drop-text--error { color: var(--danger); }
 
 .cc-drop-sub {
   font-size: 0.74rem;
@@ -443,9 +443,9 @@
 }
 
 .cc-upload-status--done {
-  background: #f0fdf4;
-  border-color: #a7f3d0;
-  color: #065f46;
+  background: var(--ok-bg);
+  border-color: var(--ok-bd);
+  color: var(--ok);
 }
 
 .cc-upload-name {
@@ -465,7 +465,7 @@
   margin: 0;
 }
 
-.cc-upload-status--done .cc-upload-sub { color: #059669; }
+.cc-upload-status--done .cc-upload-sub { color: var(--ok); }
 
 .cc-upload-remove {
   margin-left: auto;
@@ -481,7 +481,7 @@
   flex-shrink: 0;
 }
 
-.cc-upload-remove:hover { color: #c62828; }
+.cc-upload-remove:hover { color: var(--danger); }
 
 /* ── Shared button classes (also used by Contenidos pages) ── */
 .btn-simple {

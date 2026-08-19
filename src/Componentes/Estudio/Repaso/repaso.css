@@ -169,7 +169,7 @@
   padding: 0.8rem 1.75rem;
   border-radius: var(--r2);
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   font-family: var(--fb);
   font-size: 0.92rem;
   font-weight: 700;
@@ -330,7 +330,7 @@
   padding: 0.7rem 1.75rem;
   border-radius: var(--r2);
   background: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   font-family: var(--fb);
   font-size: 0.88rem;
   font-weight: 700;

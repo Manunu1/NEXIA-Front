@@ -1,0 +1,23 @@
+.iv-page .as-empty {
+  flex: 1;
+  padding: 4rem 1rem;
+}
+
+.iv-page .iv-loading {
+  flex: 1;
+}
+
+.as-error-abrir {
+  margin: 1rem 1.75rem 0;
+}
+
+.as-empty-btn {
+  border: none;
+  cursor: pointer;
+  font-family: var(--fb);
+}
+
+.as-empty-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

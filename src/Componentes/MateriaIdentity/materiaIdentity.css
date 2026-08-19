@@ -12,7 +12,7 @@
   width: 34px;
   height: 34px;
   border-radius: var(--r2);
-  color: var(--white);
+  color: var(--on-brand);
   font-family: var(--fd);
   font-size: 0.95rem;
   font-weight: 800;

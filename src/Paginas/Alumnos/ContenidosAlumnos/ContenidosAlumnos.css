@@ -141,8 +141,8 @@
 .iv-error {
   padding: 1.5rem;
   font-size: 0.82rem;
-  color: #c62828;
-  background: #fff1f1;
+  color: var(--danger);
+  background: var(--danger-bg);
   margin: 0.75rem;
   border-radius: var(--r2);
 }

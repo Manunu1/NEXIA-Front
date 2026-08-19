@@ -324,7 +324,7 @@
   font-family: var(--fd);
   font-size: 1.25rem;
   font-weight: 800;
-  color: var(--white);
+  color: var(--on-brand);
   letter-spacing: -0.5px;
 }
 
@@ -340,7 +340,7 @@
   border: none;
   border-radius: var(--r2);
   background: var(--navy-d);
-  color: var(--white);
+  color: var(--on-brand);
   cursor: pointer;
   align-items: center;
   justify-content: center;

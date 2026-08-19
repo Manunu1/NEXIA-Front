@@ -51,7 +51,7 @@
 }
 
 .ttp-card--corregido {
-  --ttp-accent: #16A34A;
+  --ttp-accent: var(--ok);
   --ttp-tint: var(--ok-bg);
 }
 
@@ -102,9 +102,9 @@
   font-size: 0.78rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: #16A34A;
+  color: var(--ok);
   background: var(--ok-bg);
-  border: 1px solid rgba(46,125,50,.2);
+  border: 1px solid var(--ok-bd);
   border-radius: 99px;
   padding: 0.05rem 0.55rem;
 }
@@ -164,7 +164,7 @@
 
 .ttp-card:hover .ttp-accion {
   background: var(--ttp-accent);
-  color: var(--white);
+  color: var(--on-brand);
 }
 
 .ttp-card--sin-entrega:hover .ttp-accion,

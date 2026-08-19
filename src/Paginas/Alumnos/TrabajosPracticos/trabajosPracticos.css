@@ -29,7 +29,7 @@
 .tpa-filtro-btn--active {
   background: var(--navy);
   border-color: var(--navy);
-  color: var(--white);
+  color: var(--on-brand);
   box-shadow: var(--sh-glow-navy);
 }
 

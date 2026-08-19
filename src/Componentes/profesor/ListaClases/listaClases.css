@@ -1,0 +1,122 @@
+.lc-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.lc-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.875rem 1.25rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-sm);
+  text-decoration: none;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), border-color 0.2s;
+  animation: fadeInUp var(--dur-md) var(--ease) both;
+}
+
+.lc-row:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-md);
+  border-color: var(--navy-xs);
+}
+
+.lc-fecha {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  background: var(--navy-ghost);
+  border-radius: var(--r2);
+}
+
+.lc-fecha-dia {
+  font-family: var(--fd);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.1;
+}
+
+.lc-fecha-mes {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--navy-l);
+}
+
+.lc-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.lc-tema {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--t1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lc-sub {
+  font-size: 0.76rem;
+  color: var(--t4);
+}
+
+.lc-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.lc-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.lc-badge--ausente { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-bd); }
+.lc-badge--tardanza { background: var(--orange-xs); color: var(--orange-d); border: 1px solid rgba(255,152,0,.22); }
+.lc-badge--justificado { background: var(--navy-ghost); color: var(--navy); border: 1px solid var(--navy-xs); }
+.lc-badge--abierta { background: var(--ok-bg); color: var(--ok); border: 1px solid var(--ok-bd); }
+.lc-badge--cerrada { background: var(--s2); color: var(--t4); border: 1px solid var(--border); }
+
+.lc-chevron {
+  color: var(--t4);
+  flex-shrink: 0;
+  transition: transform 0.2s var(--ease);
+}
+
+.lc-row:hover .lc-chevron {
+  transform: translateX(3px);
+  color: var(--navy);
+}
+
+@media (max-width: 640px) {
+  .lc-row {
+    flex-wrap: wrap;
+  }
+  .lc-badges {
+    width: 100%;
+    justify-content: flex-start;
+    margin-left: 68px;
+  }
+}
