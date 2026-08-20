@@ -2,6 +2,7 @@ import React, { useId } from 'react';
 import type { AvatarExpresion, AvatarFrame, AvatarSize } from '../../Types/perfil';
 import { mezclar, pxAvatar } from '../../utils/avatar';
 import { CIRCUITO, CUELLO, ESCOTE, MIRADA_PENSANDO, REMERA } from '../NexiaAvatar/paths';
+import { Chispas } from '../NexiaAvatar/piezas';
 import {
   ANTENA,
   BOCA_PENSANDO,
@@ -81,12 +82,28 @@ const NexiaMascota: React.FC<NexiaMascotaProps> = ({
   const viewBox =
     frame === 'full' ? '0 0 160 240' : frame === 'head' ? '18 12 124 124' : '0 14 160 160';
 
+  // Nexo tiene los mismos gestos que el retrato, resueltos con sus propias
+  // piezas: si el compañero celebra con tu avatar pero no con Nexo, deja de
+  // ser el mismo personaje para quien todavía no armó el suyo.
   const pensando = expresion === 'pensando';
+  const celebra = expresion === 'celebrando';
+  const bocaAbierta = expresion === 'alegre' || celebra;
+  const bocaQuieta = pensando || expresion === 'concentrado';
   const mirada = pensando ? MIRADA_PENSANDO : { dx: 0, dy: 0 };
+
+  const clases = [
+    'nx-mascota',
+    `nx-mascota--${frame}`,
+    animado && 'nx-mascota--viva',
+    animado && celebra && 'nx-mascota--celebra',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <span
-      className={`nx-mascota nx-mascota--${frame}${animado ? ' nx-mascota--viva' : ''} ${className}`.trim()}
+      className={clases}
       style={{ width: ancho, height: alto }}
     >
       <svg
@@ -258,9 +275,9 @@ const NexiaMascota: React.FC<NexiaMascotaProps> = ({
             );
           })}
 
-          {expresion === 'alegre' && <path d={SONRISA_ALEGRE} fill={NAVY_D} />}
+          {bocaAbierta && <path d={SONRISA_ALEGRE} fill={NAVY_D} />}
 
-          {pensando && (
+          {bocaQuieta && (
             <path
               d={BOCA_PENSANDO}
               fill="none"
@@ -270,7 +287,7 @@ const NexiaMascota: React.FC<NexiaMascotaProps> = ({
             />
           )}
 
-          {!pensando && expresion !== 'alegre' && (
+          {!bocaQuieta && !bocaAbierta && (
             <path
               d={SONRISA}
               fill="none"
@@ -283,6 +300,9 @@ const NexiaMascota: React.FC<NexiaMascotaProps> = ({
           {/* Reflejo — va al final para cruzar por encima de la cara */}
           <path d={BRILLO_VISOR} fill="#FFFFFF" opacity="0.22" />
         </g>
+
+        {/* Las mismas chispas que el retrato: un logro se festeja igual */}
+        {celebra && <Chispas />}
       </svg>
     </span>
   );

@@ -1,9 +1,12 @@
 import type {
   AvatarConfig,
   AvatarSize,
+  FondoAvatar,
   GlassesStyle,
   HairStyle,
   HatStyle,
+  MarcaRostro,
+  VelloFacial,
 } from '../Types/perfil';
 
 /* ─────────────────────────────────────────────
@@ -28,37 +31,56 @@ export interface OpcionColor {
 
 /** Tonos de piel — progresión perceptual, de claro a oscuro. */
 export const PIELES: OpcionColor[] = [
+  { value: '#FBE0C8', label: 'Porcelana' },
   { value: '#F5D0B0', label: 'Claro' },
   { value: '#EFC09A', label: 'Beige' },
+  { value: '#E3AE85', label: 'Arena' },
   { value: '#DBA478', label: 'Dorado' },
+  { value: '#C68A5C', label: 'Miel' },
   { value: '#B87C4F', label: 'Canela' },
+  { value: '#9C6640', label: 'Almendra' },
   { value: '#8A5A33', label: 'Cobre' },
+  { value: '#6E4526', label: 'Caoba' },
   { value: '#5A3A1F', label: 'Oscuro' },
+  { value: '#3F2716', label: 'Ébano' },
 ];
 
 export const ESTILOS_PELO: Opcion<HairStyle>[] = [
   { value: 'corto', label: 'Corto' },
   { value: 'medio', label: 'Medio' },
   { value: 'largo', label: 'Largo' },
+  { value: 'ondulado', label: 'Ondulado' },
+  { value: 'bob', label: 'Bob' },
   { value: 'rizado', label: 'Rizado' },
+  { value: 'coleta', label: 'Coleta' },
+  { value: 'rodete', label: 'Rodete' },
+  { value: 'trenzas', label: 'Trenzas' },
   { value: 'rapado', label: 'Rapado' },
 ];
 
 /** Colores de pelo — naturales primero, fantasía después. */
 export const COLORES_PELO: OpcionColor[] = [
   { value: '#1C1A1A', label: 'Negro' },
+  { value: '#3A2418', label: 'Castaño oscuro' },
   { value: '#4A2C1A', label: 'Castaño' },
+  { value: '#7A4A24', label: 'Castaño claro' },
+  { value: '#A9662F', label: 'Caoba' },
   { value: '#D9A441', label: 'Rubio' },
+  { value: '#EBD7A6', label: 'Platinado' },
   { value: '#B4462A', label: 'Pelirrojo' },
   { value: '#9AA3B2', label: 'Gris' },
   { value: '#2C6BD1', label: 'Azul' },
+  { value: '#3FA795', label: 'Turquesa' },
   { value: '#E5559B', label: 'Rosa' },
   { value: '#8B4FD1', label: 'Violeta' },
+  { value: '#6BAF4A', label: 'Verde' },
 ];
 
 export const COLORES_OJOS: OpcionColor[] = [
   { value: '#6B4423', label: 'Marrón' },
+  { value: '#3E2A18', label: 'Marrón oscuro' },
   { value: '#4A80C4', label: 'Azul' },
+  { value: '#79B3D9', label: 'Celeste' },
   { value: '#4C8B5A', label: 'Verde' },
   { value: '#78889B', label: 'Gris' },
   { value: '#A97C3F', label: 'Avellana' },
@@ -70,6 +92,8 @@ export const LENTES: Opcion<GlassesStyle | null>[] = [
   { value: null, label: 'Ninguno' },
   { value: 'redondos', label: 'Redondos' },
   { value: 'cuadrados', label: 'Cuadrados' },
+  { value: 'gato', label: 'Cat eye' },
+  { value: 'aviador', label: 'Aviador' },
   { value: 'sol', label: 'De sol' },
 ];
 
@@ -77,13 +101,51 @@ export const SOMBREROS: Opcion<HatStyle | null>[] = [
   { value: null, label: 'Ninguno' },
   { value: 'nexia', label: 'Gorro NEXIA' },
   { value: 'gorra', label: 'Gorra' },
+  { value: 'beanie', label: 'Gorro de lana' },
   { value: 'vincha', label: 'Vincha' },
+  { value: 'auriculares', label: 'Auriculares' },
+  { value: 'birrete', label: 'Birrete' },
+];
+
+/** Vello facial — null primero, igual que el resto de los accesorios. */
+export const VELLOS: Opcion<VelloFacial | null>[] = [
+  { value: null, label: 'Ninguno' },
+  { value: 'bigote', label: 'Bigote' },
+  { value: 'candado', label: 'Candado' },
+  { value: 'barba', label: 'Barba' },
+];
+
+export const MARCAS: Opcion<MarcaRostro | null>[] = [
+  { value: null, label: 'Ninguna' },
+  { value: 'pecas', label: 'Pecas' },
+  { value: 'lunar', label: 'Lunar' },
 ];
 
 export const COLORES_REMERA: OpcionColor[] = [
   { value: '#1A237E', label: 'Índigo' },
+  { value: '#283593', label: 'Azul' },
+  { value: '#3949AB', label: 'Azul claro' },
   { value: '#E0F2F1', label: 'Menta' },
+  { value: '#F8F9FC', label: 'Blanco' },
   { value: '#FF9800', label: 'Naranja' },
+  { value: '#C62828', label: 'Rojo' },
+  { value: '#2E7D32', label: 'Verde' },
+  { value: '#6A4FB6', label: 'Violeta' },
+  { value: '#0D1654', label: 'Noche' },
+];
+
+/**
+ * Fondos del retrato. Los colores reales viven en nexiaAvatar.css —acá sólo
+ * el catálogo— porque cada fondo necesita su versión clara y su versión
+ * oscura, y eso lo resuelve el tema, no la config del usuario.
+ */
+export const FONDOS: Opcion<FondoAvatar>[] = [
+  { value: 'aurora', label: 'Aurora' },
+  { value: 'menta', label: 'Menta' },
+  { value: 'atardecer', label: 'Atardecer' },
+  { value: 'indigo', label: 'Índigo' },
+  { value: 'rosa', label: 'Rosa' },
+  { value: 'liso', label: 'Liso' },
 ];
 
 /* ── Tamaños ───────────────────────────────── */
@@ -110,6 +172,9 @@ export const AVATAR_POR_DEFECTO: AvatarConfig = {
   eyes: '#6B4423',
   accessories: { glasses: null, hat: null },
   shirt_color: '#1A237E',
+  facial_hair: null,
+  marks: null,
+  backdrop: 'aurora',
 };
 
 /* ── Color ─────────────────────────────────── */
@@ -141,6 +206,19 @@ export function mezclar(hex: string, factor: number): string {
   const objetivo = factor > 0 ? 255 : 0;
   const t = Math.abs(factor);
   return `#${aHex(r + (objetivo - r) * t)}${aHex(g + (objetivo - g) * t)}${aHex(b + (objetivo - b) * t)}`;
+}
+
+/**
+ * Mezcla dos colores. Se usa para derivar rasgos del tono elegido —labios,
+ * rubor, vello— sin agregar colores sueltos a la paleta: un labio "rosa fijo"
+ * sobre piel oscura se ve pintado, y sobre piel clara, ausente.
+ */
+export function tenir(hex: string, objetivo: string, t: number): string {
+  if (!esHexValido(hex) || !esHexValido(objetivo)) return hex;
+  const a = aRgb(hex);
+  const b = aRgb(objetivo);
+  const k = Math.max(0, Math.min(1, t));
+  return `#${aHex(a[0] + (b[0] - a[0]) * k)}${aHex(a[1] + (b[1] - a[1]) * k)}${aHex(a[2] + (b[2] - a[2]) * k)}`;
 }
 
 /** Luminancia relativa (0 = negro, 1 = blanco). */
@@ -211,6 +289,9 @@ export function normalizarAvatar(entrada: unknown): AvatarConfig {
       hat: enLista(acc.hat ?? null, SOMBREROS, null),
     },
     shirt_color: colorValido(c.shirt_color, AVATAR_POR_DEFECTO.shirt_color),
+    facial_hair: enLista(c.facial_hair ?? null, VELLOS, null),
+    marks: enLista(c.marks ?? null, MARCAS, null),
+    backdrop: enLista(c.backdrop, FONDOS, 'aurora'),
   };
 }
 
@@ -236,5 +317,8 @@ export function avatarAleatorio(): AvatarConfig {
       hat: Math.random() < 0.3 ? alAzar(SOMBREROS.slice(1)).value : null,
     },
     shirt_color: alAzar(COLORES_REMERA).value,
+    facial_hair: Math.random() < 0.25 ? alAzar(VELLOS.slice(1)).value : null,
+    marks: Math.random() < 0.3 ? alAzar(MARCAS.slice(1)).value : null,
+    backdrop: alAzar(FONDOS).value,
   };
 }

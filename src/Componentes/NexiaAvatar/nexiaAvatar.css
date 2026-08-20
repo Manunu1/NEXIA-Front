@@ -1,12 +1,22 @@
 /* ─────────────────────────────────────────────
-   NEXIA AVATAR — sólo encuadre y tipografía.
-   Los colores de la figura viven en el SVG: el
+   NEXIA AVATAR — encuadre, atmósfera y vida.
+
+   Los colores de la FIGURA viven en el SVG: el
    avatar debe verse idéntico en claro y oscuro.
-   Lo único que sigue al tema es el fondo.
+   Lo único que sigue al tema es el fondo, y por eso
+   las seis atmósferas se definen acá y no en la
+   config: cada una necesita su versión clara y su
+   versión oscura, y eso lo decide el tema, no el
+   usuario.
+
+   Todo el movimiento vive detrás de .nx-avatar--vivo.
+   Un avatar en un listado no se mueve: treinta caras
+   respirando convierten una lista en un carrusel.
 ───────────────────────────────────────────── */
 .nx-avatar {
   --nx-avatar-bg1: #EEF1FB;
   --nx-avatar-bg2: #E2F1EF;
+  --nx-avatar-halo: #E0F2F1;
 
   display: inline-block;
   flex-shrink: 0;
@@ -27,7 +37,281 @@
   user-select: none;
 }
 
-html[data-theme='oscuro'] .nx-avatar {
+/* ── Atmósferas ────────────────────────────────
+   Seis fondos de la paleta de marca. Ninguno es
+   saturado: el fondo tiene que sostener el retrato,
+   no competir con él.
+───────────────────────────────────────────── */
+.nx-avatar[data-fondo='aurora'] {
+  --nx-avatar-bg1: #EEF1FB;
+  --nx-avatar-bg2: #E2F1EF;
+  --nx-avatar-halo: #E0F2F1;
+}
+
+.nx-avatar[data-fondo='menta'] {
+  --nx-avatar-bg1: #E6F4F1;
+  --nx-avatar-bg2: #D5EDE8;
+  --nx-avatar-halo: #FFFFFF;
+}
+
+.nx-avatar[data-fondo='atardecer'] {
+  --nx-avatar-bg1: #FFF3E0;
+  --nx-avatar-bg2: #FFE3C4;
+  --nx-avatar-halo: #FFFFFF;
+}
+
+.nx-avatar[data-fondo='indigo'] {
+  --nx-avatar-bg1: #E8EAF6;
+  --nx-avatar-bg2: #D6DAF0;
+  --nx-avatar-halo: #F4F5FD;
+}
+
+.nx-avatar[data-fondo='rosa'] {
+  --nx-avatar-bg1: #FBEDF3;
+  --nx-avatar-bg2: #F3DCE8;
+  --nx-avatar-halo: #FFFFFF;
+}
+
+.nx-avatar[data-fondo='liso'] {
+  --nx-avatar-bg1: #F4F5FA;
+  --nx-avatar-bg2: #ECEEF6;
+  --nx-avatar-halo: #FFFFFF;
+}
+
+html[data-theme='oscuro'] .nx-avatar[data-fondo='aurora'] {
   --nx-avatar-bg1: #202942;
   --nx-avatar-bg2: #1B3038;
+  --nx-avatar-halo: #2C4A50;
+}
+
+html[data-theme='oscuro'] .nx-avatar[data-fondo='menta'] {
+  --nx-avatar-bg1: #1C3B38;
+  --nx-avatar-bg2: #16302E;
+  --nx-avatar-halo: #2E5A55;
+}
+
+html[data-theme='oscuro'] .nx-avatar[data-fondo='atardecer'] {
+  --nx-avatar-bg1: #33261A;
+  --nx-avatar-bg2: #241B14;
+  --nx-avatar-halo: #5A3F1E;
+}
+
+html[data-theme='oscuro'] .nx-avatar[data-fondo='indigo'] {
+  --nx-avatar-bg1: #232A4C;
+  --nx-avatar-bg2: #1A1F3A;
+  --nx-avatar-halo: #39406B;
+}
+
+html[data-theme='oscuro'] .nx-avatar[data-fondo='rosa'] {
+  --nx-avatar-bg1: #32222C;
+  --nx-avatar-bg2: #241820;
+  --nx-avatar-halo: #56374A;
+}
+
+html[data-theme='oscuro'] .nx-avatar[data-fondo='liso'] {
+  --nx-avatar-bg1: #1E2337;
+  --nx-avatar-bg2: #191D2E;
+  --nx-avatar-halo: #2B3149;
+}
+
+/* ─────────────────────────────────────────────
+   VIDA
+
+   Cuatro gestos que nunca coinciden en el tiempo:
+   respiración, balanceo, parpadeo y deriva de la
+   mirada. Los ciclos los define cada instancia
+   (ver vida.ts) para que dos avatares en pantalla
+   no parpadeen en el mismo frame.
+───────────────────────────────────────────── */
+.nx-avatar--vivo .nx-a-cuerpo {
+  transform-origin: 80px 240px;
+  animation: nxAvRespira var(--nx-ciclo-respiro, 4.2s) ease-in-out infinite;
+  will-change: transform;
+}
+
+.nx-avatar--vivo .nx-a-cabeza {
+  transform-origin: 80px 136px;
+  animation: nxAvVaiven var(--nx-ciclo-vaiven, 7.5s) ease-in-out var(--nx-retardo-vaiven, 0s) infinite;
+}
+
+/* El párpado baja de verdad —no es un scaleY del ojo—: por eso el parpadeo
+   se lee como un parpadeo y no como un ojo que se aplasta. Dos cierres por
+   ciclo, el segundo más corto, que es como parpadea una persona. */
+.nx-avatar--vivo .nx-a-parpado {
+  animation: nxAvParpadeo var(--nx-ciclo-parpadeo, 5.4s) linear var(--nx-retardo-parpadeo, 0s) infinite;
+}
+
+/* Deriva de la mirada: microdesplazamientos del iris cuando nadie interactúa.
+   Es el detalle que evita la "mirada de maniquí". */
+.nx-avatar--vivo .nx-a-iris {
+  animation: nxAvDeriva 9s ease-in-out infinite;
+}
+
+.nx-avatar--vivo .nx-a-mechon {
+  transform-origin: 104px 64px;
+  animation: nxAvMechon var(--nx-ciclo-vaiven, 7.5s) ease-in-out var(--nx-retardo-vaiven, 0s) infinite;
+}
+
+.nx-avatar--vivo .nx-a-halo {
+  transform-origin: 132px 46px;
+  animation: nxAvHalo 7s ease-in-out infinite;
+}
+
+.nx-avatar--vivo .nx-a-led {
+  animation: nxAvLed 2.4s ease-in-out infinite;
+}
+
+.nx-avatar--vivo .nx-a-borla {
+  transform-origin: 139px 41px;
+  animation: nxAvBorla var(--nx-ciclo-vaiven, 7.5s) ease-in-out var(--nx-retardo-vaiven, 0s) infinite;
+}
+
+/* ── Mirada dirigida ───────────────────────────
+   Las variables las escribe vida.ts sobre el nodo.
+   La transición es lo que convierte el salto entre
+   frames en un seguimiento suave.
+───────────────────────────────────────────── */
+.nx-a-mirada {
+  transform: translate(var(--nx-ojo-x, 0px), var(--nx-ojo-y, 0px));
+  transition: transform 0.28s cubic-bezier(.16, 1, .3, 1);
+}
+
+.nx-avatar--interactivo .nx-a-cabeza {
+  rotate: var(--nx-cabeza-rot, 0deg);
+  transition: rotate 0.5s cubic-bezier(.16, 1, .3, 1);
+}
+
+/* Al pasar el mouse la figura se acerca apenas. No es decoración: es la
+   señal de que el avatar responde, y es lo que invita a tocarlo. */
+.nx-avatar--interactivo svg {
+  transition: transform var(--dur-md, .32s) var(--ease, ease);
+}
+
+.nx-avatar--interactivo:hover svg {
+  transform: scale(1.035);
+}
+
+/* ── Celebración ───────────────────────────────
+   El único gesto que ocupa más espacio del que le
+   corresponde, y sólo dura lo que dura un logro.
+───────────────────────────────────────────── */
+.nx-avatar--celebra .nx-a-cuerpo {
+  animation:
+    nxAvRespira var(--nx-ciclo-respiro, 4.2s) ease-in-out infinite,
+    nxAvSalto 1.6s cubic-bezier(.34, 1.56, .64, 1) infinite;
+}
+
+.nx-a-chispas path {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+}
+
+.nx-avatar--celebra .nx-a-chispas path {
+  animation: nxAvChispa 1.6s ease-out infinite;
+}
+
+/* ── Keyframes ─────────────────────────────────
+   Prefijo nxAv: los @keyframes son globales y Nexo
+   tiene los suyos con nombres parecidos. Sin el
+   prefijo, la última hoja cargada le pisaba el
+   parpadeo a la mascota.
+
+   nxAvSalto y nxAvChispa los reusa nexiaMascota.css
+   a propósito: es la MISMA celebración.
+───────────────────────────────────────────── */
+@keyframes nxAvRespira {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50%      { transform: translateY(-1.4px) scaleY(1.006); }
+}
+
+@keyframes nxAvVaiven {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  28%      { transform: translate(-0.9px, -1.1px) rotate(-1.15deg); }
+  62%      { transform: translate(1px, -0.6px) rotate(1.05deg); }
+}
+
+/* El valor de traslación es PARPADEO_Y (paths.ts): lo justo para que el
+   párpado tape la almendra entera y ni un punto más. */
+@keyframes nxAvParpadeo {
+  0%, 52%     { transform: translateY(0); }
+  53.2%       { transform: translateY(13px); }
+  54.6%       { transform: translateY(0); }
+  96%         { transform: translateY(0); }
+  97%         { transform: translateY(13px); }
+  98.2%       { transform: translateY(0); }
+  100%        { transform: translateY(0); }
+}
+
+@keyframes nxAvDeriva {
+  0%, 100% { transform: translate(0, 0); }
+  22%      { transform: translate(0.9px, -0.35px); }
+  48%      { transform: translate(-0.7px, 0.3px); }
+  74%      { transform: translate(0.35px, 0.5px); }
+}
+
+@keyframes nxAvMechon {
+  0%, 100% { transform: rotate(0deg); }
+  30%      { transform: rotate(2.2deg); }
+  65%      { transform: rotate(-1.8deg); }
+}
+
+@keyframes nxAvHalo {
+  0%, 100% { transform: scale(1); opacity: 0.34; }
+  50%      { transform: scale(1.07); opacity: 0.46; }
+}
+
+@keyframes nxAvLed {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+@keyframes nxAvBorla {
+  0%, 100% { transform: rotate(0deg); }
+  35%      { transform: rotate(5deg); }
+  70%      { transform: rotate(-4deg); }
+}
+
+@keyframes nxAvSalto {
+  0%, 60%, 100% { transform: translateY(0); }
+  18%           { transform: translateY(-5px); }
+  34%           { transform: translateY(1px); }
+  46%           { transform: translateY(-2px); }
+}
+
+@keyframes nxAvChispa {
+  0%      { opacity: 0; transform: scale(0.2) translateY(4px); }
+  25%     { opacity: 1; transform: scale(1.05) translateY(0); }
+  55%     { opacity: 0.9; transform: scale(0.95) translateY(-3px); }
+  100%    { opacity: 0; transform: scale(0.3) translateY(-12px); }
+}
+
+/* ─────────────────────────────────────────────
+   Movimiento reducido: se apaga TODO el movimiento
+   ambiental. Las expresiones siguen leyéndose
+   porque son forma, no animación.
+───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .nx-avatar--vivo .nx-a-cuerpo,
+  .nx-avatar--vivo .nx-a-cabeza,
+  .nx-avatar--vivo .nx-a-parpado,
+  .nx-avatar--vivo .nx-a-iris,
+  .nx-avatar--vivo .nx-a-mechon,
+  .nx-avatar--vivo .nx-a-halo,
+  .nx-avatar--vivo .nx-a-led,
+  .nx-avatar--vivo .nx-a-borla,
+  .nx-avatar--celebra .nx-a-cuerpo,
+  .nx-avatar--celebra .nx-a-chispas path {
+    animation: none;
+  }
+
+  .nx-avatar--celebra .nx-a-chispas path { opacity: 1; }
+
+  .nx-a-mirada,
+  .nx-avatar--interactivo .nx-a-cabeza,
+  .nx-avatar--interactivo svg {
+    transition: none;
+  }
+
+  .nx-avatar--interactivo:hover svg { transform: none; }
 }

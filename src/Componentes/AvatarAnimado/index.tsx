@@ -23,8 +23,10 @@ interface AvatarAnimadoProps {
   size?: AvatarSize | number;
   frame?: AvatarFrame;
   expresion?: AvatarExpresion;
-  /** Vida propia. Sólo la respeta Nexo: un retrato no respira. */
+  /** Vida propia: respira, parpadea y se balancea. La respetan los dos. */
   animado?: boolean;
+  /** La mirada sigue al puntero. Sólo el retrato: Nexo mira siempre de frente. */
+  interactivo?: boolean;
   backdrop?: boolean;
   className?: string;
   alt?: string;
@@ -36,6 +38,7 @@ const AvatarAnimado: React.FC<AvatarAnimadoProps> = ({
   frame = 'circle',
   expresion = 'normal',
   animado = false,
+  interactivo = false,
   backdrop = true,
   className = '',
   alt,
@@ -49,6 +52,8 @@ const AvatarAnimado: React.FC<AvatarAnimadoProps> = ({
         size={size}
         frame={frame}
         expresion={expresion}
+        animado={animado}
+        interactivo={interactivo}
         backdrop={backdrop}
         className={className}
         alt={alt}

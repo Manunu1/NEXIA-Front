@@ -132,8 +132,17 @@ const ImagenPerfil: React.FC<Props> = ({ perfil, onActualizado }) => {
       {/* ── Estado actual ── */}
       <div className="cfg-imagen-actual">
         <div className="cfg-imagen-stage">
+          {/* Es TU cara y es la pieza principal de la pantalla: acá el avatar
+              respira y te sigue con la mirada. En un listado, no. */}
           {imagen.type === 'avatar' ? (
-            <NexiaAvatar config={imagen.config} size={180} frame="full" alt="Tu avatar actual" />
+            <NexiaAvatar
+              config={imagen.config}
+              size={180}
+              frame="full"
+              animado
+              interactivo
+              alt="Tu avatar actual"
+            />
           ) : (
             <ProfileImage
               usuario={perfil}

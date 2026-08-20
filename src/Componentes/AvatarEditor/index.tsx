@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Modal from '../Modal';
 import NexiaAvatar from '../NexiaAvatar';
-import type { AvatarConfig, GlassesStyle, HairStyle, HatStyle } from '../../Types/perfil';
+import type {
+  AvatarConfig,
+  AvatarExpresion,
+  FondoAvatar,
+  GlassesStyle,
+  HairStyle,
+  HatStyle,
+  MarcaRostro,
+  VelloFacial,
+} from '../../Types/perfil';
 import {
   AVATAR_POR_DEFECTO,
   COLORES_OJOS,
   COLORES_PELO,
   COLORES_REMERA,
   ESTILOS_PELO,
+  FONDOS,
   LENTES,
+  MARCAS,
   PIELES,
   SOMBREROS,
+  VELLOS,
   avatarAleatorio,
   normalizarAvatar,
   type OpcionColor,
@@ -26,9 +38,16 @@ import './avatarEditor.css';
    "Cancelar" es realmente descartar y el padre no
    tiene que revertir nada.
 
-   Cada miniatura muestra el avatar del usuario con
-   esa opción puesta —no un ícono genérico—, que es
-   lo que hace que elegir sea inmediato.
+   Dos decisiones de experiencia:
+
+   · Cada miniatura muestra el avatar del usuario con
+     esa opción puesta —no un ícono genérico—, que es
+     lo que hace que elegir sea inmediato.
+
+   · Las opciones se agrupan en tres pasos (Rostro,
+     Pelo, Estilo) en vez de once secciones apiladas.
+     Con catorce colores de pelo y siete sombreros,
+     la lista corrida obligaba a scrollear a ciegas.
 ───────────────────────────────────────────── */
 
 interface AvatarEditorProps {
@@ -81,6 +100,8 @@ interface MiniaturasProps<T> {
   /** Config resultante de elegir esa opción — alimenta la miniatura. */
   preview: (valor: T) => AvatarConfig;
   onChange: (valor: T) => void;
+  /** Sólo para el fondo: es la única opción que se ve por detrás de la figura. */
+  conFondo?: boolean;
 }
 
 function Miniaturas<T extends string | null>({
@@ -89,6 +110,7 @@ function Miniaturas<T extends string | null>({
   etiqueta,
   preview,
   onChange,
+  conFondo = false,
 }: MiniaturasProps<T>) {
   return (
     <div className="ave-minis" role="radiogroup" aria-label={etiqueta}>
@@ -101,13 +123,44 @@ function Miniaturas<T extends string | null>({
           className={`ave-mini${valor === o.value ? ' is-active' : ''}`}
           onClick={() => onChange(o.value)}
         >
-          <NexiaAvatar config={preview(o.value)} size={56} frame="head" backdrop={false} />
+          <NexiaAvatar
+            config={preview(o.value)}
+            size={56}
+            frame="head"
+            backdrop={conFondo}
+            className="ave-mini-cara"
+          />
           <span className="ave-mini-label">{o.label}</span>
         </button>
       ))}
     </div>
   );
 }
+
+/* ── Pasos ─────────────────────────────────── */
+
+const PASOS = [
+  { id: 'rostro', label: 'Rostro' },
+  { id: 'pelo', label: 'Pelo' },
+  { id: 'estilo', label: 'Estilo' },
+] as const;
+
+type PasoId = (typeof PASOS)[number]['id'];
+
+/* ── Expresiones de prueba ─────────────────────
+   No se guardan: son un banco de pruebas. Que el
+   usuario vea que su avatar celebra y se concentra
+   es lo que lo vuelve un personaje y no una foto.
+───────────────────────────────────────────── */
+
+const EXPRESIONES: { value: AvatarExpresion; label: string }[] = [
+  { value: 'normal', label: 'Neutra' },
+  { value: 'alegre', label: 'Alegre' },
+  { value: 'guino', label: 'Guiño' },
+  { value: 'pensando', label: 'Pensando' },
+  { value: 'celebrando', label: 'Celebrando' },
+  { value: 'concentrado', label: 'Concentrada' },
+];
 
 /* ── Editor ────────────────────────────────── */
 
@@ -125,12 +178,34 @@ const Contenido: React.FC<Omit<AvatarEditorProps, 'open'>> = ({
   const [cfg, setCfg] = useState<AvatarConfig>(() =>
     configInicial ? normalizarAvatar(configInicial) : { ...AVATAR_POR_DEFECTO }
   );
+  const [paso, setPaso] = useState<PasoId>('rostro');
+  const [expresion, setExpresion] = useState<AvatarExpresion>('normal');
+  // Cambia en cada sorteo para remontar la previa y relanzar su animación
+  // de entrada: sin eso, "Aleatorio" cambia colores sin que pase nada.
+  const [pulso, setPulso] = useState(0);
+  const tabs = useRef<HTMLDivElement>(null);
 
   const setPelo = (parcial: Partial<AvatarConfig['hair']>) =>
     setCfg((c) => ({ ...c, hair: { ...c.hair, ...parcial } }));
 
   const setAccesorio = (parcial: Partial<AvatarConfig['accessories']>) =>
     setCfg((c) => ({ ...c, accessories: { ...c.accessories, ...parcial } }));
+
+  const sortear = () => {
+    setCfg(avatarAleatorio());
+    setPulso((p) => p + 1);
+  };
+
+  // Flechas entre pasos: un tablist sin teclado no es un tablist.
+  const navegarTabs = (e: React.KeyboardEvent) => {
+    const dir = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (!dir) return;
+    e.preventDefault();
+    const i = PASOS.findIndex((p) => p.id === paso);
+    const siguiente = PASOS[(i + dir + PASOS.length) % PASOS.length];
+    setPaso(siguiente.id);
+    tabs.current?.querySelector<HTMLButtonElement>(`#ave-tab-${siguiente.id}`)?.focus();
+  };
 
   return (
     <div className="ave">
@@ -155,86 +230,185 @@ const Contenido: React.FC<Omit<AvatarEditorProps, 'open'>> = ({
       <div className="ave-body">
         {/* ── Vista previa ── */}
         <div className="ave-preview">
-          <div className="ave-preview-stage">
-            <NexiaAvatar config={cfg} size={240} frame="full" alt="Vista previa de tu avatar" />
+          <div className="ave-preview-stage" key={pulso}>
+            {/* 190 y no más: la previa, los seis gestos y el sorteo tienen
+                que entrar juntos en el alto del modal (720 px). Con la figura
+                más grande, el botón queda fuera de la vista. */}
+            <NexiaAvatar
+              config={cfg}
+              size={190}
+              frame="full"
+              expresion={expresion}
+              animado
+              interactivo
+              alt="Vista previa de tu avatar"
+            />
           </div>
+
+          <div className="ave-gestos" role="radiogroup" aria-label="Probar una expresión">
+            {EXPRESIONES.map((e) => (
+              <button
+                key={e.value}
+                type="button"
+                role="radio"
+                aria-checked={expresion === e.value}
+                className={`ave-gesto${expresion === e.value ? ' is-active' : ''}`}
+                onClick={() => setExpresion(e.value)}
+              >
+                {e.label}
+              </button>
+            ))}
+          </div>
+
+          <p className="ave-pista">Las expresiones son sólo una prueba: no se guardan.</p>
+
           <button
             type="button"
             className="ave-btn ave-btn--ghost ave-random"
-            onClick={() => setCfg(avatarAleatorio())}
+            onClick={sortear}
             disabled={guardando}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5" />
             </svg>
-            Aleatorio
+            Sorprendeme
           </button>
         </div>
 
         {/* ── Controles ── */}
         <div className="ave-controles">
-          <Seccion titulo="Piel">
-            <Swatches
-              opciones={PIELES}
-              valor={cfg.skin}
-              etiqueta="Tono de piel"
-              onChange={(skin) => setCfg((c) => ({ ...c, skin }))}
-            />
-          </Seccion>
+          <div className="ave-tabs" role="tablist" aria-label="Partes del avatar" ref={tabs} onKeyDown={navegarTabs}>
+            {PASOS.map((p) => (
+              <button
+                key={p.id}
+                id={`ave-tab-${p.id}`}
+                type="button"
+                role="tab"
+                aria-selected={paso === p.id}
+                aria-controls={`ave-panel-${p.id}`}
+                tabIndex={paso === p.id ? 0 : -1}
+                className={`ave-tab${paso === p.id ? ' is-active' : ''}`}
+                onClick={() => setPaso(p.id)}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
 
-          <Seccion titulo="Pelo">
-            <Miniaturas<HairStyle>
-              opciones={ESTILOS_PELO}
-              valor={cfg.hair.style}
-              etiqueta="Estilo de pelo"
-              preview={(style) => ({ ...cfg, hair: { ...cfg.hair, style }, accessories: { ...cfg.accessories, hat: null } })}
-              onChange={(style) => setPelo({ style })}
-            />
-            <Swatches
-              opciones={COLORES_PELO}
-              valor={cfg.hair.color}
-              etiqueta="Color de pelo"
-              onChange={(color) => setPelo({ color })}
-            />
-          </Seccion>
-
-          <Seccion titulo="Ojos">
-            <Swatches
-              opciones={COLORES_OJOS}
-              valor={cfg.eyes}
-              etiqueta="Color de ojos"
-              onChange={(eyes) => setCfg((c) => ({ ...c, eyes }))}
-            />
-          </Seccion>
-
-          <Seccion titulo="Lentes">
-            <Miniaturas<GlassesStyle | null>
-              opciones={LENTES}
-              valor={cfg.accessories.glasses}
-              etiqueta="Lentes"
-              preview={(glasses) => ({ ...cfg, accessories: { ...cfg.accessories, glasses } })}
-              onChange={(glasses) => setAccesorio({ glasses })}
-            />
-          </Seccion>
-
-          <Seccion titulo="Sombrero">
-            <Miniaturas<HatStyle | null>
-              opciones={SOMBREROS}
-              valor={cfg.accessories.hat}
-              etiqueta="Sombrero"
-              preview={(hat) => ({ ...cfg, accessories: { ...cfg.accessories, hat } })}
-              onChange={(hat) => setAccesorio({ hat })}
-            />
-          </Seccion>
-
-          <Seccion titulo="Color de remera">
-            <Swatches
-              opciones={COLORES_REMERA}
-              valor={cfg.shirt_color}
-              etiqueta="Color de remera"
-              onChange={(shirt_color) => setCfg((c) => ({ ...c, shirt_color }))}
-            />
-          </Seccion>
+          <div className="ave-paneles">
+            {paso === 'rostro' && (
+              <div className="ave-panel" id="ave-panel-rostro" role="tabpanel" aria-labelledby="ave-tab-rostro">
+                <Seccion titulo="Tono de piel">
+                  <Swatches
+                    opciones={PIELES}
+                    valor={cfg.skin}
+                    etiqueta="Tono de piel"
+                    onChange={(skin) => setCfg((c) => ({ ...c, skin }))}
+                  />
+                </Seccion>
+  
+                <Seccion titulo="Color de ojos">
+                  <Swatches
+                    opciones={COLORES_OJOS}
+                    valor={cfg.eyes}
+                    etiqueta="Color de ojos"
+                    onChange={(eyes) => setCfg((c) => ({ ...c, eyes }))}
+                  />
+                </Seccion>
+  
+                <Seccion titulo="Detalles">
+                  <Miniaturas<MarcaRostro | null>
+                    opciones={MARCAS}
+                    valor={cfg.marks ?? null}
+                    etiqueta="Marcas del rostro"
+                    preview={(marks) => ({ ...cfg, marks })}
+                    onChange={(marks) => setCfg((c) => ({ ...c, marks }))}
+                  />
+                </Seccion>
+              </div>
+            )}
+  
+            {paso === 'pelo' && (
+              <div className="ave-panel" id="ave-panel-pelo" role="tabpanel" aria-labelledby="ave-tab-pelo">
+                <Seccion titulo="Estilo">
+                  <Miniaturas<HairStyle>
+                    opciones={ESTILOS_PELO}
+                    valor={cfg.hair.style}
+                    etiqueta="Estilo de pelo"
+                    preview={(style) => ({
+                      ...cfg,
+                      hair: { ...cfg.hair, style },
+                      accessories: { ...cfg.accessories, hat: null },
+                    })}
+                    onChange={(style) => setPelo({ style })}
+                  />
+                </Seccion>
+  
+                <Seccion titulo="Color">
+                  <Swatches
+                    opciones={COLORES_PELO}
+                    valor={cfg.hair.color}
+                    etiqueta="Color de pelo"
+                    onChange={(color) => setPelo({ color })}
+                  />
+                </Seccion>
+  
+                <Seccion titulo="Vello facial">
+                  <Miniaturas<VelloFacial | null>
+                    opciones={VELLOS}
+                    valor={cfg.facial_hair ?? null}
+                    etiqueta="Vello facial"
+                    preview={(facial_hair) => ({ ...cfg, facial_hair })}
+                    onChange={(facial_hair) => setCfg((c) => ({ ...c, facial_hair }))}
+                  />
+                </Seccion>
+              </div>
+            )}
+  
+            {paso === 'estilo' && (
+              <div className="ave-panel" id="ave-panel-estilo" role="tabpanel" aria-labelledby="ave-tab-estilo">
+                <Seccion titulo="Lentes">
+                  <Miniaturas<GlassesStyle | null>
+                    opciones={LENTES}
+                    valor={cfg.accessories.glasses}
+                    etiqueta="Lentes"
+                    preview={(glasses) => ({ ...cfg, accessories: { ...cfg.accessories, glasses } })}
+                    onChange={(glasses) => setAccesorio({ glasses })}
+                  />
+                </Seccion>
+  
+                <Seccion titulo="Sombrero">
+                  <Miniaturas<HatStyle | null>
+                    opciones={SOMBREROS}
+                    valor={cfg.accessories.hat}
+                    etiqueta="Sombrero"
+                    preview={(hat) => ({ ...cfg, accessories: { ...cfg.accessories, hat } })}
+                    onChange={(hat) => setAccesorio({ hat })}
+                  />
+                </Seccion>
+  
+                <Seccion titulo="Color de remera">
+                  <Swatches
+                    opciones={COLORES_REMERA}
+                    valor={cfg.shirt_color}
+                    etiqueta="Color de remera"
+                    onChange={(shirt_color) => setCfg((c) => ({ ...c, shirt_color }))}
+                  />
+                </Seccion>
+  
+                <Seccion titulo="Fondo">
+                  <Miniaturas<FondoAvatar>
+                    opciones={FONDOS}
+                    valor={cfg.backdrop ?? 'aurora'}
+                    etiqueta="Fondo del avatar"
+                    conFondo
+                    preview={(backdrop) => ({ ...cfg, backdrop })}
+                    onChange={(backdrop) => setCfg((c) => ({ ...c, backdrop }))}
+                  />
+                </Seccion>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -251,7 +425,7 @@ const Contenido: React.FC<Omit<AvatarEditorProps, 'open'>> = ({
           {guardando && <span className="ave-spinner" aria-hidden="true" />}
           {guardando ? 'Guardando…' : 'Guardar avatar'}
         </button>
-    </footer>
+      </footer>
     </div>
   );
 };

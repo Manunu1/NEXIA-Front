@@ -12,10 +12,16 @@ import type { TonoBuddy } from '../../utils/buddy';
    dejaría de leerse como una sola voz.
 ───────────────────────────────────────────── */
 
-/** La cara acompaña el tono: felicitar con cara neutra no felicita. */
+/**
+ * La cara acompaña el tono: felicitar con cara neutra no felicita.
+ *
+ * 'logro' celebra de verdad —salta y le brotan chispas— porque es el único
+ * momento en que el avatar tiene algo que festejar. Si esa cara apareciera
+ * también en un tip, dejaría de significar "lo lograste".
+ */
 export const EXPRESION_POR_TONO: Record<TonoBuddy, AvatarExpresion> = {
-  logro: 'alegre',
-  animo: 'pensando',
+  logro: 'celebrando',
+  animo: 'concentrado',
   alerta: 'normal',
   tip: 'pensando',
   saludo: 'guino',

@@ -4,9 +4,32 @@
    Espejan exactamente lo que devuelve /api/perfil.
 ───────────────────────────────────────────── */
 
-export type HairStyle = 'corto' | 'medio' | 'largo' | 'rizado' | 'rapado';
-export type GlassesStyle = 'redondos' | 'cuadrados' | 'sol';
-export type HatStyle = 'nexia' | 'gorra' | 'vincha';
+export type HairStyle =
+  | 'corto'
+  | 'medio'
+  | 'largo'
+  | 'rizado'
+  | 'rapado'
+  | 'ondulado'
+  | 'bob'
+  | 'coleta'
+  | 'rodete'
+  | 'trenzas';
+
+export type GlassesStyle = 'redondos' | 'cuadrados' | 'sol' | 'aviador' | 'gato';
+export type HatStyle = 'nexia' | 'gorra' | 'vincha' | 'beanie' | 'auriculares' | 'birrete';
+
+/** Vello facial. Sigue el color del pelo, un punto más oscuro. */
+export type VelloFacial = 'barba' | 'candado' | 'bigote';
+
+/** Marca del rostro — detalle chico que personaliza sin cambiar la silueta. */
+export type MarcaRostro = 'pecas' | 'lunar';
+
+/**
+ * Fondo del retrato. No es decoración libre: son seis atmósferas de la paleta
+ * de marca, cada una con su versión clara y oscura (ver nexiaAvatar.css).
+ */
+export type FondoAvatar = 'aurora' | 'menta' | 'atardecer' | 'indigo' | 'rosa' | 'liso';
 
 export type Genero = 'masculino' | 'femenino' | 'otro' | 'prefiero_no_decir';
 
@@ -21,9 +44,18 @@ export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 /**
  * Expresión de la cara. 'normal' es la de siempre y es el default en toda
  * la app: el avatar tiene que ser reconocible como la misma persona. Las
- * demás son puntuales — celebrar, saludar o "estar pensando".
+ * demás son puntuales — celebrar, saludar, concentrarse o "estar pensando".
+ *
+ * Son gestos, no personajes: cambian cejas, párpados, mirada y boca sobre
+ * el MISMO rostro (ver GESTOS en NexiaAvatar), nunca la silueta.
  */
-export type AvatarExpresion = 'normal' | 'alegre' | 'guino' | 'pensando';
+export type AvatarExpresion =
+  | 'normal'
+  | 'alegre'
+  | 'guino'
+  | 'pensando'
+  | 'celebrando'
+  | 'concentrado';
 
 /**
  * Encuadre. Los tres recortan zonas distintas del mismo lienzo 160 × 240,
@@ -31,13 +63,22 @@ export type AvatarExpresion = 'normal' | 'alegre' | 'guino' | 'pensando';
  */
 export type AvatarFrame = 'circle' | 'full' | 'head';
 
-/** Configuración del avatar generado. Todos los colores en formato #RRGGBB. */
+/**
+ * Configuración del avatar generado. Todos los colores en formato #RRGGBB.
+ *
+ * Los tres últimos campos se agregaron después y son opcionales a propósito:
+ * una config guardada antes de que existieran tiene que seguir renderizando
+ * sin migración (normalizarAvatar les pone el default).
+ */
 export interface AvatarConfig {
   skin: string;
   hair: { style: HairStyle; color: string };
   eyes: string;
   accessories: { glasses: GlassesStyle | null; hat: HatStyle | null };
   shirt_color: string;
+  facial_hair?: VelloFacial | null;
+  marks?: MarcaRostro | null;
+  backdrop?: FondoAvatar;
 }
 
 /**

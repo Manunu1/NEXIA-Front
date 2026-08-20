@@ -75,10 +75,29 @@ html[data-theme='oscuro'] .nx-mascota {
   96%           { transform: scaleY(1); }
 }
 
+/* ── Celebración ───────────────────────────────
+   Reusa las mismas piezas y los mismos keyframes
+   que el retrato (nexiaAvatar.css): el festejo tiene
+   que sentirse igual con tu avatar o con Nexo.
+───────────────────────────────────────────── */
+.nx-mascota--celebra .nx-mascota-cabeza {
+  animation:
+    nxRespira 4.4s ease-in-out infinite,
+    nxAvSalto 1.6s cubic-bezier(.34, 1.56, .64, 1) infinite;
+}
+
+.nx-mascota--celebra .nx-a-chispas path {
+  animation: nxAvChispa 1.6s ease-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nx-mascota--viva .nx-mascota-antena,
   .nx-mascota--viva .nx-mascota-cabeza,
-  .nx-mascota--viva .nx-mascota-ojo {
+  .nx-mascota--viva .nx-mascota-ojo,
+  .nx-mascota--celebra .nx-mascota-cabeza,
+  .nx-mascota--celebra .nx-a-chispas path {
     animation: none;
   }
+
+  .nx-mascota--celebra .nx-a-chispas path { opacity: 1; }
 }

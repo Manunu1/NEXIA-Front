@@ -64,9 +64,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
-  padding: 1.75rem 1.5rem;
+  /* `safe`: si la figura, los gestos y el sorteo no entran en pantallas
+     bajas, la columna scrollea desde arriba en vez de recortar la cabeza. */
+  justify-content: safe center;
+  min-height: 0;
+  overflow-y: auto;
+  gap: 1rem;
+  padding: 1.5rem 1.25rem;
   border-right: 1px solid var(--border);
   background:
     radial-gradient(420px 320px at 50% 12%, rgba(255,152,0,.07), transparent 62%),
@@ -84,19 +88,119 @@
   animation: scaleIn var(--dur-md) var(--ease) both;
 }
 
+/* ── Banco de expresiones ──────────────────────
+   Deliberadamente debajo de la figura y en tono
+   secundario: es una prueba, no un campo del
+   formulario. Si compitiera con los controles, el
+   usuario creería que la expresión se guarda.
+───────────────────────────────────────────── */
+.ave-gestos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.375rem;
+  max-width: 340px;
+}
+
+.ave-gesto {
+  font-family: var(--fb);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--t3);
+  padding: 0.34rem 0.7rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+    background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease-spring);
+}
+
+.ave-gesto:hover { color: var(--t1); border-color: var(--navy-xs); transform: translateY(-1px); }
+
+.ave-gesto.is-active {
+  color: var(--navy);
+  border-color: var(--orange);
+  background: var(--orange-xs);
+}
+
+html[data-theme='oscuro'] .ave-gesto.is-active {
+  color: var(--t1);
+  background: var(--s2);
+}
+
+.ave-pista {
+  font-size: 0.72rem;
+  color: var(--t4);
+  margin: -0.5rem 0 0;
+  text-align: center;
+}
+
 .ave-random {
   gap: 0.45rem;
 }
 
 .ave-random svg { width: 15px; height: 15px; }
 
-/* ── Controles ── */
+/* ── Controles ──────────────────────────────────
+   Los pasos quedan FUERA del área que scrollea: con
+   once grupos de opciones, tener que volver arriba
+   para cambiar de paso es el tipo de fricción que
+   hace abandonar la personalización a la mitad.
+───────────────────────────────────────────── */
 .ave-controles {
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+  min-height: 0;
+  overflow: hidden;
+  padding: 1.5rem 1.75rem 0;
+}
+
+.ave-paneles {
+  min-height: 0;
   overflow-y: auto;
-  padding: 1.5rem 1.75rem 2rem;
+  padding-bottom: 2rem;
+}
+
+/* ── Pasos ── */
+.ave-tabs {
+  flex-shrink: 0;
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border-radius: var(--r2);
+  background: var(--s2);
+}
+
+.ave-tab {
+  flex: 1;
+  font-family: var(--fb);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--t3);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--r1);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+}
+
+.ave-tab:hover { color: var(--t1); }
+
+.ave-tab.is-active {
+  color: var(--navy);
+  background: var(--white);
+  box-shadow: var(--sh-sm);
+}
+
+html[data-theme='oscuro'] .ave-tab.is-active { color: var(--t1); }
+
+.ave-panel {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  animation: fadeInUp var(--dur-md) var(--ease) both;
 }
 
 .ave-seccion {
@@ -114,16 +218,20 @@
   margin: 0;
 }
 
-/* ── Swatches de color ── */
+/* ── Swatches de color ──────────────────────────
+   Con doce tonos de piel y catorce de pelo, el
+   tamaño importa: círculos grandes obligan a
+   scrollear y la paleta deja de leerse de un vistazo.
+───────────────────────────────────────────── */
 .ave-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.625rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+  gap: 0.5rem;
 }
 
 .ave-swatch {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: 2px solid var(--white);
   box-shadow: 0 0 0 1.5px var(--border);
@@ -131,26 +239,32 @@
   transition: transform var(--dur-fast) var(--ease-spring), box-shadow var(--dur-fast) var(--ease);
 }
 
-.ave-swatch:hover { transform: scale(1.1); }
+.ave-swatch:hover { transform: scale(1.12); }
 
 .ave-swatch.is-active {
   box-shadow: 0 0 0 2.5px var(--orange);
-  transform: scale(1.06);
+  transform: scale(1.08);
 }
 
-/* ── Miniaturas de estilo ── */
+/* ── Miniaturas de estilo ──────────────────────
+   Todas las tarjetas miden lo mismo aunque el
+   texto ocupe dos líneas: una grilla de tarjetas
+   de alturas distintas es lo primero que delata
+   una pantalla armada a mano.
+───────────────────────────────────────────── */
 .ave-minis {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
-  gap: 0.625rem;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 0.5rem;
 }
 
 .ave-mini {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.625rem 0.375rem 0.5rem;
+  display: grid;
+  grid-template-rows: 56px auto;
+  justify-items: center;
+  align-content: start;
+  gap: 0.45rem;
+  padding: 0.625rem 0.375rem 0.55rem;
   background: var(--white);
   border: 1.5px solid var(--border);
   border-radius: var(--r2);
@@ -169,6 +283,9 @@
   border-color: var(--orange);
   box-shadow: 0 0 0 2px rgba(255,152,0,.18);
 }
+
+/* Un aro tenue separa la cara del fondo de la tarjeta sin dibujar un borde */
+.ave-mini-cara { box-shadow: inset 0 0 0 1px rgba(7,17,44,.06); }
 
 .ave-mini-label {
   font-size: 0.7rem;
@@ -246,26 +363,53 @@ html[data-theme='oscuro'] .ave-btn--ghost {
     overflow-y: auto;
   }
 
+  /* La previa pasa a ser una banda fija arriba: la figura a la izquierda y,
+     a su lado, lo que se puede probar sin perderla de vista. */
   .ave-preview {
     position: sticky;
     top: 0;
     z-index: 2;
     border-right: none;
     border-bottom: 1px solid var(--border);
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'stage gestos'
+      'stage random';
+    align-items: center;
+    gap: 0.6rem 1rem;
     padding: 1rem 1.25rem;
     background: var(--white);
   }
 
+  .ave-preview-stage { grid-area: stage; padding: 0.375rem; }
+
   /* En mobile la previa se achica para no comerse la pantalla */
-  .ave-preview-stage { padding: 0.375rem; }
   .ave-preview-stage .nx-avatar {
     width: 92px !important;
     height: 138px !important;
   }
 
-  .ave-controles { overflow-y: visible; padding: 1.25rem 1.25rem 2rem; }
+  /* Los gestos pasan a un carrusel horizontal: apilados se comían la banda */
+  .ave-gestos {
+    grid-area: gestos;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: none;
+    padding-bottom: 0.25rem;
+    scrollbar-width: none;
+  }
+
+  .ave-gestos::-webkit-scrollbar { display: none; }
+  .ave-gesto { flex: 0 0 auto; }
+
+  .ave-pista { display: none; }
+
+  .ave-random { grid-area: random; justify-self: start; }
+
+  .ave-controles { overflow: visible; padding: 1.25rem 1.25rem 0; }
+  .ave-paneles { overflow-y: visible; }
 }
 
 @media (max-width: 600px) {
