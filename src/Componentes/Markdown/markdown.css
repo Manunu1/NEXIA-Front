@@ -127,3 +127,8 @@
   border-left: 3px solid var(--orange);
   color: var(--t3);
 }
+
+/* Minimal KaTeX math styling */
+.md-math { display: inline-block; vertical-align: baseline; }
+.md-math--inline { margin: 0 0.2rem; }
+.md-math-block { margin: 0.6rem 0; }
