@@ -1,12 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import Footer from '../../../Componentes/footer';
 import Pomodoro from '../../../Componentes/Estudio/Pomodoro';
 import Objetivos from '../../../Componentes/Estudio/Objetivos';
-import PanelMazos from '../../../Componentes/Estudio/Mazos';
-import PanelMapas from '../../../Componentes/Estudio/Mapas';
 import PanelApuntes from '../../../Componentes/Estudio/Apuntes';
-import Repaso from '../../../Componentes/Estudio/Repaso';
 import api from '../../../api';
 import { usePomodoro } from '../../../hooks/usePomodoro';
 import { mensajeDeError } from '../../../utils/apiError';
@@ -17,76 +13,17 @@ import './zonaEstudio.css';
 /* ─────────────────────────────────────────────
    ZONA DE ESTUDIO.
 
-   Cuatro herramientas, un solo lugar. La pregunta
-   de diseño era si mostrarlas todas juntas o
-   separarlas, y la respuesta salió de cómo se usan:
-
-   - El Pomodoro es el marco. Corre MIENTRAS usás
-     todo lo demás, así que no puede estar dentro
-     de una pestaña que se desmonta.
-   - Las tarjetas, los apuntes y los mapas son
-     excluyentes: nadie edita un mapa y repasa
-     tarjetas al mismo tiempo.
-
-   De ahí el layout: el temporizador y los objetivos
-   fijos arriba, y abajo un cambiador para las tres
-   herramientas. Ponerlas todas a la vez habría dado
-   el dashboard saturado que hay que evitar.
-
-   El panel activo va en la URL para que el alumno
-   pueda volver a "sus apuntes" con el botón atrás
-   del navegador y guardar el enlace.
+   El Pomodoro y los objetivos quedan disponibles
+   durante toda la sesión, mientras que los apuntes
+   ocupan la sección de herramientas.
 ───────────────────────────────────────────── */
-
-type Panel = 'tarjetas' | 'apuntes' | 'mapas';
-
-const PANELES: { key: Panel; nombre: string; icono: React.ReactNode }[] = [
-  {
-    key: 'tarjetas',
-    nombre: 'Tarjetas',
-    icono: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="7" width="14" height="14" rx="2" />
-        <path d="M8 7V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-2" />
-      </svg>
-    ),
-  },
-  {
-    key: 'apuntes',
-    nombre: 'Apuntes',
-    icono: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-      </svg>
-    ),
-  },
-  {
-    key: 'mapas',
-    nombre: 'Mapas',
-    icono: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="19" r="2.5" /><circle cx="19" cy="19" r="2.5" />
-        <line x1="10.6" y1="7.3" x2="6.4" y2="16.7" /><line x1="13.4" y1="7.3" x2="17.6" y2="16.7" />
-      </svg>
-    ),
-  },
-];
-
-function esPanel(v: string | null): v is Panel {
-  return v === 'tarjetas' || v === 'apuntes' || v === 'mapas';
-}
 
 const ZonaEstudio: React.FC = () => {
   usePageTitle('Zona de estudio');
 
-  const [params, setParams] = useSearchParams();
-  const panel: Panel = esPanel(params.get('panel')) ? (params.get('panel') as Panel) : 'tarjetas';
-
   const [resumen, setResumen] = useState<ResumenEstudio | null>(null);
   const [objetivos, setObjetivos] = useState<Objetivo[]>([]);
   const [error, setError] = useState('');
-  const [repasoAbierto, setRepasoAbierto] = useState(false);
 
   const cargarResumen = useCallback(async () => {
     try {
@@ -194,14 +131,8 @@ const ZonaEstudio: React.FC = () => {
   const horasHoy = resumen ? Math.floor(resumen.totales.minutos_hoy / 60) : 0;
   const minutosHoy = resumen ? resumen.totales.minutos_hoy % 60 : 0;
 
-  const cambiarPanel = (p: Panel) => {
-    // replace: cambiar de herramienta no debería llenar el historial.
-    setParams({ panel: p }, { replace: true });
-  };
-
   return (
-    <>
-      <div className="main-wrapper">
+    <div className="main-wrapper">
         <main className="main-content">
 
           <div className="page-header">
@@ -240,17 +171,6 @@ const ZonaEstudio: React.FC = () => {
                 </span>
               </div>
 
-              <button
-                type="button"
-                className={`ze-metrica ze-metrica--accion${resumen.tarjetas_pendientes > 0 ? ' ze-metrica--urgente' : ''}`}
-                onClick={() => (resumen.tarjetas_pendientes > 0 ? setRepasoAbierto(true) : cambiarPanel('tarjetas'))}
-              >
-                <span className="ze-metrica-valor">{resumen.tarjetas_pendientes}</span>
-                <span className="ze-metrica-label">
-                  {resumen.tarjetas_pendientes > 0 ? 'Tarjetas · repasar' : 'Tarjetas para hoy'}
-                </span>
-              </button>
-
               {/* Gráfico de los últimos 14 días. Los días sin estudiar vienen
                   del backend como barras en cero: si se omitieran, dos días
                   salteados se verían como días consecutivos. */}
@@ -285,53 +205,16 @@ const ZonaEstudio: React.FC = () => {
             />
           </section>
 
-          {/* ── Herramientas ── */}
+          {/* ── Apuntes ── */}
           <section className="ze-herramientas">
-            <div className="ze-tabs" role="tablist" aria-label="Herramientas de estudio">
-              {PANELES.map((p) => (
-                <button
-                  key={p.key}
-                  type="button"
-                  role="tab"
-                  id={`ze-tab-${p.key}`}
-                  aria-selected={panel === p.key}
-                  aria-controls={`ze-panel-${p.key}`}
-                  className={`ze-tab${panel === p.key ? ' ze-tab--activo' : ''}`}
-                  onClick={() => cambiarPanel(p.key)}
-                >
-                  <span className="ze-tab-icono" aria-hidden="true">{p.icono}</span>
-                  {p.nombre}
-                  {p.key === 'tarjetas' && resumen && resumen.tarjetas_pendientes > 0 && (
-                    <span className="ze-tab-badge">{resumen.tarjetas_pendientes}</span>
-                  )}
-                </button>
-              ))}
-            </div>
-
-            <div
-              className="ze-panel"
-              role="tabpanel"
-              id={`ze-panel-${panel}`}
-              aria-labelledby={`ze-tab-${panel}`}
-            >
-              {panel === 'tarjetas' && <PanelMazos onCambio={cargarResumen} />}
-              {panel === 'apuntes' && <PanelApuntes />}
-              {panel === 'mapas' && <PanelMapas onCambio={cargarResumen} />}
+            <div className="ze-panel">
+              <PanelApuntes />
             </div>
           </section>
 
         </main>
         <Footer />
-      </div>
-
-      {repasoAbierto && (
-        <Repaso
-          mazoId={null}
-          onCerrar={() => setRepasoAbierto(false)}
-          onTerminado={cargarResumen}
-        />
-      )}
-    </>
+    </div>
   );
 };
 

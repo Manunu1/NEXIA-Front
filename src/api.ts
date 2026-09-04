@@ -9,7 +9,7 @@ import { clearSession, getRefreshToken, setTokens } from './utils/session';
    los requests concurrentes la reutilizan).
 ───────────────────────────────────────────── */
 
-export const BASE_URL = import.meta.env.VITE_API_URL || 'https://nexia-backend-pxke.onrender.com';
+export const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const api = axios.create({ baseURL: BASE_URL });
 
