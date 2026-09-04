@@ -85,7 +85,8 @@ const Seguridad: React.FC = () => {
   const largoOk = nueva.length >= MIN;
   const numeroOk = /\d/.test(nueva);
   const coincideOk = nueva.length > 0 && nueva === confirmacion;
-  const valido = largoOk && numeroOk && coincideOk && actual.length > 0;
+  const diferenteOk = nueva.length > 0 && actual.length > 0 && nueva !== actual;
+  const valido = largoOk && numeroOk && coincideOk && diferenteOk && actual.length > 0;
 
   const enviar = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,6 +95,7 @@ const Seguridad: React.FC = () => {
     if (!largoOk) return toast.error(`La nueva contraseña debe tener al menos ${MIN} caracteres`);
     if (!numeroOk) return toast.error('La nueva contraseña debe incluir al menos un número');
     if (!coincideOk) return toast.error('Las contraseñas nuevas no coinciden');
+    if (!diferenteOk) return toast.error('La nueva contraseña debe ser diferente de la contraseña actual');
 
     setGuardando(true);
     try {
@@ -143,6 +145,7 @@ const Seguridad: React.FC = () => {
         <Requisito ok={largoOk}>Al menos {MIN} caracteres</Requisito>
         <Requisito ok={numeroOk}>Al menos un número</Requisito>
         <Requisito ok={coincideOk}>Las dos contraseñas coinciden</Requisito>
+        <Requisito ok={diferenteOk}>La nueva contraseña es diferente de la actual</Requisito>
       </ul>
 
       <div className="cfg-savebar">
