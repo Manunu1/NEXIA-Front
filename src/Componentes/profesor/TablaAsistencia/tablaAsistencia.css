@@ -3,7 +3,7 @@
   border: 1px solid var(--border);
   border-radius: var(--r3);
   box-shadow: var(--sh-sm);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .ta-row {
