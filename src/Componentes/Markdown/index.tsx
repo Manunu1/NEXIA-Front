@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './markdown.css';
 
 /* ─────────────────────────────────────────────
@@ -17,8 +17,8 @@ interface MarkdownProps {
 const INLINE_RE = /(`[^`]+`|\*\*[^*]+\*\*|\*[^*\n]+\*|\[[^\]]+\]\(https?:\/\/[^)\s]+\))/g;
 const LINK_RE = /^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)$/;
 
-/** Convierte los tokens inline de una línea en nodos React. */
-function renderInline(text: string, keyBase: string): React.ReactNode[] {
+/** Render inline tokens (code, bold, italic, links) — used for non-math fragments */
+function renderInlineTokens(text: string, keyBase: string): React.ReactNode[] {
   const nodes: React.ReactNode[] = [];
   let last = 0;
   let i = 0;
@@ -49,6 +49,43 @@ function renderInline(text: string, keyBase: string): React.ReactNode[] {
     last = index + token.length;
   }
   if (last < text.length) nodes.push(text.slice(last));
+  return nodes;
+}
+
+/** Render inline text and process $...$ math segments if KaTeX is available. */
+function renderInline(text: string, keyBase: string): React.ReactNode[] {
+  const nodes: React.ReactNode[] = [];
+  const MATH_RE = /\$(.+?)\$/g;
+  let last = 0;
+  let i = 0;
+  for (const m of text.matchAll(MATH_RE)) {
+    const match = m[0];
+    const content = m[1];
+    const index = m.index ?? 0;
+    if (index > last) {
+      const pre = text.slice(last, index);
+      nodes.push(...renderInlineTokens(pre, `${keyBase}-t${i}`));
+    }
+    const key = `${keyBase}-math-${i}`;
+    const katex = (window as any).katex;
+    if (katex && typeof katex.renderToString === 'function') {
+      try {
+        const html = katex.renderToString(content, { throwOnError: false, displayMode: false });
+        nodes.push(<span key={key} className="md-math md-math--inline" dangerouslySetInnerHTML={{ __html: html }} />);
+      } catch {
+        nodes.push(<code key={key}>{`$${content}$`}</code>);
+      }
+    } else {
+      // fallback: show literal with code styling until KaTeX loads
+      nodes.push(<code key={key}>{`$${content}$`}</code>);
+    }
+    last = index + match.length;
+    i++;
+  }
+  if (last < text.length) {
+    const rest = text.slice(last);
+    nodes.push(...renderInlineTokens(rest, `${keyBase}-t${i}`));
+  }
   return nodes;
 }
 
@@ -112,6 +149,52 @@ function renderBlocks(text: string): React.ReactNode[] {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
+
+    // Display math $$ ... $$ support: capture blocks delimited by $$
+    if (line.trim().startsWith('$$')) {
+      flushAll();
+      const mathLines: string[] = [];
+      let inner = line.trim().slice(2);
+      // If it closes on same line like $$a+b$$
+      if (inner.endsWith('$$')) {
+        inner = inner.slice(0, -2);
+        const katex = (window as any).katex;
+        if (katex && typeof katex.renderToString === 'function') {
+          try {
+            const html = katex.renderToString(inner, { throwOnError: false, displayMode: true });
+            blocks.push(<div key={`md-m-${blocks.length}`} className="md-math-block" dangerouslySetInnerHTML={{ __html: html }} />);
+          } catch {
+            blocks.push(<pre key={`md-m-${blocks.length}`}><code>{`$$${inner}$$`}</code></pre>);
+          }
+        } else {
+          blocks.push(<pre key={`md-m-${blocks.length}`}><code>{`$$${inner}$$`}</code></pre>);
+        }
+        continue;
+      }
+      // otherwise gather until closing $$
+      i++;
+      while (i < lines.length && !lines[i].trim().endsWith('$$')) {
+        mathLines.push(lines[i]);
+        i++;
+      }
+      if (i < lines.length) {
+        const lastLine = lines[i].trim();
+        mathLines.push(lastLine.slice(0, lastLine.length - 2));
+      }
+      const mathContent = mathLines.join('\n');
+      const katex = (window as any).katex;
+      if (katex && typeof katex.renderToString === 'function') {
+        try {
+          const html = katex.renderToString(mathContent, { throwOnError: false, displayMode: true });
+          blocks.push(<div key={`md-m-${blocks.length}`} className="md-math-block" dangerouslySetInnerHTML={{ __html: html }} />);
+        } catch {
+          blocks.push(<pre key={`md-m-${blocks.length}`}><code>{`$$${mathContent}$$`}</code></pre>);
+        }
+      } else {
+        blocks.push(<pre key={`md-m-${blocks.length}`}><code>{`$$${mathContent}$$`}</code></pre>);
+      }
+      continue;
+    }
 
     // Bloque de código ``` … ```
     if (line.trim().startsWith('```')) {
@@ -179,8 +262,65 @@ function renderBlocks(text: string): React.ReactNode[] {
   return blocks;
 }
 
-const Markdown: React.FC<MarkdownProps> = ({ text, className }) => (
-  <div className={`md${className ? ` ${className}` : ''}`}>{renderBlocks(text)}</div>
-);
+/**
+ * Markdown component — now stateful so it can trigger a re-render when KaTeX
+ * is loaded dynamically at runtime (from CDN). We keep behaviour minimal: if
+ * KaTeX isn't available yet, math is shown as code, and once KaTeX loads we
+ * re-render to display pretty math.
+ */
+const KATEX_CSS = 'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css';
+const KATEX_JS = 'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js';
+
+let katexLoader: Promise<void> | null = null;
+function ensureKatexLoaded(): Promise<void> {
+  if ((window as any).katex) return Promise.resolve();
+  if (katexLoader) return katexLoader;
+
+  katexLoader = new Promise((resolve) => {
+    // inject CSS
+    if (!document.querySelector(`link[data-katex]`)) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = KATEX_CSS;
+      link.setAttribute('data-katex', '1');
+      document.head.appendChild(link);
+    }
+    // inject JS
+    if (!document.querySelector(`script[data-katex]`)) {
+      const script = document.createElement('script');
+      script.src = KATEX_JS;
+      script.async = true;
+      script.setAttribute('data-katex', '1');
+      script.onload = () => resolve();
+      // in case the CDN fails, still resolve to avoid blocking
+      script.onerror = () => resolve();
+      document.body.appendChild(script);
+    } else {
+      // already present but maybe not ready
+      const existing: any = document.querySelector(`script[data-katex]`);
+      existing.onload = () => resolve();
+      existing.onerror = () => resolve();
+    }
+  }).then(() => {
+    // small delay to allow global to be set by the loaded script
+    return new Promise<void>((res) => setTimeout(res, 50));
+  });
+
+  return katexLoader;
+}
+
+const Markdown: React.FC<MarkdownProps> = ({ text, className }) => {
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    // if the text contains any $ signs, try to load KaTeX so math can render
+    if (text.includes('$')) {
+      ensureKatexLoaded().then(() => setTick((t) => t + 1));
+    }
+  }, [text]);
+
+  // tick is used only to force re-render once KaTeX becomes available
+  return <div className={`md${className ? ` ${className}` : ''}`}>{renderBlocks(text)}</div>;
+};
 
 export default Markdown;
